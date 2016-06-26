@@ -1,0 +1,3 @@
+java -jar javatools/lib/Glass.jar src/transball-main-en.asm transball-en.rom
+java -jar javatools/lib/Glass.jar src/transball-main-es.asm transball-es.rom
+
