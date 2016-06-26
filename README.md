@@ -9,6 +9,8 @@ An opportunist civilization has stolen all the charged spheres from your home pl
 
 ## Instructions
 
+Demo video can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
+
 In each level of Transball, the goal is to find the energy sphere, capture it and carry it to the upper part of the level. The main obstacle is the gravity, that pulls you towards the ground. But many other obstacles such as canons, tanks, doors, etc. will make your journey harder than it seems.
 
 In order to capture the energy sphere, just touch it with your ship.
