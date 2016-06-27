@@ -9,6 +9,15 @@ An opportunist civilization has stolen all the charged spheres from your home pl
 
 ## Instructions
 
+Screenshots:
+
+![title screen](https://github.com/santiontanon/transballmsx/blob/master/screenshots/v1.0/sshot1.png?raw=true)
+![in game 1](https://github.com/santiontanon/transballmsx/blob/master/screenshots/v1.0/sshot2.png?raw=true)
+
+![in game 2](https://github.com/santiontanon/transballmsx/blob/master/screenshots/v1.0/sshot3.png?raw=true)
+![in game 3](https://github.com/santiontanon/transballmsx/blob/master/screenshots/v1.0/sshot4.png?raw=true)
+
+
 Demo video can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
 
 Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.0
