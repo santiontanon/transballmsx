@@ -1,0 +1,13 @@
+# Binary (or testing) files
+#########################
+transball-en.rom
+
+
+# OS X temporary files
+#########################
+.DS_Store
+.Trashes
+*.swp
+*.lock
+
+

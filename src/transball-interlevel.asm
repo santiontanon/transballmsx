@@ -70,8 +70,9 @@ Level_Restart:
     call getcharacter_nonwaiting_reset
 
 InterLevel_Loop:
-    halt
-
+    call SFX_INT
+    halt    ;; give the CPU a break
+    
     call getcharacter_nonwaiting
     cp 27   ;; ESC
     jp z,SplashScreen
@@ -91,7 +92,6 @@ InterLevel_Loop:
 
 InterLevel_Loop_Continue:
 
-    halt    ;; give the CPU a break
     jp InterLevel_Loop
 
 
@@ -222,6 +222,7 @@ Level_complete_time_convert_loop_done:
     call getcharacter_nonwaiting_reset
 
 Level_complete_Loop:
+    call SFX_INT
     halt    
 
     call getcharacter_nonwaiting
