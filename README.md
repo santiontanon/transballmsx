@@ -22,6 +22,8 @@ Demo video can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
 
 Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.0
 
+You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
+
 In each level of Transball, the goal is to find the energy sphere, capture it and carry it to the upper part of the level. The main obstacle is the gravity, that pulls you towards the ground. But many other obstacles such as canons, tanks, doors, etc. will make your journey harder than it seems.
 
 In order to capture the energy sphere, just touch it with your ship.
