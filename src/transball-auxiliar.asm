@@ -6,7 +6,7 @@ RLE_decode:
 RLE_decode_loop:
     ld a,(ix)
     cp RLE_META
-    jp z,RLE_decode_loop_meta_character
+    jr z,RLE_decode_loop_meta_character
     ld (de),a
     inc ix
     inc de
@@ -15,7 +15,7 @@ RLE_decode_loop:
     ld a,b  ;; check if bc is 0
     or c
     cp 0
-    jp nz,RLE_decode_loop
+    jr nz,RLE_decode_loop
     ret
 RLE_decode_loop_meta_character:
     inc ix
@@ -28,11 +28,11 @@ RLE_decode_loop2:
     inc de
     dec bc
     dec l
-    jp nz,RLE_decode_loop2
+    jr nz,RLE_decode_loop2
     ld a,b  ;; check if bc is 0
     or c
     cp 0
-    jp nz,RLE_decode_loop
+    jr nz,RLE_decode_loop
     ret
 
 

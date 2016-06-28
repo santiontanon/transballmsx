@@ -83,21 +83,7 @@ enemyUpdateCycle_CannonUp:
     ld bc,(shipposition+2)  ;; player x
     sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
-
-    ;; fire!
-    ;; check if there is any bullet slot available:
-    ld c,0
-    ld hl,enemy_bullet_active
-enemyUpdateCycle_CannonUp_checking_for_free_slot:
-    ld a,(hl)
-    cp 0
-    jp z,enemyUpdateCycle_Cannon_fireBullet
-    inc hl
-    inc c
-    ld a,c
-    cp MAX_ENEMY_BULLETS
-    jr nz,enemyUpdateCycle_CannonUp_checking_for_free_slot
-    jp enemyUpdateCycle_nextEnemy
+    jp enemyUpdateCycle_Cannon_fireBullet
 
 
 ; ------------------------------------------------
@@ -130,21 +116,7 @@ enemyUpdateCycle_CannonRight:
     xor a
     sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
-
-    ;; fire!
-    ;; check if there is any bullet slot available:
-    ld c,0
-    ld hl,enemy_bullet_active
-enemyUpdateCycle_CannonRight_checking_for_free_slot:
-    ld a,(hl)
-    cp 0
-    jp z,enemyUpdateCycle_Cannon_fireBullet
-    inc hl
-    inc c
-    ld a,c
-    cp MAX_ENEMY_BULLETS
-    jr nz,enemyUpdateCycle_CannonRight_checking_for_free_slot
-    jp enemyUpdateCycle_nextEnemy
+    jp enemyUpdateCycle_Cannon_fireBullet
 
 
 ; ------------------------------------------------
@@ -175,21 +147,7 @@ enemyUpdateCycle_CannonDown:
     ld bc,(shipposition+2)  ;; player x
     sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
-
-    ;; fire!
-    ;; check if there is any bullet slot available:
-    ld c,0
-    ld hl,enemy_bullet_active
-enemyUpdateCycle_CannonDown_checking_for_free_slot:
-    ld a,(hl)
-    cp 0
-    jp z,enemyUpdateCycle_Cannon_fireBullet
-    inc hl
-    inc c
-    ld a,c
-    cp MAX_ENEMY_BULLETS
-    jr nz,enemyUpdateCycle_CannonDown_checking_for_free_slot
-    jp enemyUpdateCycle_nextEnemy
+    jp enemyUpdateCycle_Cannon_fireBullet
 
 
 ; ------------------------------------------------
@@ -222,27 +180,29 @@ enemyUpdateCycle_CannonLeft:
     xor a
     sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
-
-    ;; fire!
-    ;; check if there is any bullet slot available:
-    ld c,0
-    ld hl,enemy_bullet_active
-enemyUpdateCycle_CannonLeft_checking_for_free_slot:
-    ld a,(hl)
-    cp 0
-    jp z,enemyUpdateCycle_Cannon_fireBullet
-    inc hl
-    inc c
-    ld a,c
-    cp MAX_ENEMY_BULLETS
-    jr nz,enemyUpdateCycle_CannonLeft_checking_for_free_slot
-    jp enemyUpdateCycle_nextEnemy
+    jp enemyUpdateCycle_Cannon_fireBullet
 
 
 ; ------------------------------------------------
 
 
 enemyUpdateCycle_Cannon_fireBullet:
+    ;; fire!
+    ;; check if there is any bullet slot available:
+    ld c,0
+    ld hl,enemy_bullet_active
+enemyUpdateCycle_Cannon_checking_for_free_slot:
+    ld a,(hl)
+    cp 0
+    jp z,enemyUpdateCycle_Cannon_fireBullet_slotFound
+    inc hl
+    inc c
+    ld a,c
+    cp MAX_ENEMY_BULLETS
+    jr nz,enemyUpdateCycle_Cannon_checking_for_free_slot
+    jp enemyUpdateCycle_nextEnemy
+
+enemyUpdateCycle_Cannon_fireBullet_slotFound:
     ld (hl),1   ;; bullet is fired
     ld hl,enemy_bullet_positions
     sla c   ;; multiply c by 4 (to get the offset of the bullet coordinates)
@@ -375,7 +335,7 @@ enemyUpdateCycle_DirectionalCannon:
 enemyUpdateCycle_DirectionalCannon_checking_for_free_slot:
     ld a,(hl)
     cp 0
-    jr z,enemyUpdateCycle_DirectionalCannon_fireBullet
+    jr z,enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot
     inc hl
     inc c
     ld a,c
@@ -383,7 +343,7 @@ enemyUpdateCycle_DirectionalCannon_checking_for_free_slot:
     jr nz,enemyUpdateCycle_DirectionalCannon_checking_for_free_slot
     jp enemyUpdateCycle_nextEnemy
 
-enemyUpdateCycle_DirectionalCannon_fireBullet:
+enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot:
     ld (hl),1   ;; bullet is fired
     ld hl,enemy_bullet_positions
     sla c   ;; multiply c by 4 (to get the offset of the bullet coordinates)
