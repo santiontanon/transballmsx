@@ -147,11 +147,11 @@ applyGravityAndSpeed_bullet_loop:
     push de
     ld e,(ix+2)
     ld d,(ix+3)
-    push bc
-    push de
+;    push bc
+;    push de
     call checkMapCollision  ;; (bc,de) = (y,x)
-    pop de
-    pop bc
+;    pop de
+;    pop bc
     ;; check if any enemy has been hit:
     cp 9
     call z,player_bullet_hit_a_tank    ;; this function preserves the value of 'a', and 'ix'
@@ -166,6 +166,7 @@ applyGravityAndSpeed_bullet_loop:
     cp 4
     jp p,bullet_collided
 
+bullet_no_collision:
     pop hl
     pop bc
     jr applyGravityAndSpeed_next_bullet2

@@ -4,17 +4,17 @@ checkJoystick:    ;; these are "jp" instead of "call", so that when "MoveUp", et
     xor a
     call GTSTCK
     cp 2
-    jp z,TurnRight
+    jr z,TurnRight
     cp 3
-    jp z,TurnRight
+    jr z,TurnRight
     cp 4
-    jp z,TurnRight
+    jr z,TurnRight
     cp 6
-    jp z,TurnLeft
+    jr z,TurnLeft
     cp 7
-    jp z,TurnLeft
+    jr z,TurnLeft
     cp 8
-    jp z,TurnLeft
+    jr z,TurnLeft
     ret
 TurnLeft:    
     ld a,(shipangle)
@@ -43,11 +43,11 @@ checkThrust:
     xor a
     call GTSTCK
     cp 8
-    jp z,Thrust
+    jr z,Thrust
     cp 1
-    jp z,Thrust
+    jr z,Thrust
     cp 2
-    jp z,Thrust    
+    jr z,Thrust    
     ret
 Thrust:
     ;; decrease fuel

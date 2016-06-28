@@ -1087,7 +1087,6 @@ player_bullet_hit_a_tank_done:
 ;-----------------------------------------------
 ; The enemy stored in (iy) was hit by the player:
 enemy_hit:
-
     ld hl,SFX_explosion
     call play_SFX
 
