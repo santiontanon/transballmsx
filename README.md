@@ -20,7 +20,7 @@ Screenshots:
 
 Demo video can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.0
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.0.1
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
