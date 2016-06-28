@@ -17,14 +17,15 @@ import org.jdom.input.SAXBuilder;
  */
 public class TMX2Assembler {
     public static void main(String args[]) throws Exception {
-//        String inputMap = "/Users/santi/Dropbox/Brain/8bit-programming/MSX/graphics/map15.tmx";
-        String inputMap = "/Users/santi/Dropbox/Brain/8bit-programming/MSX/transball/graphics/titlescreen-es.tmx";
+        String inputMap = "graphics/map15.tmx";
+//        String inputMap = "graphics/titlescreen-es.tmx";
         
         int [][]maparray = importTMX(inputMap);
         
         countNumberOfAnimations(maparray);
         //convertToAssemblerPlain(maparray);
-        convertToAssemblerRunLengthEncodingPerLine(maparray, 255);
+//        convertToAssemblerRunLengthEncodingPerLine(maparray, 255);
+        convertToAssemblerRunLengthEncoding(maparray, 255);
     }
 
 
@@ -104,6 +105,54 @@ public class TMX2Assembler {
         System.out.println(";; Run-length encoding per line (size: "+size+")");
     }
 
+    
+
+    public static void convertToAssemblerRunLengthEncoding(int [][]maparray, int meta) {
+        int width = maparray[0].length;
+        int height = maparray.length;
+        int size = 0;
+        
+        System.out.println(";; map is " + width + " * " + height);
+        int i = 0, j = 0;
+        for(;i<height;) {
+            System.out.print("    db ");
+            List<Integer> encoding = new ArrayList<>();       
+            int last_i = i;
+            for(;j<width && i==last_i;) {
+                int last = maparray[i][j];
+                int count = 0;
+                do {
+                    do{
+                        count++;
+                        j++;
+                    }while(j<width && maparray[i][j]==last && count<255);
+                    if (j>=width) {
+                        j = 0;
+                        i++;
+                    }
+                }while(i<height && maparray[i][j]==last && count<255);
+                if (count==1 && last!=meta) {
+                    encoding.add(last);
+                } else if (count==2 && last!=meta) {
+                    encoding.add(last);
+                    encoding.add(last);
+                } else {
+                    encoding.add(meta);
+                    encoding.add(last);
+                    encoding.add(count);
+                }
+            }
+            for(int k = 0;k<encoding.size();k++) {
+                System.out.print(encoding.get(k));
+                if (k<encoding.size()-1) System.out.print(",");
+            }
+            System.out.println("");
+            size+=encoding.size();
+        }
+        System.out.println(";; Run-length encoding (size: "+size+")");
+    }
+    
+    
     
     public static int [][]importTMX(String fileName) throws Exception {
         Element e = new SAXBuilder().build(fileName).getRootElement();
