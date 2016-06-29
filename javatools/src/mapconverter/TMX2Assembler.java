@@ -17,8 +17,8 @@ import org.jdom.input.SAXBuilder;
  */
 public class TMX2Assembler {
     public static void main(String args[]) throws Exception {
-        String inputMap = "graphics/map15.tmx";
-//        String inputMap = "graphics/titlescreen-es.tmx";
+//        String inputMap = "graphics/map15.tmx";
+        String inputMap = "graphics/titlescreen-en.tmx";
         
         int [][]maparray = importTMX(inputMap);
         

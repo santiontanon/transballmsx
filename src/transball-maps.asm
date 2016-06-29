@@ -226,7 +226,7 @@ LOADMAP_ballstand_found:
 LOADMAP_find_enemies_loop1:
     ld a,(hl)
     cp 0
-    jp z,LOADMAP_done_finding_enemies
+    jr z,LOADMAP_done_finding_enemies
     inc hl
     ld e,(hl)
     inc hl
@@ -624,14 +624,14 @@ player_bullet_hit_a_button:
 
     ld a,(ndoors)
     cp 0
-    jp z,player_bullet_hit_a_button_done
+    jr z,player_bullet_hit_a_button_done
 
     ld c,0
     ld hl,doors
 player_bullet_hit_a_button_loop:
     ld a,(hl)
     cp 0
-    jp z,player_bullet_hit_a_button_door_was_closed
+    jr z,player_bullet_hit_a_button_door_was_closed
 player_bullet_hit_a_button_door_was_open:
     ld a,0
     ld (hl),a   ;; make the door closed
@@ -700,14 +700,14 @@ open_close_ball_doors:
 
     ld a,(nballdoors)
     cp 0
-    jp z,open_close_ball_doors_done
+    jr z,open_close_ball_doors_done
 
     ld c,0
     ld hl,balldoors
 open_close_ball_doors_loop:
     ld a,(hl)
     cp 0
-    jp z,open_close_ball_doors_door_was_closed
+    jr z,open_close_ball_doors_door_was_closed
 open_close_ball_doors_door_was_open:
     ld a,0
     ld (hl),a   ;; make the door closed

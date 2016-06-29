@@ -54,6 +54,8 @@ shipExplosionSprites:
     and #f8
     sla a
     sla a
+    cp 32*3
+    jp p,shipExplosionSprites_blank_sprites
     ld c,a
     ld b,0
     add hl,bc
@@ -79,6 +81,13 @@ shipExplosionSprites_loop:
 shipExplosionSprites_loop2:
     outi
     jp nz,shipExplosionSprites_loop2
+    ret
+
+shipExplosionSprites_blank_sprites:
+    xor a
+    ld bc,64
+    ld hl,SPRTBL2
+    call FILVRM
     ret
 
 
