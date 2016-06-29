@@ -82,10 +82,26 @@ applyGravityAndSpeed_x_continue2:
     ld (shipposition+2),hl
 
     ;; apply speed to the player bullets:
+    ld a,1  ;; player bullets
+    ld (bulletType_tmp),a
     ld c,0
     ld hl,player_bullet_active
     ld ix,player_bullet_positions
     ld de,player_bullet_velocities
+    call applyGravityAndSpeed_bullet_loop
+
+    ;; apply speed to the enemy bullets:
+    xor a   ;; enemy bullets
+    ld (bulletType_tmp),a
+    ld c,0
+    ld hl,enemy_bullet_active
+    ld ix,enemy_bullet_positions
+    ld de,enemy_bullet_velocities
+    call applyGravityAndSpeed_bullet_loop
+
+    ret
+
+
 applyGravityAndSpeed_bullet_loop:
     ld a,(hl)
     cp 0
@@ -147,11 +163,14 @@ applyGravityAndSpeed_bullet_loop:
     push de
     ld e,(ix+2)
     ld d,(ix+3)
-;    push bc
-;    push de
+
+    ld a,(bulletType_tmp)
+    cp 0
+    jr z,applyGravityAndSpeed_enemy_bullet_collision
+
+applyGravityAndSpeed_player_bullet_collision:
     call checkMapCollision  ;; (bc,de) = (y,x)
-;    pop de
-;    pop bc
+
     ;; check if any enemy has been hit:
     cp 9
     call z,player_bullet_hit_a_tank    ;; this function preserves the value of 'a', and 'ix'
@@ -162,6 +181,20 @@ applyGravityAndSpeed_bullet_loop:
 
     pop de
 
+    jp applyGravityAndSpeed_common_bullet_collision
+
+applyGravityAndSpeed_enemy_bullet_collision:
+    call checkMapCollision  ;; (bc,de) = (y,x)
+
+    pop de
+
+    ; if a<8 && a>=4: collision! jump to bullet_off_the_map_x
+    cp 8
+    jp p,bullet_no_collision
+    cp 4
+    jp p,bullet_collided    
+
+applyGravityAndSpeed_common_bullet_collision:
     ; if a>=4: collision! jump to bullet_off_the_map_x
     cp 4
     jp p,bullet_collided
@@ -198,115 +231,6 @@ applyGravityAndSpeed_next_bullet2:
     ld a,c
     cp MAX_PLAYER_BULLETS
     jp nz,applyGravityAndSpeed_bullet_loop
-
-    ;; apply speed to the enemy bullets:
-    ld c,0
-    ld hl,enemy_bullet_active
-    ld ix,enemy_bullet_positions
-    ld de,enemy_bullet_velocities
-applyGravityAndSpeed_enemy_bullet_loop:
-    ld a,(hl)
-    cp 0
-    jp z,applyGravityAndSpeed_next_enemy_bullet
-    push bc
-    push hl
-    ; y:
-    ld l,(ix)
-    ld h,(ix+1)
-    ld a,(de)
-    ld c,a
-    inc de
-    ld a,(de)
-    ld b,a
-    inc de
-    add hl,bc
-    ld (ix),l
-    ld (ix+1),h
-
-    ;; check that the bullet didn't go off the map:
-    ld bc,(current_map_ship_limits)
-    push hl
-    xor a
-    sbc hl,bc
-    pop hl
-    jp m,enemy_bullet_off_the_map_y
-    ld bc,(current_map_ship_limits+4)
-    xor a
-    sbc hl,bc
-    jp p,enemy_bullet_off_the_map_y
-
-    ; x:
-    ld l,(ix+2)
-    ld h,(ix+3)
-    ld a,(de)
-    ld c,a
-    inc de
-    ld a,(de)
-    ld b,a
-    inc de
-    add hl,bc
-    ld (ix+2),l
-    ld (ix+3),h
-
-    ;; check that the bullet didn't go off the map:
-    ld bc,(current_map_ship_limits+2)
-    push hl
-    xor a
-    sbc hl,bc
-    pop hl
-    jp m,enemy_bullet_off_the_map_x
-    ld bc,(current_map_ship_limits+6)
-    xor a
-    sbc hl,bc
-    jp p,enemy_bullet_off_the_map_x
-
-    ld c,(ix)
-    ld b,(ix+1)
-    push de
-    ld e,(ix+2)
-    ld d,(ix+3)
-    call checkMapCollision  ;; (bc,de) = (y,x)
-    pop de
-
-    ; if a<8 && a>=4: collision! jump to bullet_off_the_map_x
-    cp 8
-    jp p,enemy_bullet_no_collision
-    cp 4
-    jp p,enemy_bullet_collided
-
-enemy_bullet_no_collision:
-    pop hl
-    pop bc
-    jr applyGravityAndSpeed_next_enemy_bullet2
-
-enemy_bullet_off_the_map_y:
-    inc de
-    inc de    
-enemy_bullet_collided:
-enemy_bullet_off_the_map_x:
-    pop hl
-    xor a       ;; set the bullet "off"
-    ld (hl),a
-
-    pop bc
-    jr applyGravityAndSpeed_next_enemy_bullet2
-
-applyGravityAndSpeed_next_enemy_bullet:
-    inc de  ;; next bullet position
-    inc de
-    inc de
-    inc de
-applyGravityAndSpeed_next_enemy_bullet2:
-    inc ix
-    inc ix
-    inc ix
-    inc ix
-    inc hl
-    inc c
-    ld a,c
-    cp MAX_ENEMY_BULLETS
-    jp nz,applyGravityAndSpeed_enemy_bullet_loop
-
     ret
 
 

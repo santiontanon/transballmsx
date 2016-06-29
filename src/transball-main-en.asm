@@ -470,4 +470,5 @@ best_times_buffer:
 ballPositionBeforePhysics:  ;; temporary storage to restore the position of the ball after a collision
     ds virtual 4
 ballCollisioncount:         ;; temporary variable to count the number of points that collide with the ball
+bulletType_tmp:             ;; temporary variable storing the type of bullet we are considering in the physics code
     ds virtual 1
