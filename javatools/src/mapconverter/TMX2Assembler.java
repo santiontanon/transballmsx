@@ -49,7 +49,7 @@ public class TMX2Assembler {
                 if (animationTiles.contains(maparray[i][j])) nanimations++;
             }
         }
-        System.out.println("; number of animation tiles: " + nanimations);
+        System.out.println("    ;; number of animation tiles: " + nanimations);
     }
     
     
@@ -65,7 +65,7 @@ public class TMX2Assembler {
             }
             System.out.println("");
         }
-        System.out.println(";; Regular encoding (size: " + width + "*" + height + " = " + width*height + ")");
+        System.out.println("    ;; Regular encoding (size: " + width + "*" + height + " = " + width*height + ")");
     }
     
 
@@ -102,7 +102,7 @@ public class TMX2Assembler {
             System.out.println("");
             size+=encoding.size();
         }
-        System.out.println(";; Run-length encoding per line (size: "+size+")");
+        System.out.println("    ;; Run-length encoding per line (size: "+size+")");
     }
 
     
@@ -112,7 +112,7 @@ public class TMX2Assembler {
         int height = maparray.length;
         int size = 0;
         
-        System.out.println(";; map is " + width + " * " + height);
+//        System.out.println("    ;; map is " + width + " * " + height);
         int i = 0, j = 0;
         for(;i<height;) {
             System.out.print("    db ");
@@ -149,7 +149,7 @@ public class TMX2Assembler {
             System.out.println("");
             size+=encoding.size();
         }
-        System.out.println(";; Run-length encoding (size: "+size+")");
+        System.out.println("    ;; Run-length encoding (size: "+size+")");
     }
     
     
