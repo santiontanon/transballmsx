@@ -413,8 +413,7 @@ enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot:
     ld c,e
     call atan2
     add a,64  ; transform from math standard angles, to transball angles (0 pointing up)
-    srl a   ; divide by 16
-    srl a
+    srl a   ; divide by 8
     srl a
     srl a
     ld c,a
@@ -822,8 +821,7 @@ tankUpdateCycle_updateCanon_fireBullet_turrentAngleRight:
     ld (ix+7),3
 
 tankUpdateCycle_updateCanon_fireBullet_turrentAngleDone:
-    srl a   ; divide by 16
-    srl a
+    srl a   ; divide by 8
     srl a
     srl a
     ld c,a

@@ -6,12 +6,14 @@ changeSprites:
     ex de,hl
     ld bc,0
     ld a,(shipangle)
-    and #fc    ;; angle needs to be divided by 4 (we only have 16 frames), 
+    and #fe    ;; angle needs to be divided by 2 (we only have 32 frames), 
     sla a      ;; and then multiplied by 32 (each sprite is 32 bytes),
-    sla a      ;; so, we just clear the lower 2 bits, and multiply by 8 (to
-               ;; prevent overflow, we multiply by 4 and add it twice to hl)
+    sla a      ;; so, we just clear the lower bit, and multiply by 16 (to
+               ;; prevent overflow, we multiply by 4 and add it four times to hl)
     ld c,a
     ld hl,shipvpanther
+    add hl,bc
+    add hl,bc
     add hl,bc
     add hl,bc
     push bc
@@ -27,6 +29,8 @@ changeSprites_loop:
     call SETWRT
     ex de,hl
     ld hl,shipvpanther_thruster
+    add hl,bc
+    add hl,bc
     add hl,bc
     add hl,bc
     ld b,32

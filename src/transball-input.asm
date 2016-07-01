@@ -74,8 +74,7 @@ skip_thrust_sound:
     ld bc,0
     ld a,(shipangle)
     sra a
-    sra a
-    and #0f
+    and #1f ;; 32 angle steps
     sla a
     ld c,a
     push bc
@@ -165,8 +164,7 @@ checkFireButton_fireBullet:
     ld bc,0
     ld a,(shipangle)
     sra a
-    sra a
-    and #0f
+    and #1f ;; 32 angle steps
     sla a
     ld c,a
     ld hl,y_4pixel_velocity

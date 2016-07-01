@@ -335,22 +335,6 @@ ballPhysics_active:
     pop de
     pop hl
     jr ballPhysics_gravity ;; otherwise, do not apply any attractive force
-;ballPhysics_attract4:
-;    ld ix,y_4pixel_velocity
-;    ld iy,x_4pixel_velocity
-;    jr ballPhysics_attractive_force
-;ballPhysics_attract3:
-;    ld ix,y_3pixel_velocity
-;    ld iy,x_3pixel_velocity
-;    jr ballPhysics_attractive_force
-;ballPhysics_attract2:
-;    ld ix,y_2pixel_velocity
-;    ld iy,x_2pixel_velocity
-;    jr ballPhysics_attractive_force
-;ballPhysics_attract1:
-;    ld ix,y_1pixel_velocity
-;    ld iy,x_1pixel_velocity
-;    jr ballPhysics_attractive_force
 ballPhysics_attract0.5:
     ld ix,y_0.5pixel_velocity
     ld iy,x_0.5pixel_velocity
@@ -373,8 +357,7 @@ ballPhysics_attractive_force:
     call atan2
     add a,64  ; transform from math standard angles, to transball angles (0 pointing up)
     ; apply the attractive force:
-    srl a   ; divide by 16
-    srl a
+    srl a   ; divide by 8
     srl a
     srl a
     ld c,a
@@ -728,70 +711,46 @@ checkMapCollision:
 
 
 ;-----------------------------------------------
-; velocities of objects (0.125 pixels per frame)
+; velocities of objects (0.125 pixel per frame)
 y_0.125pixel_velocity:
-    dw -2, -2, -1, -1 
+    dw -2, -2, -2, -2, -1, -1, -1, 0
 x_0.125pixel_velocity:
-    dw  0,  1,  2,  2, 
-        2,  2,  1,  1, 0, -1, -2, -2,
-        -2, -2, -1, -1 
-;x_0.125pixel_velocity:
-;    dw 0,  1,  1,  2,  2,  2,  1,  1, 
-;       0, -1, -1, -2, -2, -2, -1, -1 
+    dw 0, 0, 1, 1, 1, 2, 2, 2
+    dw 2, 2, 2, 2, 1, 1, 1, 0, 0, 0, -1, -1, -1, -2, -2, -2
+    dw -2, -2, -2, -2, -1, -1, -1, 0
+
 ;-----------------------------------------------
-; velocities of objects (0.25 pixels per frame)
+; velocities of objects (0.25 pixel per frame)
 y_0.25pixel_velocity:
-    dw -4, -4, -3, -2
+    dw -4, -4, -4, -3, -3, -2, -2, -1
 x_0.25pixel_velocity:
-    dw  0,  2,  3,  4, 
-        4,  4,  3,  2, 0, -2, -3, -4,
-        -4, -4, -3, -2
-;x_0.25pixel_velocity:
-;    dw 0,  2,  3,  4,  4,  4,  3,  2, 
-;       0, -2, -3, -4, -4, -4, -3, -2 
+    dw 0, 1, 2, 2, 3, 3, 4, 4
+    dw 4, 4, 4, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -4, -4
+    dw -4, -4, -4, -3, -3, -2, -2, -1
+
 ;-----------------------------------------------
-; velocities of objects (0.5 pixels per frame)
+; velocities of objects (0.5 pixel per frame)
 y_0.5pixel_velocity:
-    dw -8, -7, -6, -3
+    dw -8, -8, -7, -7, -6, -4, -3, -2
 x_0.5pixel_velocity:
-    dw  0,  3,  6,  7, 
-        8,  7,  6,  3, 0, -3, -6, -7,
-        -8, -7, -6, -3
-;x_0.5pixel_velocity:
-;    dw 0,  3,  6,  7,  8,  7,  6,  3, 
-;       0, -3, -6, -7, -8, -7, -6, -3 
+    dw 0, 2, 3, 4, 6, 7, 7, 8
+    dw 8, 8, 7, 7, 6, 4, 3, 2, 0, -2, -3, -4, -6, -7, -7, -8
+    dw -8, -8, -7, -7, -6, -4, -3, -2
+
 ;-----------------------------------------------
-; velocities of objects (1 pixel per frame)
+; velocities of objects (1.0 pixel per frame)
 y_1pixel_velocity:
-    dw -16, -15, -11, -6
+    dw -16, -16, -15, -13, -11, -9, -6, -3
 x_1pixel_velocity:
-    dw   0,  6,  11,  15, 
-        16,  15,  11,  6, 0, -6, -11, -15,
-        -16, -15, -11, -6 
-;x_1pixel_velocity:
-;    dw 0,  6,  11,  15,  16,  15,  11,  6, 
-;       0, -6, -11, -15, -16, -15, -11, -6 
-; velocities of objects (2 pixels per frame)
-;y_2pixel_velocity:
-;    dw -32, -30, -23, -12, 0,  12,  23,  30, 
-;        32,  30,  23,  12, 0, -12, -23, -30 
-;x_2pixel_velocity:
-;    dw 0,  12,  23,  30,  32,  30,  23,  12, 
-;       0, -12, -23, -30, -32, -30, -23, -12 
-; velocities of objects (3 pixels per frame)
-;y_3pixel_velocity:
-;    dw -48, -45, -34, -18, 0,  18,  34,  45, 
-;        48,  45,  34,  18, 0, -18, -34, -45 
-;x_3pixel_velocity:
-;    dw 0,  18,  34,  45,  64,  45,  34,  18, 
-;       0, -18, -34, -45, -64, -45, -34, -18 
-; velocities of objects (4 pixels per frame)
+    dw 0, 3, 6, 9, 11, 13, 15, 16
+    dw 16, 16, 15, 13, 11, 9, 6, 3, 0, -3, -6, -9, -11, -13, -15, -16
+    dw -16, -16, -15, -13, -11, -9, -6, -3
+
+;-----------------------------------------------
+; velocities of objects (4.0 pixel per frame)
 y_4pixel_velocity:
-    dw -64, -59, -45, -24
+    dw -64, -63, -59, -53, -45, -36, -24, -12
 x_4pixel_velocity:
-    dw  0,  24,  45,  64,
-        64,  59,  45,  24, 0, -24, -45, -64,
-        -64, -59, -45, -24
-;x_4pixel_velocity:
-;    dw 0,  24,  45,  59,  64,  59,  45,  24, 
-;       0, -24, -45, -59, -64, -59, -45, -24 
+    dw 0, 12, 24, 36, 45, 53, 59, 63
+    dw 64, 63, 59, 53, 45, 36, 24, 12, 0, -12, -24, -36, -45, -53, -59, -63
+    dw -64, -63, -59, -53, -45, -36, -24, -12
