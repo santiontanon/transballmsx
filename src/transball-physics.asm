@@ -378,6 +378,13 @@ ballPhysics_attractive_force:
     ld (ballvelocity+2),hl
 
 ballPhysics_gravity:
+    ;; drag:
+    ld a,(balldragTimer)
+    cp 0 
+    call z, ballPhysics_drag
+    dec a
+    ld (balldragTimer),a
+ballPhysics_after_drag:
     ld de,GRAVITY
     ld hl,(ballvelocity)
     add hl,de
@@ -611,6 +618,40 @@ ballPhysics_ball_horizontal_collision_continue:
 ballPhysics_ball_no_collision_at_the_end:
     ret
 
+
+ballPhysics_drag:
+    ld hl,(ballvelocity)
+    ld bc,0
+    sbc hl,bc
+    jp p,ballPhysics_drag_positive_y
+ballPhysics_drag_negative_y:
+    inc hl
+    ld (ballvelocity),hl
+    jp ballPhysics_drag_x
+
+ballPhysics_drag_positive_y:
+    dec hl
+    ld (ballvelocity),hl
+
+ballPhysics_drag_x:
+    ld hl,(ballvelocity+2)
+    sbc hl,bc
+    jp p,ballPhysics_drag_positive_x
+ballPhysics_drag_negative_x:
+    inc hl
+    ld (ballvelocity+2),hl
+
+    ld a,BALLDRAG
+    ld (balldragTimer),a
+    ret
+
+ballPhysics_drag_positive_x:
+    dec hl
+    ld (ballvelocity+2),hl
+
+    ld a,BALLDRAG
+    ld (balldragTimer),a
+    ret
 
 ;-----------------------------------------------
 ; Checks if the ship has collided with the map

@@ -3,6 +3,8 @@
 checkJoystick:    ;; these are "jp" instead of "call", so that when "MoveUp", etc. do a "ret", we directly go out of this function
     xor a
     call GTSTCK
+    cp 0
+    call z,checkJoystick_1
     cp 2
     jr z,TurnRight
     cp 3
@@ -29,6 +31,10 @@ TurnRight:
     ld (shipangle),a
     ret
 
+checkJoystick_1:
+    inc a
+    call GTSTCK
+    ret
 
 ;-----------------------------------------------
 ; Checks whether the player is pressing the "up" key and applies thruster accordingly
