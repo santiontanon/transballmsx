@@ -85,7 +85,7 @@ InterLevel_Loop:
     ld (fire_button_status),a
     cp b
     jp z,InterLevel_Loop_Continue
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,InterLevel_Loop_Continue
 
     jp Game_Loop    ; Space pressed, start the game!
@@ -239,7 +239,7 @@ Level_complete_Loop:
     ld (fire_button_status),a
     cp b
     jp z,Level_complete_Loop
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,Level_complete_Loop
 
 Level_complete_Loop_Continue:

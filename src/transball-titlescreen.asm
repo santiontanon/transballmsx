@@ -32,7 +32,7 @@ SplashScreen_Loop:
     ld (fire_button_status),a
     cp d
     jp z,SplashScreen_Loop
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,SplashScreen_Loop
 
     jp MainMenu    ; Space pressed, start the game!
@@ -73,7 +73,7 @@ GameComplete_Loop:
     ld (fire_button_status),a
     cp d
     jp z,GameComplete_Loop
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,GameComplete_Loop
 
     jp SplashScreen    ; Space pressed, restart
@@ -138,7 +138,7 @@ MainMenu_Loop:
     ld (fire_button_status),a
     cp b
     jp z,MainMenu_Loop_input_continue
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,MainMenu_option_selected
 
 MainMenu_Loop_input_continue:
@@ -153,7 +153,7 @@ MainMenu_Loop_input_continue:
     jp z,MainMenu_Loop_up
     cp 5
     jp z,MainMenu_Loop_down
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,MainMenu_Loop_input_continue
 
 MainMenu_Loop_input_continue2:
@@ -192,7 +192,7 @@ MainMenu_Loop_input_continue2:
     inc a
     ld (menu_timer),a
     and #08
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,MainMenu_Loop_clear_selectedOption
 MainMenu_Loop_mark_selectedOption:
     ld d,0
@@ -233,7 +233,7 @@ MainMenu_Loop_Change_rowPatterns_continue:
 
 MainMenu_Loop_up:
     ld a,(menu_selected_option)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,MainMenu_Loop_up_overflow
     dec a
     ld (menu_selected_option),a
@@ -258,7 +258,7 @@ MainMenu_Loop_down_overflow:
 
 MainMenu_option_selected:
     ld a,(menu_selected_option)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,Game_StartFromBeginning
 
     cp 1
@@ -384,7 +384,7 @@ highscoresloop:
     ld (fire_button_status),a
     cp b
     jp z,highscoresloop_continue
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,MainMenu_music_already_playing
 highscoresloop_continue:
 
@@ -425,7 +425,7 @@ entering_password_Loop:
     push bc
     call getcharacter_nonwaiting
     pop bc
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,entering_password_Loop_nocharacter
     cp 27
     jp z,MainMenu_music_already_playing ;; ESC
@@ -458,7 +458,7 @@ entering_password_Loop_nocharacter:
 
 entering_password_delete:
     ld a,c
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,entering_password_Loop_nocharacter   ;; if we are in position 0, there is nothing to delete
     ld a,'-'
     ld hl,password_buffer
@@ -473,7 +473,7 @@ entering_password_enter:
     ld b,0
 entering_password_enter_external_loop
     ld a,(de)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,MainMenu_music_already_playing ;; if we have reached the end of the array
 
     push bc

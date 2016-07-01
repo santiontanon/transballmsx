@@ -14,7 +14,7 @@ RLE_decode_loop:
 
     ld a,b  ;; check if bc is 0
     or c
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,RLE_decode_loop
     ret
 RLE_decode_loop_meta_character:
@@ -31,7 +31,7 @@ RLE_decode_loop2:
     jr nz,RLE_decode_loop2
     ld a,b  ;; check if bc is 0
     or c
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,RLE_decode_loop
     ret
 

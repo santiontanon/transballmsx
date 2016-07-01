@@ -146,7 +146,7 @@ calculate_ball_sprite_position:
     ld hl,(ballposition)
     ld bc,(map_offset)
     ld a,(ballstate)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_snap_ball_to_map_y_continue
     ld a,c
     and #80
@@ -163,7 +163,7 @@ calculate_ball_sprite_position_snap_ball_to_map_y_continue:
     sra h
     rr l
     ld a,h  ;; If "h" is anything but 0, that means that the ball is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_outside_y
     ld a,l
     cp 192
@@ -178,7 +178,7 @@ calculate_ball_sprite_position_y_continue:
     ld hl,(ballposition+2)
     ld bc,(map_offset+2)
     ld a,(ballstate)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_snap_ball_to_map_x_continue
     ld a,c
     and #80
@@ -195,7 +195,7 @@ calculate_ball_sprite_position_snap_ball_to_map_x_continue:
     sra h
     rr l
     ld a,h  ;; If "h" is anything but 0, that means that the ball is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_outside_x
     ld a,l
     ld (ball_spriteattributes+1),a
@@ -210,7 +210,7 @@ calculate_ball_sprite_position_outside_x:
 calculate_ball_sprite_position_continue:
     ; set the color of the ball (and also if it is inactive, make it snap to 8x8 coordinates)
     ld a,(ballstate)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,calculate_ball_sprite_position_ball_inactive
     ld a,BALL_ACTIVE_COLOR
     ld (ball_spriteattributes+3),a
@@ -232,7 +232,7 @@ calculate_bullet_sprite_positions:
     ld ix,player_bullet_sprite_attributes
 calculate_bullet_sprite_positions_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,calculate_bullet_sprite_positions_next_bullet
 
     push hl
@@ -262,7 +262,7 @@ calculate_bullet_sprite_positions_loop:
     sra h
     rr l
     ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_bullet_sprite_positions_bullet_outside_y
     ld a,l
     cp 192
@@ -291,7 +291,7 @@ calculate_bullet_sprite_positions_bullet_outside_y_continue:
     sra h
     rr l
     ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_bullet_sprite_positions_bullet_outside_x
     ld a,l
     ld (ix+1),a
@@ -335,7 +335,7 @@ calculate_enemy_bullet_sprite_positions:
     ld ix,enemy_bullet_sprite_attributes
 calculate_enemy_bullet_sprite_positions_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,calculate_enemy_bullet_sprite_positions_next_bullet
 
     push hl
@@ -370,7 +370,7 @@ calculate_enemy_bullet_sprite_positions_loop:
     sra h
     rr l
     ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_y
     ld a,l
     cp 192
@@ -404,7 +404,7 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     sra h
     rr l    
     ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_x
     ld a,l
     ld (ix+1),a

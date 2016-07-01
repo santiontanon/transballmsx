@@ -16,7 +16,7 @@ play_SFX:
 ; Thanks to NYYRIKKI
 SFX_INT:    
     ld a,(SFX_play)
-    cp 0   
+    and a   ;; equivalent to cp 0, but faster
     jp z,CLEAR_SFX_VOLUME_AND_END       ;; if we are not to play any SFX, return
 
     ld a,(SFX_channel1_skip_counter)
@@ -45,7 +45,7 @@ MUSIC_INT_AT_TEMPO:
     xor a
     ld (MUSIC_tempo_counter),a
     ld a,(MUSIC_play)
-    cp 0   
+    and a   ;; equivalent to cp 0, but faster
     jr z,CLEAR_SFX_VOLUME_AND_END       ;; if we are not to play any SFX, return
 
     ld a,(SFX_channel1_skip_counter)
@@ -93,7 +93,7 @@ CLEAR_SFX_VOLUME_AND_END:
 
 
 SFX_INT_CHANNEL:
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,SFX_INT_MULTISKIP_STEP
 SFX_INT_LOOP:
     ld a,(hl)
@@ -166,7 +166,7 @@ SFX_INT_END_REPEAT:
     ;; if it is not 0, goto the repeat point
     ld a,(ix-3)
     dec a
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,SFX_INT_END_REPEAT_POP
     ld (ix-3),a
     ld l,(ix-2)

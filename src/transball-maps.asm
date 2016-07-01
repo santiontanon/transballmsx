@@ -225,7 +225,7 @@ LOADMAP_ballstand_found:
     ld hl,enemies
 LOADMAP_find_enemies_loop1:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,LOADMAP_done_finding_enemies
     inc hl
     ld e,(hl)
@@ -507,7 +507,7 @@ LOADMAP_find_animations:
     ld hl,animations
 LOADMAP_find_animations_loop1:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret z
     inc hl
     ld e,(hl)
@@ -623,14 +623,14 @@ player_bullet_hit_a_button:
     call play_SFX
 
     ld a,(ndoors)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,player_bullet_hit_a_button_done
 
     ld c,0
     ld hl,doors
 player_bullet_hit_a_button_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,player_bullet_hit_a_button_door_was_closed
 player_bullet_hit_a_button_door_was_open:
     ld a,0
@@ -699,14 +699,14 @@ open_close_ball_doors:
     push af     ;; we preserve 'a'
 
     ld a,(nballdoors)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,open_close_ball_doors_done
 
     ld c,0
     ld hl,balldoors
 open_close_ball_doors_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,open_close_ball_doors_door_was_closed
 open_close_ball_doors_door_was_open:
     ld a,0

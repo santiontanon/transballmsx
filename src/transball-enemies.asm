@@ -7,7 +7,7 @@ enemyUpdateCycle:
 
 enemyUpdateCycle_loop:
     ld a,b
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret z
 
     push bc
@@ -20,7 +20,7 @@ enemyUpdateCycle_loop:
     ;; state (1 byte)
     ;; health (1 byte)
     ld a,(ix+9)     ;; state
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,enemyUpdateCycle_cannotFire
 
     ld a,(ix) ; enemy type
@@ -193,7 +193,7 @@ enemyUpdateCycle_Cannon_fireBullet:
     ld hl,enemy_bullet_active
 enemyUpdateCycle_Cannon_checking_for_free_slot:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,enemyUpdateCycle_Cannon_fireBullet_slotFound
     inc hl
     inc c
@@ -334,7 +334,7 @@ enemyUpdateCycle_DirectionalCannon:
     ld hl,enemy_bullet_active
 enemyUpdateCycle_DirectionalCannon_checking_for_free_slot:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot
     inc hl
     inc c
@@ -459,7 +459,7 @@ tankUpdateCycle:
 
 tankUpdateCycle_loop:
     ld a,b
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret z
 
     push bc
@@ -473,19 +473,19 @@ tankUpdateCycle_loop:
     ;;      turret angle
     
     ld a,(ix)   ;; tank is dead!
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,tankUpdateCycle_nextTank
 
     ;; check movement state:
     ld a,(ix+2)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp p,tankUpdateCycle_moving_right
     jp tankUpdateCycle_moving_left
 tankUpdateCycle_done_moving:
 
     ;; check fire state:
     ld a,(ix+1)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,tankUpdateCycle_updateCanon
     dec a
     ld (ix+1),a
@@ -519,7 +519,7 @@ tankUpdateCycle_move_right:
     add hl,bc
     ld a,(hl)
     pop hl
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,tankUpdateCycle_moving_right_obstacle
 
     ;; erase the left-most bottom tile:
@@ -566,7 +566,7 @@ tankUpdateCycle_move_left:
     add hl,bc
     ld a,(hl)
     pop hl
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,tankUpdateCycle_moving_left_obstacle
 
     ;; erase the two right-most tiles:
@@ -600,7 +600,7 @@ tankUpdateCycle_moving_left_obstacle:
 
 tankUpdateCycle_draw_tank:
     ld a,(ix+7) ;; turret state
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,tankUpdateCycle_draw_tank_turretLeft
     cp 1
     jp z,tankUpdateCycle_draw_tank_turretLeftUp
@@ -716,7 +716,7 @@ tankUpdateCycle_updateCanon:
     ld hl,enemy_bullet_active
 tankUpdateCycle_updateCanon_checking_for_free_slot:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,tankUpdateCycle_updateCanon_fireBullet
     inc hl
     inc c
@@ -871,7 +871,7 @@ checkForShipToEnemyBulletCollision:
     ld ix,enemy_bullet_sprite_attributes
 checkForShipToEnemyBulletCollision_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,checkForShipToEnemyBulletCollision_next_bullet
 
     ;; check collision of bullet with ship:
@@ -932,7 +932,7 @@ player_bullet_hit_an_enemy:
 
 player_bullet_hit_an_enemy_loop:
     ld a,b
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,player_bullet_hit_an_enemy_done
 
     push bc
@@ -1010,7 +1010,7 @@ player_bullet_hit_a_tank:
 
 player_bullet_hit_a_tank_loop:
     ld a,b
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,player_bullet_hit_a_tank_done
 
     push bc
@@ -1091,7 +1091,7 @@ enemy_hit:
     ld a,(iy+10)
     dec a
     ld (iy+10),a
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret nz  ;; if the enemy still has health, return
 
     ;; destroy enemy:
@@ -1104,7 +1104,7 @@ enemy_hit:
     ld de,explosions_positions_and_replacement
 enemy_hit_explosion_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,enemy_hit_explosion_slot_found
     inc c
     inc hl
@@ -1171,7 +1171,7 @@ tank_hit:
     ld a,(iy)
     dec a
     ld (iy),a
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret nz  ;; if the tank still has health, return
 
     ;; clear tank:
@@ -1185,7 +1185,7 @@ tank_hit:
     ld de,explosions_positions_and_replacement
 tank_hit_explosion_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,tank_hit_explosion_slot_found
     inc c
     inc hl

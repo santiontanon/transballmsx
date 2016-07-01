@@ -3,7 +3,7 @@
 checkJoystick:    ;; these are "jp" instead of "call", so that when "MoveUp", etc. do a "ret", we directly go out of this function
     xor a
     call GTSTCK
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     call z,checkJoystick_1
     cp 2
     jr z,TurnRight
@@ -43,7 +43,7 @@ checkThrust:
     ld (thruster_spriteattributes+3),a
 
     ld a,(current_fuel_left)    
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret z   ;; if we have no fuel left, return
 
     xor a
@@ -70,7 +70,7 @@ Thrust:
 Thrust_do_not_lose_major_fuel_unit:
     ; play SFX:
     ld a,(SFX_play)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr nz,skip_thrust_sound
 
     ld hl,SFX_thrust
@@ -125,11 +125,11 @@ checkFireButton:
     xor a
     call GTTRIG
     ld (fire_button_status),a
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret z
 
     ld a,b
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     ret nz
 
     ;; check if there is any bullet slot available:
@@ -137,7 +137,7 @@ checkFireButton:
     ld hl,player_bullet_active
 checkFireButton_checking_for_free_slot:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,checkFireButton_fireBullet
     inc hl
     inc c

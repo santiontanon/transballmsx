@@ -26,7 +26,7 @@ renderExplosions:
     ld c,0
 renderExplosions_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,renderExplosions_next_explosion
 
     cp 16
@@ -100,7 +100,7 @@ renderExplosions_after_render:
     ld a,(hl)
     dec a
     ld (hl),a
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,renderExplosions_next_explosion
 
     ;; explosion is over:
@@ -233,10 +233,10 @@ clearScreenLeftToRightLoop:
     jp nz,clearScreenLeftToRightLoop
     
     ld a,(SFX_play)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     call nz,SFX_INT   ;; if music is playing, keep playing it!
     ld a,(MUSIC_play)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     call nz,MUSIC_INT   ;; if music is playing, keep playing it!
     halt
     

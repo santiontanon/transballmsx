@@ -8,12 +8,12 @@ Game_Loop:
 Game_Loop_loop:
     ;; check if ship collided:
     ld a,(shipstate)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,Ship_collided
 
     ;; check if level is complete
     ld a,(levelComplete)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,Level_complete
 
 ;;  this is some debug code (that prints the highscores during the game to see when they got corrupted)

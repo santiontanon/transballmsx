@@ -104,7 +104,7 @@ applyGravityAndSpeed_x_continue2:
 
 applyGravityAndSpeed_bullet_loop:
     ld a,(hl)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp z,applyGravityAndSpeed_next_bullet
     push bc
     push hl
@@ -165,7 +165,7 @@ applyGravityAndSpeed_bullet_loop:
     ld d,(ix+3)
 
     ld a,(bulletType_tmp)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jr z,applyGravityAndSpeed_enemy_bullet_collision
 
 applyGravityAndSpeed_player_bullet_collision:
@@ -288,7 +288,7 @@ ballPhysics_ball_no_collision_at_start:
     rr l    ;; now we have (ship.x - ball.x) in hl, and (ship.y - ball.y) in de (in pixels)
 
     ld a,(ballstate)
-    cp 0
+    and a   ;; equivalent to cp 0, but faster
     jp nz,ballPhysics_active
 
 ballPhysics_inactive:
@@ -380,7 +380,7 @@ ballPhysics_attractive_force:
 ballPhysics_gravity:
     ;; drag:
     ld a,(balldragTimer)
-    cp 0 
+    and a   ;; equivalent to cp 0, but faster
     call z, ballPhysics_drag
     dec a
     ld (balldragTimer),a
