@@ -25,10 +25,10 @@ Game_Loop_loop:
 ;    ldi
 ;    ldi
 
-
-    call checkJoystick     
-    call checkThrust
-    call checkFireButton
+    call checkInput
+;    call checkJoystick     
+;    call checkThrust
+;    call checkFireButton
     call applyGravityAndSpeed   
     call ballPhysics
     call enemyUpdateCycle

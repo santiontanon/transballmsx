@@ -27,8 +27,7 @@ SplashScreen_Loop:
     ;; wait for space to be pressed:
     ld a,(fire_button_status)
     ld d,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp d
     jp z,SplashScreen_Loop
@@ -68,8 +67,7 @@ GameComplete_Loop:
     ;; wait for space to be pressed:
     ld a,(fire_button_status)
     ld d,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp d
     jp z,GameComplete_Loop
@@ -133,8 +131,7 @@ MainMenu_Loop:
     ;; check input:
     ld a,(fire_button_status)
     ld b,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp b
     jp z,MainMenu_Loop_input_continue
@@ -144,9 +141,10 @@ MainMenu_Loop:
 MainMenu_Loop_input_continue:
     ld a,(menu_input_buffer)
     ld b,a
-    xor a
-    call GTSTCK
+    push bc
+    call GETSTCK0AND1
     ld (menu_input_buffer),a
+    pop bc
     cp b
     jp z,MainMenu_Loop_input_continue2
     cp 1
@@ -237,11 +235,11 @@ MainMenu_Loop_up:
     jp z,MainMenu_Loop_up_overflow
     dec a
     ld (menu_selected_option),a
-    jp MainMenu_Loop_input_continue
+    jp MainMenu_Loop_input_continue2
 MainMenu_Loop_up_overflow:
     ld a,2
     ld (menu_selected_option),a
-    jp MainMenu_Loop_input_continue
+    jp MainMenu_Loop_input_continue2
 
 MainMenu_Loop_down:
     ld a,(menu_selected_option)
@@ -249,11 +247,11 @@ MainMenu_Loop_down:
     jp z,MainMenu_Loop_down_overflow
     inc a
     ld (menu_selected_option),a
-    jp MainMenu_Loop_input_continue
+    jp MainMenu_Loop_input_continue2
 MainMenu_Loop_down_overflow:
     xor a
     ld (menu_selected_option),a
-    jp MainMenu_Loop_input_continue
+    jp MainMenu_Loop_input_continue2
 
 
 MainMenu_option_selected:
@@ -379,8 +377,7 @@ highscoresloop:
     ;; check input:
     ld a,(fire_button_status)
     ld b,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp b
     jp z,highscoresloop_continue

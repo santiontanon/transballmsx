@@ -80,8 +80,7 @@ InterLevel_Loop:
     ;; wait for space to be pressed:
     ld a,(fire_button_status)
     ld b,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp b
     jp z,InterLevel_Loop_Continue
@@ -234,8 +233,7 @@ Level_complete_Loop:
     ;; wait for space to be pressed:
     ld a,(fire_button_status)
     ld b,a
-    xor a
-    call GTTRIG
+    call GTTRIG0AND1
     ld (fire_button_status),a
     cp b
     jp z,Level_complete_Loop

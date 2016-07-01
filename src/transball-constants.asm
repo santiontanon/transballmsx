@@ -15,6 +15,7 @@ CHGET:  equ #009f
 CHPUT:  equ #00a2
 GTSTCK: equ #00d5
 GTTRIG: equ #00d8
+SNSMAT: equ #0141
 RSLREG: equ #0138
 KILBUF: equ #0156
 ;-----------------------------------------------

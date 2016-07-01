@@ -1,61 +1,112 @@
 ;-----------------------------------------------
-; checks whether the player is pressing the left or right keys to turn the ship
-checkJoystick:    ;; these are "jp" instead of "call", so that when "MoveUp", etc. do a "ret", we directly go out of this function
+; Checks the status of the joystick or arrow keys 
+; this function is slow, so, I only use it in the title screen
+; in-game I use another, more optimized version
+GETSTCK0AND1:
     xor a
     call GTSTCK
     and a   ;; equivalent to cp 0, but faster
-    call z,checkJoystick_1
-    cp 2
-    jr z,TurnRight
-    cp 3
-    jr z,TurnRight
-    cp 4
-    jr z,TurnRight
-    cp 6
-    jr z,TurnLeft
-    cp 7
-    jr z,TurnLeft
-    cp 8
-    jr z,TurnLeft
+    jp z,GETSTCK0AND1_CALL1
     ret
+GETSTCK0AND1_CALL1:
+    inc a
+    call GTSTCK
+    ret
+
+
+;-----------------------------------------------
+; Checks the status of the joystick or arrow keys 
+; this function is slow, so, I only use it in the title screen
+; in-game I use another, more optimized version
+GTTRIG0AND1:
+    xor a
+    call GTTRIG
+    and a   ;; equivalent to cp 0, but faster
+    jp z,GTTRIG0AND1_CALL1
+    ret
+GTTRIG0AND1_CALL1:
+    inc a
+    call GTTRIG
+    ret
+
+
+;-----------------------------------------------
+; checks all the player input (left/right/thrust/fire)
+checkInput:
+    xor a
+    ld (thruster_spriteattributes+3),a
+    
+    ld a,#04    ;; get the status of the 4th keyboard row (to get the status of the 'M' key)
+    call SNSMAT
+    cpl         
+    and #04     ;; keep just bit 2: A = #04 if 'M' was pressed, and A = #00 if it was not
+    ld b,a      ;; store this in B
+    ld a,#08    ;; get the status of the 8th keyboard row (to get SPACE and arrow keys)
+    call SNSMAT 
+    cpl
+    and #f1     ;; keep only the arrow keys and space
+    or b        ;; add 'M' in bit 2
+    jp z,Readjoystick   ;; if no key was pressed, then check the joystick
+    bit 7,a
+    call nz,TurnRight
+    bit 4,a
+    call nz,TurnLeft
+    bit 0,a
+    call z,noFireBullet
+    bit 0,a
+    push af
+    call nz,FireBullet
+    pop af
+    and #24     ;; up or 'M' key
+    jp nz,Thrust
+    ret
+
+Readjoystick:   
+    ld  a, 15   ;; read the joystick 1 status:
+    out (#A0), a
+    in  a, (#A2)
+    and #AF
+    out (#A1), a
+    ld  a, 14
+    out (#A0), a
+    in  a, (#A2) 
+    cpl         ;; invert the bits (so that '1' means direction pressed)
+    bit 3,a
+    call nz,TurnRight
+    bit 2,a
+    call nz,TurnLeft
+    bit 4,a
+    call z,noFireBullet
+    bit 4,a
+    push af
+    call nz,FireBullet
+    pop af
+    and #21     ;; up or second button
+    jp nz,Thrust
+    ret
+
 TurnLeft:    
+    ld b,a
     ld a,(shipangle)
     dec a
     and #3f
     ld (shipangle),a
+    ld a,b
     ret
 TurnRight:  
+    ld b,a
     ld a,(shipangle)
     inc a
     and #3f
     ld (shipangle),a
+    ld a,b
     ret
 
-checkJoystick_1:
-    inc a
-    call GTSTCK
-    ret
-
-;-----------------------------------------------
-; Checks whether the player is pressing the "up" key and applies thruster accordingly
-checkThrust:
-    xor a
-    ld (thruster_spriteattributes+3),a
-
+Thrust:
     ld a,(current_fuel_left)    
     and a   ;; equivalent to cp 0, but faster
     ret z   ;; if we have no fuel left, return
 
-    xor a
-    call GTSTCK
-    cp 8
-    jr z,Thrust
-    cp 1
-    jr z,Thrust
-    cp 2
-    jr z,Thrust    
-    ret
-Thrust:
     ;; decrease fuel
     ld a,(current_fuel_left+1)
     dec a
@@ -117,20 +168,20 @@ skip_thrust_sound:
     ret
 
 
-;-----------------------------------------------
-; Checks whether the player is pressing "space", to fire bullets
-checkFireButton:
-    ld a,(fire_button_status)
+noFireBullet:
     ld b,a
     xor a
-    call GTTRIG
     ld (fire_button_status),a
-    and a   ;; equivalent to cp 0, but faster
-    ret z
-
     ld a,b
+    ret
+
+FireBullet:
+    ld a,(fire_button_status)
     and a   ;; equivalent to cp 0, but faster
     ret nz
+
+    inc a   ;; set the fire button status to 1
+    ld (fire_button_status),a
 
     ;; check if there is any bullet slot available:
     ld c,0
