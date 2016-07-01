@@ -10,7 +10,7 @@ package msxspriteeditor;
  * @author santi
  */
 public class Sprite {
-    String id = null;
+    public String id = null;
     public int sprite[][];    
     
     public Sprite(int w, int h, String a_id) {

@@ -433,3 +433,160 @@ calculate_enemy_bullet_sprite_positions_next_bullet2:
     jp nz,calculate_enemy_bullet_sprite_positions_loop
     ret
     
+
+;-----------------------------------------------
+; decompresses the RLE-encoded sprites into RAM so they can be used during the game
+DECOMPRESS_SPRITES:
+    ;; 1) decompress shipvpanther_RLE_encoded1 onto the sprites buffer
+    ld ix,shipvpanther_RLE_encoded1
+    ld de,shipvpanther
+    ld bc,288
+    call RLE_decode
+
+    ;; 2) decompress shipvpanther_RLE_encoded2 onto the map buffer
+    ld ix,shipvpanther_RLE_encoded2
+    ld de,shipvpanther+17*32
+    ld bc,256
+    call RLE_decode
+
+    ;; 3) copy to sprites 0 - 7 onto 9 - 16 inverting the y 
+    ld hl,shipvpanther+32*7
+    ld de,shipvpanther+32*9
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*6
+    ld de,shipvpanther+32*10
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*5
+    ld de,shipvpanther+32*11
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*4
+    ld de,shipvpanther+32*12
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*3
+    ld de,shipvpanther+32*13
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*2
+    ld de,shipvpanther+32*14
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*1
+    ld de,shipvpanther+32*15
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*0
+    ld de,shipvpanther+32*16
+    call INVERT_SPRITE
+
+    ;; 4) copy to sprites 17 - 23 onto 25 - 31 inverting the y 
+    ld hl,shipvpanther+32*17
+    ld de,shipvpanther+32*31
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*18
+    ld de,shipvpanther+32*30
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*19
+    ld de,shipvpanther+32*29
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*20
+    ld de,shipvpanther+32*28
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*21
+    ld de,shipvpanther+32*27
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*22
+    ld de,shipvpanther+32*26
+    call INVERT_SPRITE
+    ld hl,shipvpanther+32*23
+    ld de,shipvpanther+32*25
+    call INVERT_SPRITE
+
+    ;; 5) decompress shipvpanther_RLE_encoded1 onto the sprites buffer
+    ld ix,shipvpanther_thruster_RLE_encoded1
+    ld de,shipvpanther_thruster
+    ld bc,288
+    call RLE_decode
+
+    ;; 6) decompress shipvpanther_RLE_encoded2 onto the map buffer
+    ld ix,shipvpanther_thruster_RLE_encoded2
+    ld de,shipvpanther_thruster+17*32
+    ld bc,256
+    call RLE_decode
+
+    ;; 7) copy to sprites 0 - 7 onto 9 - 16 inverting the y 
+    ld hl,shipvpanther_thruster+32*7
+    ld de,shipvpanther_thruster+32*9
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*6
+    ld de,shipvpanther_thruster+32*10
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*5
+    ld de,shipvpanther_thruster+32*11
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*4
+    ld de,shipvpanther_thruster+32*12
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*3
+    ld de,shipvpanther_thruster+32*13
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*2
+    ld de,shipvpanther_thruster+32*14
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*1
+    ld de,shipvpanther_thruster+32*15
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*0
+    ld de,shipvpanther_thruster+32*16
+    call INVERT_SPRITE    
+
+    ;; 8) copy to sprites 17 - 23 onto 25 - 31 inverting the y 
+    ld hl,shipvpanther_thruster+32*17
+    ld de,shipvpanther_thruster+32*31
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*18
+    ld de,shipvpanther_thruster+32*30
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*19
+    ld de,shipvpanther_thruster+32*29
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*20
+    ld de,shipvpanther_thruster+32*28
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*21
+    ld de,shipvpanther_thruster+32*27
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*22
+    ld de,shipvpanther_thruster+32*26
+    call INVERT_SPRITE
+    ld hl,shipvpanther_thruster+32*23
+    ld de,shipvpanther_thruster+32*25
+    call INVERT_SPRITE
+    ret
+
+INVERT_SPRITE:
+    push hl
+    push de
+    ld bc,15
+    ex de,hl
+    add hl,bc
+    ex de,hl
+    ld b,16
+INVERT_SPRITE_loop1:
+    ld a,(hl)
+    ld (de),a
+    inc hl
+    dec de
+    djnz INVERT_SPRITE_loop1
+    pop de
+    pop hl
+    ld bc,16
+    add hl,bc
+    ld bc,31
+    ex de,hl
+    add hl,bc
+    ex de,hl
+    ld b,16
+INVERT_SPRITE_loop2:
+    ld a,(hl)
+    ld (de),a
+    inc hl
+    dec de
+    djnz INVERT_SPRITE_loop2
+    ret

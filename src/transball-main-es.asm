@@ -457,6 +457,10 @@ SFX_channel1_repeat_stack:  ds virtual 4*3
 SFX_channel2_repeat_stack:  ds virtual 4*3
 SFX_channel3_repeat_stack:  ds virtual 4*3
 
+;; Sprites:
+shipvpanther: ds virtual 32*32
+shipvpanther_thruster: ds virtual 32*32
+
 ;; best times:
 current_time_buffer:
     ds virtual 5

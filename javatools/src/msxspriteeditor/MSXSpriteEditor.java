@@ -148,7 +148,16 @@ public class MSXSpriteEditor extends JFrame {
                     // yes option
                     String text = hexTextArea.getText();
                     try {
-                        importHex(text);
+                        List<Sprite> loadedSprites = importHex(text);
+                        if (!loadedSprites.isEmpty()) {
+                            sprites.clear();
+                            listModel.clear();
+                            for(Sprite sp:loadedSprites) {
+                                sprites.add(sp);
+                                listModel.addElement(sp);
+                            }
+                            spriteList.setSelectedIndex(0);
+                        }                        
                     }catch(Exception exception) {
                         exception.printStackTrace();
                     }
@@ -263,7 +272,7 @@ public class MSXSpriteEditor extends JFrame {
     }
     
     
-    public void importHex(String text) throws Exception {
+    public static List<Sprite> importHex(String text) throws Exception {
         List<Sprite> loadedSprites = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(text,"\n");
         String currentSpriteName = null;
@@ -302,19 +311,11 @@ public class MSXSpriteEditor extends JFrame {
              loadedSprites.add(sp);
         }
         
-        if (loadedSprites.isEmpty()) return;
-
-        sprites.clear();
-        listModel.clear();
-        for(Sprite sp:loadedSprites) {
-            sprites.add(sp);
-            listModel.addElement(sp);
-        }
-        spriteList.setSelectedIndex(0);
+        return loadedSprites;
     }
     
     
-    public Sprite createSpriteFromHex(String name, List<String> hexList) throws Exception {
+    public static Sprite createSpriteFromHex(String name, List<String> hexList) throws Exception {
 //        System.out.println("creating a sprite ("+name+") with " + hexList);
         
         String c[]={"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"};

@@ -122,6 +122,7 @@ Execute:
 
     ; Define the graphic patterns:
     call SETUPPATTERNS
+    call DECOMPRESS_SPRITES
 
     ;; 16x16 sprites:
     ld bc,#e201  ;; write #e2 in VDP register #01 (activate sprites, generate interrupts, 16x16 sprites with no magnification)
@@ -456,6 +457,10 @@ MUSIC_tempo_counter: ds virtual 1
 SFX_channel1_repeat_stack:  ds virtual 4*3
 SFX_channel2_repeat_stack:  ds virtual 4*3
 SFX_channel3_repeat_stack:  ds virtual 4*3
+
+;; Sprites:
+shipvpanther: ds virtual 32*32
+shipvpanther_thruster: ds virtual 32*32
 
 ;; best times:
 current_time_buffer:
