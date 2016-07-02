@@ -62,14 +62,26 @@ checkInput:
     ret
 
 Readjoystick:   
-    ld  a, 15   ;; read the joystick 1 status:
-    out (#A0), a
-    in  a, (#A2)
-    and #AF
-    out (#A1), a
-    ld  a, 14
-    out (#A0), a
-    in  a, (#A2) 
+    ;; direct access method (I was told this might not be very compatible):
+;    ld  a, 15   ;; read the joystick 1 status:
+;    out (#a0), a
+;    in  a, (#a2)
+;    and #af
+;    out (#a1), a
+;    ld  a, 14
+;    out (#a0), a
+;    in  a, (#a2) 
+
+    ;; Using BIOS calls:
+    ld a,15   ;; read the joystick 1 status:
+    call RDPSG
+    and #af
+    ld e,a
+    ld a,15
+    call WRTPSG
+    dec a
+    call RDPSG    
+
     cpl         ;; invert the bits (so that '1' means direction pressed)
     bit 3,a
     call nz,TurnRight

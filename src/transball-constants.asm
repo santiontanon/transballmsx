@@ -11,6 +11,7 @@ CHGMOD: equ #005f
 CHGCLR: equ #0062
 GICINI: equ #0090   
 WRTPSG: equ #0093 
+RDPSG:  equ #0096
 CHGET:  equ #009f
 CHPUT:  equ #00a2
 GTSTCK: equ #00d5
