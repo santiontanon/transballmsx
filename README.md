@@ -53,7 +53,7 @@ Joystick:
 
 In the title screen:
 * Up/down arrow keys to change the selected menu item
-* Space to select a menu item
+* Space/Trigger A to select a menu item
 
 
 ## Compatibility
