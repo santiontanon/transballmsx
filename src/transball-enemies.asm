@@ -24,21 +24,21 @@ enemyUpdateCycle_loop:
     jp nz,enemyUpdateCycle_cannotFire
 
     ld a,(ix) ; enemy type
-    cp 1
+    dec a
     jp z,enemyUpdateCycle_CannonUp
-    cp 2
+    dec a
     jp z,enemyUpdateCycle_CannonRight
-    cp 3
+    dec a
     jp z,enemyUpdateCycle_CannonDown
-    cp 4
+    dec a
     jp z,enemyUpdateCycle_CannonLeft
-    cp 5
+    dec a
     jp z,enemyUpdateCycle_DirectionalCannon
-    cp 6
+    dec a
     jp z,enemyUpdateCycle_DirectionalCannon
-    cp 7
+    dec a
     jp z,enemyUpdateCycle_DirectionalCannon
-    cp 8
+    dec a
     jp z,enemyUpdateCycle_DirectionalCannon
 
 enemyUpdateCycle_nextEnemy:
