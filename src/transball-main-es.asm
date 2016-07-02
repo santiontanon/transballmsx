@@ -36,6 +36,7 @@ Execute:
 
     ; Define the graphic patterns:
     call SETUPPATTERNS
+    call DECOMPRESS_SPRITES
 
     ;; 16x16 sprites:
     ld bc,#e201  ;; write #e2 in VDP register #01 (activate sprites, generate interrupts, 16x16 sprites with no magnification)
