@@ -41,9 +41,15 @@ Finally, this game uses a password system, so be sure to write down those passwo
 
 ## Controls
 
+Keyboard:
 * Left/right arrow keys - rotate the ship
-* Up arrow key          - thrust
+* Up arrow key/M        - thrust
 * Space                 - fire
+
+Joystick:
+* LEft/Right   - rotate the ship
+* Up/Trigger B - thrust
+* Trigger A    - fire
 
 In the title screen:
 * Up/down arrow keys to change the selected menu item
