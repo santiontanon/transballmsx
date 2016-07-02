@@ -18,9 +18,11 @@ Screenshots:
 ![in game 3](https://github.com/santiontanon/transballmsx/blob/master/screenshots/v1.0/sshot4.png?raw=true)
 
 
-Demo video can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
+Demo video ov version 1.0.1 can be found at: https://www.youtube.com/watch?v=uLxYm5E4HOA
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.0.1
+Demo of the updates in version 1.1 can be found at: https://www.youtube.com/watch?v=tCYXHnjSeAo
+
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.1
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
