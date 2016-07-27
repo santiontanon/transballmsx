@@ -27,7 +27,9 @@ SplashScreen_Loop:
     ;; wait for space to be pressed:
     ld a,(fire_button_status)
     ld d,a
+    push bc
     call GTTRIG0AND1
+    pop bc
     ld (fire_button_status),a
     cp d
     jp z,SplashScreen_Loop
