@@ -22,7 +22,7 @@ Demo video ov version 1.0.1 can be found at: https://www.youtube.com/watch?v=uLx
 
 Demo of the updates in version 1.1 can be found at: https://www.youtube.com/watch?v=tCYXHnjSeAo
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.1
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.1.1
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
