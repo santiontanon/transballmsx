@@ -90,7 +90,7 @@ The game was compiled with Grauw's Glass compiler (cannot thank him enough for c
 * I drew all the graphics myself using GIMP and a couple of small tools I coded in Java. I started by converting all the graphics I drew for "Super Transball 2" to the MSX color palette, and then I edited them. They were converted automatically to hex with another little script I wrote. The font was adapted from the one in Thexder (one of my favorite MSX games), although I had to draw some of the characters from scratch, since I could not find any text in Thexder that used some of the letters (e.q., the "Q"). I also redid the numbers, since I didn't like the Thexder ones.
 
 ### Concerning the music:
-* I know, I know, the music leaves much to be desired. I wrote a quick and dirty song by just adding some arpeggios to a basic bass line just to test my music playing routines, and I eventually left the song there. But I should write a better song for future version. I'll come!
+* I know, I know, the music leaves much to be desired. I wrote a quick and dirty song by just adding some arpeggios to a basic bass line (with some notes inspired from the "What a feeling" song :)) just to test my music playing routines, and I eventually left the song there. But I should write a better song for future version. It'll come!
 * Also, the song only plays in the menu, since I used 3 channels for the song, and during the game I need one for the SFX. So, instead of worrying about composing a song where one of the channels can be easily silenced for the SFX, I just decided to play the music only in the menu. That's also something to be improved upon.
 
 
