@@ -13,6 +13,21 @@
 ; Code that gets executed when the game starts
 Execute:
     call move_ROMpage2_to_memorypage1
+    call save_HKEY_Interrupt
+
+    call VDP_IsTMS9918A
+    jr z,Execute_MSX1
+Execute_MSX2:
+    ld a,1
+    ld (isMSX2),a
+    jr Execute_Continue
+Execute_MSX1:
+    xor a
+    ld (isMSX2),a
+Execute_Continue:
+
+    ; set default ship rotation speed:
+    call set_ship_rotation_100
 
     ; Silence and init keyboard:
     xor a
@@ -104,6 +119,7 @@ move_ROMpage2_to_memorypage1:
     include "transball-maps.asm"
     include "transball-titlescreen.asm"
     include "transball-song.asm"
+    include "transball-interrupts.asm"
 
 InterLevel_text:
     db "       PRESS FIRE TO START       "
@@ -172,7 +188,7 @@ titlescreen:
 ; Game variables to be copied to RAM
 ROMtoRAM:
 map_offsetROM:     ;; top-left coordinates of the portion of the map drawn on screen (lowest 4 bits are the decimal part)
-    dw 0, 0
+    dw 0,0
 shipstateROM:
     db 0
 shipangleROM:      ;; angle goes from 0 - 255
@@ -199,13 +215,13 @@ InterLevel_text2_passwordROM:
 
 ;; These variables need to be at the end of the ROM-to-RAM space, since they need to be contiguous with the bullet sprites, which are not in ROM
 thruster_spriteattributesROM:
-    db 64,64,1*4,THRUSTERCOLOR    ;; 4 is the address of the second sprite shape, 
+    db 64,64,THRUSTER_SPRITE*4,THRUSTERCOLOR    ;; 4 is the address of the second sprite shape, 
                                 ;; since we are in 16x16 sprite mode, each shape is 4 blocks in size
 ship_spriteattributesROM:       
-    db 64,64,0,SHIPCOLOR
+    db 64,64,SHIP_SPRITE*4,SHIPCOLOR
 
 ball_spriteattributesROM:
-    db 0,0,3*4,0     
+    db 0,0,BALL_SPRITE*4,0     
 endROMtoRAM:
 
 
@@ -394,4 +410,26 @@ ballPositionBeforePhysics:  ;; temporary storage to restore the position of the 
     ds virtual 4
 ballCollisioncount:         ;; temporary variable to count the number of points that collide with the ball
 bulletType_tmp:             ;; temporary variable storing the type of bullet we are considering in the physics code
+    ds virtual 1
+
+;; variables to control the ship rotation speed:
+ship_rotation_speed_pattern:
+    ds virtual 8 
+
+;; variables for the smooth scroll interrupt:
+old_interrupt_buffer:
+    ds virtual 3
+vertical_scroll_for_r23:
+    ds virtual 1
+horizontal_scroll_for_r18:
+    ds virtual 1
+desired_vertical_scroll_for_r23:
+    ds virtual 1
+desired_horizontal_scroll_for_r18:
+    ds virtual 1
+desired_map_offset:  ;; this stores the desired_map_offset for the next frame, that will be copied to map_offset immediately after vsync
+    ds virtual 4
+current_game_frame:
+    ds virtual 1
+isMSX2:
     ds virtual 1

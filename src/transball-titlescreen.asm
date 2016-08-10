@@ -129,7 +129,12 @@ MainMenu_music_already_playing_clear_password_loop:
     ld (menu_timer),a
     ld (menu_input_buffer),a
 
+    call KILBUF ;; clear the keyboard buffer (so we can use 1 - 5 to configure ship speed)
+
 MainMenu_Loop:
+
+    call checkForRotationSpeedConfigInput
+
     ;; check input:
     ld a,(fire_button_status)
     ld b,a

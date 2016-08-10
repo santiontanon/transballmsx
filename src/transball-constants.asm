@@ -1,4 +1,5 @@
 ;-----------------------------------------------
+; BIOS calls:
 DCOMPR: equ #0020
 ENASLT: equ #0024
 WRTVDP: equ #0047
@@ -12,16 +13,19 @@ CHGCLR: equ #0062
 GICINI: equ #0090   
 WRTPSG: equ #0093 
 RDPSG:  equ #0096
+CHSNS:  equ #009c
 CHGET:  equ #009f
 CHPUT:  equ #00a2
 GTSTCK: equ #00d5
 GTTRIG: equ #00d8
 SNSMAT: equ #0141
 RSLREG: equ #0138
+RDVDP:  equ #013e
 KILBUF: equ #0156
 ;-----------------------------------------------
 ; System variables
 VDP_DATA: equ #98
+VDP_REGISTER_0: equ #f3df
 CLIKSW: equ #f3db       ; keyboard sound
 FORCLR: equ #f3e9
 BAKCLR: equ #f3ea
@@ -31,7 +35,8 @@ GETPNT: equ #f3fa
 KEYS:   equ #fbe5    
 KEYBUF: equ #fbf0
 EXPTBL: equ #fcc1
-JPCODE: equ #c3
+TIMI:   equ #fd9f       ; timer interrupt hook
+HKEY:   equ #fd9a       ; hkey interrupt hook
 ;-----------------------------------------------
 ; VRAM map in Screen 2
 CHRTBL2:  equ     #0000   ; pattern table address
@@ -72,6 +77,11 @@ SFX_GOTO:       equ  #fc
 SFX_SKIP:       equ  #fd
 SFX_MULTISKIP:  equ  #fe
 SFX_END:        equ  #ff
+; Sprite definition constants:
+SHIP_SPRITE: equ	4
+THRUSTER_SPRITE: equ	5
+BULLET_SPRITE: equ	6
+BALL_SPRITE: equ	7
 ; GFX definition constants:
 PATTERN_FUEL2:  equ  222
 PATTERN_FUEL1:  equ  223

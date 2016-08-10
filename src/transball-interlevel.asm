@@ -9,6 +9,8 @@ Game_StartFromBeginning:
 ;-----------------------------------------------
 ; Restart a level:
 Level_Restart:
+    call Restore_Interrupt
+
     call CLEAR_SFX_AND_MUSIC_STATUS
     call clearScreenLeftToRight
 
@@ -37,12 +39,6 @@ Level_Restart:
     add hl,bc   ;; hl now has a pointer to the password of this level
     ld bc,8
     ldir
-
-    ;; clear all the sprites:
-    xor a
-    ld bc,32*4
-    ld hl,SPRATR2
-    call FILVRM
 
     call updateTimeAndFuel_done_updating_time   ;; this will update the scoreboard string
     
@@ -95,13 +91,9 @@ InterLevel_Loop_Continue:
 
 
 Level_complete:
-    call clearScreenLeftToRight
+    call Restore_Interrupt
 
-    ;; clear all the sprites:
-    xor a
-    ld bc,32*4
-    ld hl,SPRATR2
-    call FILVRM
+    call clearScreenLeftToRight
 
     ;; draw line 1:
     ld de,NAMTBL2+32*6+8

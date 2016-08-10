@@ -1,7 +1,7 @@
 ;-----------------------------------------------
 ; updates the ship and thruster sprites depending on the ship state
 changeSprites:
-    ld hl,SPRTBL2
+    ld hl,SPRTBL2+SHIP_SPRITE*32
     call SETWRT
     ex de,hl
     ld bc,0
@@ -25,7 +25,7 @@ changeSprites_loop:
 
     pop bc
 
-    ld hl,SPRTBL2+32
+    ld hl,SPRTBL2+THRUSTER_SPRITE*32
     call SETWRT
     ex de,hl
     ld hl,shipvpanther_thruster
@@ -50,7 +50,7 @@ shipExplosionSprites:
     ld a,10
     ld (ship_spriteattributes+3),a
 
-    ld hl,SPRTBL2
+    ld hl,SPRTBL2+SHIP_SPRITE*32
     call SETWRT
     ex de,hl
     ld hl,explosion_sprites_inside
@@ -59,7 +59,7 @@ shipExplosionSprites:
     sla a
     sla a
     cp 32*3
-    jp p,shipExplosionSprites_blank_sprites
+    jp p,clearAllTheSprites ;; we do a "jp", so that when "clearAllTheSprites" is over, we return from this function
     ld c,a
     ld b,0
     add hl,bc
@@ -69,7 +69,7 @@ shipExplosionSprites_loop:
     outi
     jp nz,shipExplosionSprites_loop
 
-    ld hl,SPRTBL2+32
+    ld hl,SPRTBL2+THRUSTER_SPRITE*32
     call SETWRT
     ex de,hl
     ld hl,explosion_sprites_outside
@@ -87,21 +87,13 @@ shipExplosionSprites_loop2:
     jp nz,shipExplosionSprites_loop2
     ret
 
-shipExplosionSprites_blank_sprites:
-    xor a
-    ld bc,64
-    ld hl,SPRTBL2
-    call FILVRM
-    ret
-
-
 ;-----------------------------------------------
 ; calculates the coordinates where to draw the ship on screen based on its coordinates 
 ; and on the map offset
 calculate_ship_sprite_position:
     ld hl,(shipposition)
     ;; project down to screen coordinates:
-    ld bc,(map_offset)
+    ld bc,(desired_map_offset)
     xor a
     sbc hl,bc
     sra h   ; divide by 16:
@@ -113,13 +105,19 @@ calculate_ship_sprite_position:
     sra h
     rr l
     ld a,l
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_vertical_scroll_for_r23)
+    add a,b
+
     ld (ship_spriteattributes),a
     ld (thruster_spriteattributes),a
 
     ld hl,(shipposition+2)
     ;; project down to screen coordinates:
     ; divide by 16:
-    ld bc,(map_offset+2)
+    ld bc,(desired_map_offset+2)
     xor a
     sbc hl,bc
     sra h   ; divide by 16:
@@ -131,6 +129,12 @@ calculate_ship_sprite_position:
     sra h
     rr l
     ld a,l
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_horizontal_scroll_for_r18)
+    add a,b
+
     ld (ship_spriteattributes+1),a
     ld (thruster_spriteattributes+1),a
 
@@ -145,6 +149,11 @@ calculate_ball_sprite_position:
     ; y:
     ld hl,(ballposition)
     ld bc,(map_offset)
+
+    ;; in MSX1, align the ball coordinates to the map offset:
+    ld a,(isMSX2)
+    and a
+    jp nz,calculate_ball_sprite_position_snap_ball_to_map_y_continue
     ld a,(ballstate)
     and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_snap_ball_to_map_y_continue
@@ -168,15 +177,26 @@ calculate_ball_sprite_position_snap_ball_to_map_y_continue:
     ld a,l
     cp 192
     jr nc,calculate_ball_sprite_position_outside_y
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_vertical_scroll_for_r23)
+    add a,b
+
     ld (ball_spriteattributes),a
     jr calculate_ball_sprite_position_y_continue
 calculate_ball_sprite_position_outside_y:
-    ld a,192
+    ld a,224
     ld (ball_spriteattributes),a ;; just a value that would draw the ball out of the drawable area
 calculate_ball_sprite_position_y_continue:
     ; x:
     ld hl,(ballposition+2)
     ld bc,(map_offset+2)
+
+    ;; in MSX1, align the ball coordinates to the map offset:
+    ld a,(isMSX2)
+    and a
+    jp nz,calculate_ball_sprite_position_snap_ball_to_map_x_continue
     ld a,(ballstate)
     and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_snap_ball_to_map_x_continue
@@ -198,6 +218,12 @@ calculate_ball_sprite_position_snap_ball_to_map_x_continue:
     and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_ball_sprite_position_outside_x
     ld a,l
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_horizontal_scroll_for_r18)
+    add a,b
+
     ld (ball_spriteattributes+1),a
     jp calculate_ball_sprite_position_continue
 calculate_ball_sprite_position_outside_x:
@@ -267,6 +293,12 @@ calculate_bullet_sprite_positions_loop:
     ld a,l
     cp 192
     jr nc,calculate_bullet_sprite_positions_bullet_outside_y
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_vertical_scroll_for_r23)
+    add a,b
+
     ld (ix),a
     jr calculate_bullet_sprite_positions_bullet_outside_y_continue
 calculate_bullet_sprite_positions_bullet_outside_y:
@@ -294,6 +326,12 @@ calculate_bullet_sprite_positions_bullet_outside_y_continue:
     and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_bullet_sprite_positions_bullet_outside_x
     ld a,l
+
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_horizontal_scroll_for_r18)
+    add a,b
+
     ld (ix+1),a
     jr calculate_bullet_sprite_positions_bullet_outside_x_continue
 calculate_bullet_sprite_positions_bullet_outside_x:
@@ -336,7 +374,7 @@ calculate_enemy_bullet_sprite_positions:
 calculate_enemy_bullet_sprite_positions_loop:
     ld a,(hl)
     and a   ;; equivalent to cp 0, but faster
-    jr z,calculate_enemy_bullet_sprite_positions_next_bullet
+    jp z,calculate_enemy_bullet_sprite_positions_next_bullet
 
     push hl
     push bc
@@ -355,10 +393,14 @@ calculate_enemy_bullet_sprite_positions_loop:
     inc de
     ld bc,(map_offset)
 
+    ;; in MSX1, align the enemy coordinates to the map offset:
+    ld a,(isMSX2)
+    and a
+    jp nz,calculate_enemy_bullet_sprite_positions_snap_y_continue
     ld a,c      ;; align the bullet to the exact map offset (in blocks of 8x8)
     and #80
     ld c,a
-
+calculate_enemy_bullet_sprite_positions_snap_y_continue:
     xor a
     sbc hl,bc
     sra h   ; divide by 16:
@@ -375,6 +417,10 @@ calculate_enemy_bullet_sprite_positions_loop:
     ld a,l
     cp 192
     jr nc,calculate_enemy_bullet_sprite_positions_bullet_outside_y
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_vertical_scroll_for_r23)
+    add a,b
     ld (ix),a
     jr calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue
 calculate_enemy_bullet_sprite_positions_bullet_outside_y:
@@ -389,10 +435,14 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     inc de
     ld bc,(map_offset+2)
 
+    ;; in MSX1, align the enemy coordinates to the map offset:
+    ld a,(isMSX2)
+    and a
+    jp nz,calculate_enemy_bullet_sprite_positions_snap_x_continue
     ld a,c      ;; align the bullet to the exact map offset (in blocks of 8x8)
     and #80
     ld c,a
-
+calculate_enemy_bullet_sprite_positions_snap_x_continue:
     xor a
     sbc hl,bc
     sra h   ; divide by 16:
@@ -407,6 +457,10 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     and a   ;; equivalent to cp 0, but faster
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_x
     ld a,l
+    ;; adjust sprite position based on the smooth scroll offset:
+    ld b,a
+    ld a,(desired_horizontal_scroll_for_r18)
+    add a,b
     ld (ix+1),a
     jr calculate_enemy_bullet_sprite_positions_bullet_outside_x_continue
 calculate_enemy_bullet_sprite_positions_bullet_outside_x:

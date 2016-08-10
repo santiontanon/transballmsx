@@ -2,10 +2,12 @@
 ; Updates all the sprite attribute tables to draw the following:
 ; - ship
 ; - thruster
+; - ball
+; - enemy bullets
 ; - player bullets
 drawSprites:
     ;; draw all the sprites:
-    ld hl,SPRATR2
+    ld hl,SPRATR2+8*4
     call SETWRT
     ex de,hl
     ld hl,thruster_spriteattributes
@@ -190,12 +192,12 @@ SETUPPATTERNS:
 ; sets the base sprites at the beginning of the game
 setupBaseSprites:
     ;; setup bullet sprite
-    ld de,SPRTBL2+2*32
+    ld de,SPRTBL2+BULLET_SPRITE*32
     ld hl,player_bullet_sprite
     ld bc,32
     call LDIRVM
     ;; ball sprite:
-    ld de,SPRTBL2+3*32
+    ld de,SPRTBL2+BALL_SPRITE*32
     ld hl,ball_sprite
     ld bc,32
     call LDIRVM
@@ -203,13 +205,18 @@ setupBaseSprites:
 
 
 ;-----------------------------------------------
-; Clears the screen left to right
-clearScreenLeftToRight:
-    ;; clear sprites:
+;; clear sprites:
+clearAllTheSprites:
     xor a
     ld bc,32*4
     ld hl,SPRATR2
     call FILVRM
+    ret
+
+;-----------------------------------------------
+; Clears the screen left to right
+clearScreenLeftToRight:
+    call clearAllTheSprites
 
     ld a,32
     ld bc,0

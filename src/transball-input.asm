@@ -31,6 +31,27 @@ GTTRIG0AND1_CALL1:
 
 
 ;-----------------------------------------------
+; checks whether any of the keys from 1 - 5 have been pressed and changes ship rotation speed accordingly
+checkForRotationSpeedConfigInput:
+    call CHSNS
+    ret z
+
+    ld a,1
+    call CHGET
+    cp '1'
+    jp z,set_ship_rotation_100
+    cp '2'
+    jp z,set_ship_rotation_87
+    cp '3'
+    jp z,set_ship_rotation_75
+    cp '4'
+    jp z,set_ship_rotation_62
+    cp '5'
+    jp z,set_ship_rotation_50
+    ret
+
+
+;-----------------------------------------------
 ; checks all the player input (left/right/thrust/fire)
 checkInput:
     xor a
@@ -98,20 +119,45 @@ Readjoystick:
     ret
 
 TurnLeft:    
-    ld b,a
+    ld d,a
+    
+    ld a,(current_game_frame)
+    and #07
+    ld hl,ship_rotation_speed_pattern
+    ld b,0
+    ld c,a
+    add hl,bc
+    ld a,(hl)
+    and a
+    jr z,TurnLeft_dont_turn
+
     ld a,(shipangle)
     dec a
     and #3f
     ld (shipangle),a
-    ld a,b
+TurnLeft_dont_turn:
+    ld a,d
     ret
+
 TurnRight:  
-    ld b,a
+    ld d,a
+
+    ld a,(current_game_frame)
+    and #07
+    ld hl,ship_rotation_speed_pattern
+    ld b,0
+    ld c,a
+    add hl,bc
+    ld a,(hl)
+    and a
+    jr z,TurnRight_dont_turn
+
     ld a,(shipangle)
     inc a
     and #3f
     ld (shipangle),a
-    ld a,b
+TurnRight_dont_turn:
+    ld a,d
     ret
 
 Thrust:
@@ -252,4 +298,40 @@ checkFireButton_fireBullet:
     ld hl,SFX_bullet    ;; play the bullet SFX!
     call play_SFX
 
+    ret
+
+
+set_ship_rotation_100:
+    ld a,1
+    ld (ship_rotation_speed_pattern),a
+    ld (ship_rotation_speed_pattern+1),a
+    ld (ship_rotation_speed_pattern+2),a
+    ld (ship_rotation_speed_pattern+3),a
+    ld (ship_rotation_speed_pattern+4),a
+    ld (ship_rotation_speed_pattern+5),a
+    ld (ship_rotation_speed_pattern+6),a
+    ld (ship_rotation_speed_pattern+7),a
+    ret
+
+set_ship_rotation_87:
+    call set_ship_rotation_100
+    xor a
+    ld (ship_rotation_speed_pattern+7),a
+    ret
+
+set_ship_rotation_75:
+    call set_ship_rotation_87
+    ld (ship_rotation_speed_pattern+3),a
+    ret
+
+set_ship_rotation_62:
+    call set_ship_rotation_87
+    ld (ship_rotation_speed_pattern+2),a
+    ld (ship_rotation_speed_pattern+5),a
+    ret
+
+set_ship_rotation_50:
+    call set_ship_rotation_75
+    ld (ship_rotation_speed_pattern+1),a
+    ld (ship_rotation_speed_pattern+5),a
     ret

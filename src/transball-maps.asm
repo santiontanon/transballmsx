@@ -120,7 +120,7 @@ LOADMAP_initialize_variables_loop2:
     inc hl
     ld (hl),a
     inc hl
-    ld a,2*4    ;; pointer to the 3rd sprite (the bullet)
+    ld a,BULLET_SPRITE*4    ;; pointer to the 3rd sprite (the bullet)
     ld (hl),a
     inc hl
     xor a
@@ -145,7 +145,7 @@ LOADMAP_initialize_variables_loop4:
     inc hl
     ld (hl),a
     inc hl
-    ld a,2*4    ;; pointer to the 3rd sprite (the bullet)
+    ld a,BULLET_SPRITE*4    ;; pointer to the 3rd sprite (the bullet)
     ld (hl),a
     inc hl
     xor a
@@ -589,7 +589,23 @@ calculate_map_offset:
     ld b,c
     ld c,a
     call HL_NOT_BIGGER_THAN_BC
-    ld (map_offset),hl
+    ld (desired_map_offset),hl
+
+    ;; calculate the offset for smooth scroll in MSX2
+    ld a,(isMSX2)
+    and a   ;; equivalent to cp 0, but faster
+    jp z,calculate_map_offset_MSX1_y
+    ld a,l
+    sra a
+    sra a
+    sra a
+    sra a
+    and #07
+    ld (desired_vertical_scroll_for_r23),a
+
+    ;; desired_map_offset_blockresolution
+
+calculate_map_offset_MSX1_y:
 
     ;; map_offset.x = (shipposition.x - 120*16)
     ;; if map_offset.x < 0 then map_offset.x = 0
@@ -610,7 +626,20 @@ calculate_map_offset:
     ld b,c
     ld c,a
     call HL_NOT_BIGGER_THAN_BC
-    ld (map_offset+2),hl
+    ld (desired_map_offset+2),hl
+
+    ;; calculate the offset for smooth scroll in MSX2
+    ld a,(isMSX2)
+    and a   ;; equivalent to cp 0, but faster
+    ret z
+    ld a,l
+    sra a
+    sra a
+    sra a
+    sra a
+    and #07
+    ld (desired_horizontal_scroll_for_r18),a    
+
     ret
     
 
@@ -772,6 +801,7 @@ open_close_ball_doors_done:
 ;-----------------------------------------------
 ; renders the map to screeen
 renderMap:
+
     ;; render scoreboard:
     ld hl,NAMTBL2
     call SETWRT

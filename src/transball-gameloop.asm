@@ -1,6 +1,8 @@
 Game_Loop:
     call clearScreenLeftToRight
 
+    call Set_SmoothScroll_Interrupt
+
     ;; play the game start SFX!
     ld hl,SFX_gamestart
     call play_SFX
@@ -16,19 +18,7 @@ Game_Loop_loop:
     and a   ;; equivalent to cp 0, but faster
     jp nz,Level_complete
 
-;;  this is some debug code (that prints the highscores during the game to see when they got corrupted)
-;    ld hl,best_times+3*5
-;    ld de,scoreboard
-;    ldi
-;    ldi
-;    ldi
-;    ldi
-;    ldi
-
     call checkInput
-;    call checkJoystick     
-;    call checkThrust
-;    call checkFireButton
     call applyGravityAndSpeed   
     call ballPhysics
     call enemyUpdateCycle
@@ -47,15 +37,32 @@ Game_Loop_loop:
     call renderExplosions
     call renderMap
     call changeSprites
-    call drawSprites
 
     call SFX_INT
-    halt    ;; wait for the interrupt generated after screen is refreshed
+
+    ld a,(current_game_frame)
+    ld b,a
+Game_Loop_wait_for_next_frame:
+    ld a,(current_game_frame)
+    cp b
+    jp z,Game_Loop_wait_for_next_frame
+;    halt    ;; wait for the interrupt generated after screen is refreshed
+
+    call drawSprites
+    ld a,(desired_vertical_scroll_for_r23)
+    ld (vertical_scroll_for_r23),a
+    ld a,(desired_horizontal_scroll_for_r18)
+    ld (horizontal_scroll_for_r18),a
+    ld hl,(desired_map_offset)
+    ld (map_offset),hl
+    ld hl,(desired_map_offset+2)
+    ld (map_offset+2),hl
 
     jp Game_Loop_loop
 
 
 Ship_collided:
+
     xor a
     ld (shipvelocity),a
     ld (shipvelocity+1),a
@@ -72,7 +79,6 @@ Ship_collided_Loop:
     call renderExplosions
     call renderMap
     call shipExplosionSprites
-    call drawSprites
     ld a,(shipstate)
     inc a
     ld (shipstate),a
@@ -80,7 +86,25 @@ Ship_collided_Loop:
     jp z,Level_Restart
 
     call SFX_INT
-    halt    
+
+    ld a,(current_game_frame)
+    ld b,a
+Ship_collided_wait_for_next_frame:
+    ld a,(current_game_frame)
+    cp b
+    jp z,Ship_collided_wait_for_next_frame
+;    halt    ;; wait for the interrupt generated after screen is refreshed
+
+    call drawSprites
+    ld a,(desired_vertical_scroll_for_r23)
+    ld (vertical_scroll_for_r23),a
+    ld a,(desired_horizontal_scroll_for_r18)
+    ld (horizontal_scroll_for_r18),a
+    ld hl,(desired_map_offset)
+    ld (map_offset),hl
+    ld hl,(desired_map_offset+2)
+    ld (map_offset+2),hl
+
     jp Ship_collided_Loop
 
 
