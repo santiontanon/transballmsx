@@ -888,9 +888,14 @@ mapAnimationCycle:
     ld b,a
     ld hl,currentAnimations
 
-mapAnimationCycle_loop:
+mapAnimationCycle_loop:        
     dec b
     ret z
+
+    ld a,(current_game_frame)
+    xor b
+    and #01
+    jp z,mapAnimacionCycle_skip_this_tile
 
     push bc
     ld e,(hl)
@@ -957,6 +962,12 @@ no_animaiton_overflow_yet:
     pop bc
     jr mapAnimationCycle_loop
 
+mapAnimacionCycle_skip_this_tile:
+    ld a,b
+    ld bc,6
+    add hl,bc
+    ld b,a
+    jr mapAnimationCycle_loop    
 
 ;-----------------------------------------------
 ; Map collision information:
@@ -1011,15 +1022,15 @@ animations:
     dw verticallaser
     db 0                ;; indicates the end
 
-leftspike1:         db 130, 6,16, 130,131,0,0,0,131 
-leftspike2:         db 131, 6,16, 131,0,0,0,0,0 
-rightspike1:        db 136, 6,16, 136,0,0,0,0,0 
-rightspike2:        db 137, 6,16, 137,136,0,0,0,136 
-smallradar:         db 134, 4,8, 134,144,135,144
-redlight1:          db 248, 2,50, 248,250   
-redlight2:          db 249, 2,50, 249,251   
-horizontallaser:    db 252, 2,100, 252,0
-verticallaser:      db 253, 2,100, 253,0 
+leftspike1:         db 130, 6,8, 130,131,0,0,0,131 
+leftspike2:         db 131, 6,8, 131,0,0,0,0,0 
+rightspike1:        db 136, 6,8, 136,0,0,0,0,0 
+rightspike2:        db 137, 6,8, 137,136,0,0,0,136 
+smallradar:         db 134, 4,4, 134,144,135,144
+redlight1:          db 248, 2,25, 248,250   
+redlight2:          db 249, 2,25, 249,251   
+horizontallaser:    db 252, 2,50, 252,0
+verticallaser:      db 253, 2,50, 253,0 
 
 
 ;-----------------------------------------------

@@ -214,6 +214,11 @@ MainMenu_Loop_continue:
     call mapAnimationCycle
     call renderMap
 
+    ;; needed for the animation cycle
+    ld a,(current_game_frame)
+    inc a
+    ld (current_game_frame),a    
+
     call MUSIC_INT
     halt    ;; wait for the interrupt generated after screen is refreshed
 
@@ -453,6 +458,11 @@ entering_password_Loop_nocharacter:
 
     call mapAnimationCycle
     call renderMap
+
+    ;; needed for the animation cycle
+    ld a,(current_game_frame)
+    inc a
+    ld (current_game_frame),a    
 
     call MUSIC_INT
     halt    ;; wait for the interrupt generated after screen is refreshed
