@@ -846,7 +846,7 @@ renderMap_scoreboard_loop:
     ld b,0
     ld c,a
     add hl,bc
-    ld bc,24-1
+    ld b,24-1
     ld de, NAMTBL2+32
 
 renderMap_loop:
@@ -875,25 +875,29 @@ renderMap_loop_internal:
     add hl,bc
 
     pop bc
-    dec c
-    jp nz,renderMap_loop
+    djnz renderMap_loop
     ret
 
 
 ;-----------------------------------------------
 ; executes one cycle of all the animations in the map
-mapAnimationCycle:
+mapAnimationCycle:    
     ld a,(currentNAnimations)
     inc a
     ld b,a
     ld hl,currentAnimations
 
+    ld a,(current_animation_frame)
+    inc a
+    ld (current_animation_frame),a
+
 mapAnimationCycle_loop:        
     dec b
     ret z
 
-    ld a,(current_game_frame)
-    xor b
+    ;; consider only the odd tiles in odd frames, and even tiles in even frames
+    ld a,(current_animation_frame)
+    add a,b
     and #01
     jp z,mapAnimacionCycle_skip_this_tile
 

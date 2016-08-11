@@ -432,5 +432,7 @@ desired_map_offset:  ;; this stores the desired_map_offset for the next frame, t
     ds virtual 4
 current_game_frame:
     ds virtual 1
+current_animation_frame:
+    ds virtual 1
 isMSX2:
     ds virtual 1

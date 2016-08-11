@@ -11,7 +11,7 @@ applyGravityAndSpeed:
     call HL_NOT_SMALLER_THAN_BC
     ld (shipvelocity),hl
     ;; add velocity (Y):
-    ld de,(shipvelocity)
+    ex de,hl
     sra d   ; divide by 16:
     rr e
     sra d
@@ -93,7 +93,7 @@ applyGravityAndSpeed_x_continue2:
     ;; apply speed to the enemy bullets:
     xor a   ;; enemy bullets
     ld (bulletType_tmp),a
-    ld c,0
+    ld c,a
     ld hl,enemy_bullet_active
     ld ix,enemy_bullet_positions
     ld de,enemy_bullet_velocities
@@ -166,7 +166,7 @@ applyGravityAndSpeed_bullet_loop:
 
     ld a,(bulletType_tmp)
     and a   ;; equivalent to cp 0, but faster
-    jr z,applyGravityAndSpeed_enemy_bullet_collision
+    jp z,applyGravityAndSpeed_enemy_bullet_collision
 
 applyGravityAndSpeed_player_bullet_collision:
     call checkMapCollision  ;; (bc,de) = (y,x)
@@ -202,7 +202,7 @@ applyGravityAndSpeed_common_bullet_collision:
 bullet_no_collision:
     pop hl
     pop bc
-    jr applyGravityAndSpeed_next_bullet2
+    jp applyGravityAndSpeed_next_bullet2
 
 bullet_off_the_map_y:
     inc de
@@ -214,7 +214,7 @@ bullet_off_the_map_x:
     ld (hl),a
 
     pop bc
-    jr applyGravityAndSpeed_next_bullet2
+    jp applyGravityAndSpeed_next_bullet2
 
 applyGravityAndSpeed_next_bullet:
     inc de  ;; next bullet position
@@ -334,19 +334,19 @@ ballPhysics_active:
     jp m,ballPhysics_attract0.125
     pop de
     pop hl
-    jr ballPhysics_gravity ;; otherwise, do not apply any attractive force
+    jp ballPhysics_gravity ;; otherwise, do not apply any attractive force
 ballPhysics_attract0.5:
     ld ix,y_0.5pixel_velocity
     ld iy,x_0.5pixel_velocity
-    jr ballPhysics_attractive_force
+    jp ballPhysics_attractive_force
 ballPhysics_attract0.25:
     ld ix,y_0.25pixel_velocity
     ld iy,x_0.25pixel_velocity
-    jr ballPhysics_attractive_force
+    jp ballPhysics_attractive_force
 ballPhysics_attract0.125:
     ld ix,y_0.125pixel_velocity
     ld iy,x_0.125pixel_velocity
-    jr ballPhysics_attractive_force
+    jp ballPhysics_attractive_force
 
 ballPhysics_attractive_force:
     pop de
@@ -684,7 +684,7 @@ checkForShipToMapCollision_refuel:
     inc a
     ld (current_fuel_left),a
     cp 11   ;; max fuel+1
-    jr nz,checkForShipToMapCollision_refuel_do_not_increase_major_fuel_unit
+    jp nz,checkForShipToMapCollision_refuel_do_not_increase_major_fuel_unit
     ld a,10 ;; max fuel
     ld (current_fuel_left),a
 checkForShipToMapCollision_refuel_do_not_increase_major_fuel_unit:

@@ -2,13 +2,19 @@
 ; Executes one update cycle of each enemy in the map
 enemyUpdateCycle:
     ld a,(currentNEnemies)
+    inc a
     ld b,a
     ld ix,currentEnemies
 
 enemyUpdateCycle_loop:
-    ld a,b
-    and a   ;; equivalent to cp 0, but faster
+    dec b
     ret z
+
+    ;; consider only the odd tiles in odd frames, and even tiles in even frames
+    ld a,(current_game_frame)
+    xor b
+    and #01
+    jp z,enemyUpdateCycle_nextEnemy_nopop    
 
     push bc
     ;; each enemy is 11 bytes:
@@ -43,9 +49,9 @@ enemyUpdateCycle_loop:
 
 enemyUpdateCycle_nextEnemy:
     pop bc
+enemyUpdateCycle_nextEnemy_nopop:
     ld de,11
     add ix,de
-    dec b
     jr enemyUpdateCycle_loop
 
 
