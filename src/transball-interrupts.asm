@@ -182,8 +182,7 @@ MSX2_SmoothScroll_Interrupt:
     ld (current_game_frame),a
 
     pop af
-    ei
-    reti
+    ret
 
     ;; We get to this point if it's a line interrupt:
 MSX2_SmoothScroll_Interrupt_Line_Interrupt:
@@ -212,8 +211,7 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
     out (#99),a
 
     pop af
-    ei
-    reti
+    ret
 
 
 MSX1_Interrupt:
@@ -224,5 +222,4 @@ MSX1_Interrupt:
     ld (current_game_frame),a
 
     pop af
-    ei
-    reti
+    ret
