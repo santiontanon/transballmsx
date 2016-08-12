@@ -44,10 +44,10 @@ save_interrupts:
     ld de,old_HKEY_interrupt_buffer
     ld bc,3
     ldir
-    ld hl,TIMI
-    ld de,old_TIMI_interrupt_buffer
-    ld bc,3
-    ldir
+;    ld hl,TIMI
+;    ld de,old_TIMI_interrupt_buffer
+;    ld bc,1
+;    ldir
     ret
 
 ;-----------------------------------------------
@@ -77,8 +77,8 @@ Set_SmoothScroll_Interrupt:
     ld hl,MSX2_SmoothScroll_Interrupt
     ld (HKEY+1),hl
 
-    ld a,#c9    ;; #c9 is the opcode for "ret"
-    ld (TIMI),a
+;    ld a,#c9    ;; #c9 is the opcode for "ret"
+;    ld (TIMI),a
 
     ;; activate line interrupts:
     ld a,(VDP_REGISTER_0)
@@ -131,10 +131,10 @@ Restore_Interrupt_MSX1:
     ld de,HKEY
     ld bc,3
     ldir    
-    ld hl,old_TIMI_interrupt_buffer
-    ld de,TIMI
-    ld bc,3
-    ldir    
+;    ld hl,old_TIMI_interrupt_buffer
+;    ld de,TIMI
+;    ld bc,1
+;    ldir    
     ei
 
     ret

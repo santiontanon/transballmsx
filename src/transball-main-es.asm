@@ -420,8 +420,8 @@ ship_rotation_speed_pattern:
 ;; variables for the smooth scroll interrupt:
 old_HKEY_interrupt_buffer:
     ds virtual 3
-old_TIMI_interrupt_buffer:
-    ds virtual 1
+;old_TIMI_interrupt_buffer:
+;    ds virtual 1
 vertical_scroll_for_r23:
     ds virtual 1
 horizontal_scroll_for_r18:
