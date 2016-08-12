@@ -194,8 +194,8 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
 
 ;    ld a,(vertical_scroll_for_r23)
 ;    ld b,a
- ;   ld c,23
- ;   call WRTVDP
+;    ld c,23
+;    call WRTVDP
     ld a,(vertical_scroll_for_r23)
     out (#99),a
     ld a,128+23

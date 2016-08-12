@@ -7,7 +7,9 @@
 ; - player bullets
 drawSprites:
     ;; draw all the sprites:
-    ld hl,SPRATR2+8*4
+    ld hl,SPRATR2+8*4   ;; we don't use the first 8 sprites, since in MSX those bytes need to be 
+                        ;; set to 0 (otherwise, we would see garbage when we move the scroll with 
+                        ;; register r23).
     call SETWRT
     ex de,hl
     ld hl,thruster_spriteattributes
