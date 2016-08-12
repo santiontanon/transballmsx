@@ -35,7 +35,6 @@ Game_Loop_loop:
     call updateTimeAndFuel  
     call mapAnimationCycle
     call renderExplosions
-    call renderMap
     call changeSprites
 
     call SFX_INT
@@ -48,7 +47,6 @@ Game_Loop_wait_for_next_frame:
     jp z,Game_Loop_wait_for_next_frame
 ;    halt    ;; wait for the interrupt generated after screen is refreshed
 
-    call drawSprites
     ld a,(desired_vertical_scroll_for_r23)
     ld (vertical_scroll_for_r23),a
     ld a,(desired_horizontal_scroll_for_r18)
@@ -57,6 +55,9 @@ Game_Loop_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
+    call drawSprites
+    call renderMap
+
 
     jp Game_Loop_loop
 
@@ -77,7 +78,6 @@ Ship_collided_Loop:
     call calculate_enemy_bullet_sprite_positions
     call mapAnimationCycle
     call renderExplosions
-    call renderMap
     call shipExplosionSprites
     ld a,(shipstate)
     inc a
@@ -95,7 +95,6 @@ Ship_collided_wait_for_next_frame:
     jp z,Ship_collided_wait_for_next_frame
 ;    halt    ;; wait for the interrupt generated after screen is refreshed
 
-    call drawSprites
     ld a,(desired_vertical_scroll_for_r23)
     ld (vertical_scroll_for_r23),a
     ld a,(desired_horizontal_scroll_for_r18)
@@ -104,6 +103,8 @@ Ship_collided_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
+    call drawSprites
+    call renderMap
 
     jp Ship_collided_Loop
 
