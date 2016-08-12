@@ -79,6 +79,7 @@ Ship_collided_Loop:
     call mapAnimationCycle
     call renderExplosions
     call shipExplosionSprites
+    
     ld a,(shipstate)
     inc a
     ld (shipstate),a
