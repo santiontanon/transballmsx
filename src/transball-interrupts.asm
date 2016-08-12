@@ -39,9 +39,13 @@ VDP_IsTMS9918A_Wait:
 
 ;-----------------------------------------------
 ; saves the old interrupt
-save_HKEY_Interrupt:
+save_interrupts:
     ld hl,HKEY
-    ld de,old_interrupt_buffer
+    ld de,old_HKEY_interrupt_buffer
+    ld bc,3
+    ldir
+    ld hl,TIMI
+    ld de,old_TIMI_interrupt_buffer
     ld bc,3
     ldir
     ret
@@ -72,6 +76,9 @@ Set_SmoothScroll_Interrupt:
     ld (HKEY),a
     ld hl,MSX2_SmoothScroll_Interrupt
     ld (HKEY+1),hl
+
+    ld a,#c9    ;; #c9 is the opcode for "ret"
+    ld (TIMI),a
 
     ;; activate line interrupts:
     ld a,(VDP_REGISTER_0)
@@ -120,8 +127,12 @@ Restore_Interrupt:
 
 Restore_Interrupt_MSX1:
     di
-    ld hl,old_interrupt_buffer
+    ld hl,old_HKEY_interrupt_buffer
     ld de,HKEY
+    ld bc,3
+    ldir    
+    ld hl,old_TIMI_interrupt_buffer
+    ld de,TIMI
     ld bc,3
     ldir    
     ei
@@ -150,19 +161,29 @@ MSX2_SmoothScroll_Interrupt:
     in a,(#99)
 
     ;; Set NO vertical offset:
-    ld b,0
-    ld c,23
-    call WRTVDP
-    ld b,0
-    ld c,18
-    call WRTVDP
+;    ld b,0
+;    ld c,23
+;    call WRTVDP
+    xor a
+    out (#99),a
+    ld a,128+23
+    out (#99),a
+
+;    ld b,0
+;    ld c,18
+;    call WRTVDP
+    xor a
+    out (#99),a
+    ld a,128+18
+    out (#99),a
 
     ld a,(current_game_frame)
     inc a
     ld (current_game_frame),a
 
     pop af
-    ret
+    ei
+    reti
 
     ;; We get to this point if it's a line interrupt:
 MSX2_SmoothScroll_Interrupt_Line_Interrupt:
@@ -172,19 +193,27 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
     out (#99),a 
     in a,(#99)
 
+;    ld a,(vertical_scroll_for_r23)
+;    ld b,a
+ ;   ld c,23
+ ;   call WRTVDP
     ld a,(vertical_scroll_for_r23)
-;;    ld a,8
-    ld b,a
-    ld c,23
-    call WRTVDP
+    out (#99),a
+    ld a,128+23
+    out (#99),a
 
+;    ld a,(horizontal_scroll_for_r18)
+;    ld b,a
+;    ld c,18
+;    call WRTVDP
     ld a,(horizontal_scroll_for_r18)
-    ld b,a
-    ld c,18
-    call WRTVDP
+    out (#99),a
+    ld a,128+18
+    out (#99),a
 
     pop af
-    ret
+    ei
+    reti
 
 
 MSX1_Interrupt:
@@ -195,4 +224,5 @@ MSX1_Interrupt:
     ld (current_game_frame),a
 
     pop af
-    ret
+    ei
+    reti

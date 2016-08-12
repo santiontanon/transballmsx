@@ -13,7 +13,7 @@
 ; Code that gets executed when the game starts
 Execute:
     call move_ROMpage2_to_memorypage1
-    call save_HKEY_Interrupt
+    call save_interrupts
 
     call VDP_IsTMS9918A
     jr z,Execute_MSX1
@@ -417,8 +417,10 @@ ship_rotation_speed_pattern:
     ds virtual 8 
 
 ;; variables for the smooth scroll interrupt:
-old_interrupt_buffer:
+old_HKEY_interrupt_buffer:
     ds virtual 3
+old_TIMI_interrupt_buffer:
+    ds virtual 1
 vertical_scroll_for_r23:
     ds virtual 1
 horizontal_scroll_for_r18:
