@@ -13,7 +13,6 @@
 ; Code that gets executed when the game starts
 Execute:
     call move_ROMpage2_to_memorypage1
-    call setUp_VDP_addresses
     call save_interrupts
 
     call VDP_IsTMS9918A
@@ -37,6 +36,7 @@ Execute_Continue:
 
     ld a,2      ; Change screen mode
     call CHGMOD
+    call setup_VDP_addresses
 
     ; Change colors:
     ld a,15

@@ -7,8 +7,8 @@
 ; - player bullets
 drawSprites:
     ;; draw all the sprites:
-    ld hl,SPRATR2
-;    ld hl,SPRATR2+8*4   ;; we don't use the first 8 sprites, since in MSX those bytes need to be 
+;    ld hl,SPRATR_CUSTOM
+    ld hl,SPRATR_CUSTOM+8*4   ;; we don't use the first 8 sprites, since in MSX those bytes need to be 
                         ;; set to 0 (otherwise, we would see garbage when we move the scroll with 
                         ;; register r23).
     call SETWRT
@@ -176,15 +176,15 @@ SETUPPATTERNS:
     call RLE_decode
 
     ld bc,2048
-    ld de,CLRTBL2
+    ld de,CLRTBL_CUSTOM
     ld hl,currentMap
     call LDIRVM
     ld bc,2048
-    ld de,CLRTBL2+2048
+    ld de,CLRTBL_CUSTOM+2048
     ld hl,currentMap
     call LDIRVM
     ld bc,2048
-    ld de,CLRTBL2+4096
+    ld de,CLRTBL_CUSTOM+4096
     ld hl,currentMap
     call LDIRVM
 
@@ -212,7 +212,7 @@ setupBaseSprites:
 clearAllTheSprites:
     xor a
     ld bc,32*4
-    ld hl,SPRATR2
+    ld hl,SPRATR_CUSTOM
     call FILVRM
     ret
 

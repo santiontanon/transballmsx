@@ -36,6 +36,7 @@ Execute_Continue:
 
     ld a,2      ; Change screen mode
     call CHGMOD
+    call setup_VDP_addresses
 
     ; Change colors:
     ld a,15

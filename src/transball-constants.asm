@@ -44,6 +44,11 @@ SPRTBL2:  equ     #3800   ; sprite pattern address
 NAMTBL2:  equ     #1800   ; name table address 
 CLRTBL2:  equ     #2000   ; color table address             
 SPRATR2:  equ     #1b00   ; sprite attribute address            
+; I moved some of the addresses to be able to use a 25th row of patterns for smooth scroll:
+;CLRTBL_CUSTOM:  equ     #1f00   ; custom color table address          
+CLRTBL_CUSTOM:  equ     #2000   ; custom color table address          
+;SPRATR_CUSTOM:  equ     #1c00   ; custom sprite attribute address            
+SPRATR_CUSTOM:  equ     #1c00   ; custom sprite attribute address            
 ;-----------------------------------------------
 ; game constants:
 SHIPCOLOR:      equ 7
@@ -78,10 +83,10 @@ SFX_SKIP:       equ  #fd
 SFX_MULTISKIP:  equ  #fe
 SFX_END:        equ  #ff
 ; Sprite definition constants:
-SHIP_SPRITE: equ	0
-THRUSTER_SPRITE: equ	1
-BULLET_SPRITE: equ	2
-BALL_SPRITE: equ	3
+SHIP_SPRITE: equ	4
+THRUSTER_SPRITE: equ	5
+BULLET_SPRITE: equ	6
+BALL_SPRITE: equ	7
 ; GFX definition constants:
 PATTERN_FUEL2:  equ  222
 PATTERN_FUEL1:  equ  223

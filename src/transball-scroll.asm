@@ -40,8 +40,26 @@ VDP_IsTMS9918A_Wait:
 ; Shifts the VDP Sprite attribute and Sprite pattern tables
 ; to prevent overlap with the 25th pattern row in the screen, so that
 ; I can use it in MSX2
-setUp_VDP_addresses:
-        
+setup_VDP_addresses:
+    ld bc,#3805
+    call WRTVDP
+
+;    ld a,(VDP_REGISTER_0)+9
+;    or #80
+;    ld b,a
+;    ld c,9
+;    call WRTVDP
+
+;    ld a,#78
+;    out (#99),a
+;    ld a,3+128
+;    out (#99),a
+    
+;    ld a,#70
+;    out (#99),a
+;    ld a,5+128
+;    out (#99),a
+
     ret
 
 
@@ -69,7 +87,7 @@ Set_SmoothScroll_Interrupt:
     jp z,Set_SmoothScroll_Interrupt_MSX1
 
     ;; set the line interrupt to trigger after the first 8 lines
-    ld a,5  ; I set it to 5, since apparently the code takes 5 lines of time to execute
+    ld a,5  ; I set it to 5, since apparently the code takes 3 lines of time to execute
     out (#99),a
     ld a,19+128
     out (#99),a
