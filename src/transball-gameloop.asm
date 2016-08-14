@@ -58,18 +58,23 @@ Game_Loop_wait_for_next_frame:
     call drawSprites
     call renderMap
 
-
     jp Game_Loop_loop
 
 
 Ship_collided:
-
     xor a
     ld (shipvelocity),a
     ld (shipvelocity+1),a
     ld (shipvelocity+2),a
     ld (shipvelocity+3),a
+
 Ship_collided_Loop:
+    ld a,(shipstate)
+    inc a
+    ld (shipstate),a
+    cp 47
+    jp z,Level_Restart
+
     call applyGravityAndSpeed 
     call calculate_map_offset
     call calculate_ship_sprite_position
@@ -78,14 +83,7 @@ Ship_collided_Loop:
     call calculate_enemy_bullet_sprite_positions
     call mapAnimationCycle
     call renderExplosions
-    call shipExplosionSprites
     
-    ld a,(shipstate)
-    inc a
-    ld (shipstate),a
-    cp 47
-    jp z,Level_Restart
-
     call SFX_INT
 
     ld a,(current_game_frame)
@@ -104,7 +102,8 @@ Ship_collided_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
-    call drawSprites
+    call shipExplosionSprites
+;    call drawSprites
     call renderMap
 
     jp Ship_collided_Loop

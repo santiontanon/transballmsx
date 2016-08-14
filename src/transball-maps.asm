@@ -847,6 +847,7 @@ renderMap_scoreboard_loop:
     ld c,a
     add hl,bc
     ld b,24-1
+;    ld b,24
     ld de, NAMTBL2+32
 
 renderMap_loop:

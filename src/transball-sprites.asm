@@ -85,7 +85,8 @@ shipExplosionSprites_loop:
 shipExplosionSprites_loop2:
     outi
     jp nz,shipExplosionSprites_loop2
-    ret
+    jp drawSprites
+    
 
 ;-----------------------------------------------
 ; calculates the coordinates where to draw the ship on screen based on its coordinates 

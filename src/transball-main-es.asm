@@ -119,7 +119,7 @@ move_ROMpage2_to_memorypage1:
     include "transball-maps.asm"
     include "transball-titlescreen.asm"
     include "transball-song.asm"
-    include "transball-interrupts.asm"
+    include "transball-scroll.asm"
 
 InterLevel_text:
     db "    PULSA ESPACIO PARA EMPEZAR   "

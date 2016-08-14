@@ -36,6 +36,14 @@ VDP_IsTMS9918A_Wait:
     ret
 
 
+;-----------------------------------------------
+; Shifts the VDP Sprite attribute and Sprite pattern tables
+; to prevent overlap with the 25th pattern row in the screen, so that
+; I can use it in MSX2
+setUp_VDP_addresses:
+        
+    ret
+
 
 ;-----------------------------------------------
 ; saves the old interrupt
@@ -44,10 +52,6 @@ save_interrupts:
     ld de,old_HKEY_interrupt_buffer
     ld bc,3
     ldir
-;    ld hl,TIMI
-;    ld de,old_TIMI_interrupt_buffer
-;    ld bc,1
-;    ldir
     ret
 
 ;-----------------------------------------------
@@ -76,9 +80,6 @@ Set_SmoothScroll_Interrupt:
     ld (HKEY),a
     ld hl,MSX2_SmoothScroll_Interrupt
     ld (HKEY+1),hl
-
-;    ld a,#c9    ;; #c9 is the opcode for "ret"
-;    ld (TIMI),a
 
     ;; activate line interrupts:
     ld a,(VDP_REGISTER_0)
@@ -131,10 +132,6 @@ Restore_Interrupt_MSX1:
     ld de,HKEY
     ld bc,3
     ldir    
-;    ld hl,old_TIMI_interrupt_buffer
-;    ld de,TIMI
-;    ld bc,1
-;    ldir    
     ei
 
     ret
@@ -154,24 +151,18 @@ MSX2_SmoothScroll_Interrupt:
     jp c,MSX2_SmoothScroll_Interrupt_Line_Interrupt 
 
     ;; We get to this point if it's a vertical sync interrupt:
-    xor a   ; read S#0 (otherwise, the program hangs)
+    xor a   ; select S#0 again (otherwise, the program hangs)
     out (#99),a
     ld a,128+15
     out (#99),a 
     in a,(#99)
 
-    ;; Set NO vertical offset:
-;    ld b,0
-;    ld c,23
-;    call WRTVDP
+    ;; Set NO vertical/horizontal offset:
     xor a
     out (#99),a
     ld a,128+23
     out (#99),a
 
-;    ld b,0
-;    ld c,18
-;    call WRTVDP
     xor a
     out (#99),a
     ld a,128+18
@@ -186,25 +177,17 @@ MSX2_SmoothScroll_Interrupt:
 
     ;; We get to this point if it's a line interrupt:
 MSX2_SmoothScroll_Interrupt_Line_Interrupt:
-    xor a   ; read S#0 (otherwise, the program hangs)
+    xor a   ; select S#0 again (otherwise, the program hangs)
     out (#99),a
     ld a,128+15
     out (#99),a 
     in a,(#99)
 
-;    ld a,(vertical_scroll_for_r23)
-;    ld b,a
-;    ld c,23
-;    call WRTVDP
     ld a,(vertical_scroll_for_r23)
     out (#99),a
     ld a,128+23
     out (#99),a
 
-;    ld a,(horizontal_scroll_for_r18)
-;    ld b,a
-;    ld c,18
-;    call WRTVDP
     ld a,(horizontal_scroll_for_r18)
     out (#99),a
     ld a,128+18

@@ -78,10 +78,10 @@ SFX_SKIP:       equ  #fd
 SFX_MULTISKIP:  equ  #fe
 SFX_END:        equ  #ff
 ; Sprite definition constants:
-SHIP_SPRITE: equ	4
-THRUSTER_SPRITE: equ	5
-BULLET_SPRITE: equ	6
-BALL_SPRITE: equ	7
+SHIP_SPRITE: equ	0
+THRUSTER_SPRITE: equ	1
+BULLET_SPRITE: equ	2
+BALL_SPRITE: equ	3
 ; GFX definition constants:
 PATTERN_FUEL2:  equ  222
 PATTERN_FUEL1:  equ  223
