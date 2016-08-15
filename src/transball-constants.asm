@@ -44,11 +44,9 @@ SPRTBL2:  equ     #3800   ; sprite pattern address
 NAMTBL2:  equ     #1800   ; name table address 
 CLRTBL2:  equ     #2000   ; color table address             
 SPRATR2:  equ     #1b00   ; sprite attribute address            
-; I moved some of the addresses to be able to use a 25th row of patterns for smooth scroll:
-;CLRTBL_CUSTOM:  equ     #1f00   ; custom color table address          
+; Since the VDP addresses can change, here's some variables in case I change them:
 CLRTBL_CUSTOM:  equ     #2000   ; custom color table address          
-;SPRATR_CUSTOM:  equ     #1c00   ; custom sprite attribute address            
-SPRATR_CUSTOM:  equ     #1c00   ; custom sprite attribute address            
+SPRATR_CUSTOM:  equ     #1b00   ; custom sprite attribute address            
 ;-----------------------------------------------
 ; game constants:
 SHIPCOLOR:      equ 7

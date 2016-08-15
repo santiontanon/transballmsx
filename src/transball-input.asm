@@ -48,6 +48,10 @@ checkForRotationSpeedConfigInput:
     jp z,set_ship_rotation_62
     cp '5'
     jp z,set_ship_rotation_50
+    cp '6'
+    jp z,set_msx1_scroll
+    cp '7'
+    jp z,set_msx2_scroll
     ret
 
 
@@ -302,6 +306,9 @@ checkFireButton_fireBullet:
 
 
 set_ship_rotation_100:
+    ld hl,speed_change_message_100
+    call display_config_change_message
+
     ld a,1
     ld (ship_rotation_speed_pattern),a
     ld (ship_rotation_speed_pattern+1),a
@@ -315,23 +322,66 @@ set_ship_rotation_100:
 
 set_ship_rotation_87:
     call set_ship_rotation_100
+
+    ld hl,speed_change_message_87
+    call display_config_change_message
+
     xor a
     ld (ship_rotation_speed_pattern+7),a
     ret
 
 set_ship_rotation_75:
     call set_ship_rotation_87
+
+    ld hl,speed_change_message_75
+    call display_config_change_message
+
     ld (ship_rotation_speed_pattern+3),a
     ret
 
 set_ship_rotation_62:
     call set_ship_rotation_87
+
+    ld hl,speed_change_message_62
+    call display_config_change_message
+
     ld (ship_rotation_speed_pattern+2),a
     ld (ship_rotation_speed_pattern+5),a
     ret
 
 set_ship_rotation_50:
     call set_ship_rotation_75
+
+    ld hl,speed_change_message_50
+    call display_config_change_message
+
     ld (ship_rotation_speed_pattern+1),a
     ld (ship_rotation_speed_pattern+5),a
+    ret
+
+
+set_msx1_scroll:
+    xor a
+    ld (useSmoothScroll),a
+
+    ld hl,scroll_change_message_msx1
+    jp display_config_change_message
+
+
+set_msx2_scroll:
+    ld a,(isMSX2)
+    and a
+    ret z   ;; if we cannot use smooth scroll, then ignore
+
+    ld a,1
+    ld (useSmoothScroll),a
+
+    ld hl,scroll_change_message_msx2
+    jp display_config_change_message
+
+
+display_config_change_message:
+    ld de,currentMap+23*32
+    ld bc,5
+    ldir    
     ret

@@ -592,7 +592,7 @@ calculate_map_offset:
     ld (desired_map_offset),hl
 
     ;; calculate the offset for smooth scroll in MSX2
-    ld a,(isMSX2)
+    ld a,(useSmoothScroll)
     and a   ;; equivalent to cp 0, but faster
     jp z,calculate_map_offset_MSX1_y
     ld a,l
@@ -629,7 +629,7 @@ calculate_map_offset_MSX1_y:
     ld (desired_map_offset+2),hl
 
     ;; calculate the offset for smooth scroll in MSX2
-    ld a,(isMSX2)
+    ld a,(useSmoothScroll)
     and a   ;; equivalent to cp 0, but faster
     ret z
     ld a,l

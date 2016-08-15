@@ -20,10 +20,12 @@ Execute:
 Execute_MSX2:
     ld a,1
     ld (isMSX2),a
+    ld (useSmoothScroll),a
     jr Execute_Continue
 Execute_MSX1:
     xor a
     ld (isMSX2),a
+    ld (useSmoothScroll),a
 Execute_Continue:
 
     ; set default ship rotation speed:
@@ -36,7 +38,7 @@ Execute_Continue:
 
     ld a,2      ; Change screen mode
     call CHGMOD
-    call setup_VDP_addresses
+;    call setup_VDP_addresses
 
     ; Change colors:
     ld a,15
@@ -184,6 +186,21 @@ titlescreen:
     db 255,177,4,95,255,0,18,149,161,255,177,3,161
     ;; Run-length encoding (size: 505)
 
+speed_change_message_100:
+    db "X1.00"
+speed_change_message_87:
+    db "X0.87"
+speed_change_message_75:
+    db "X0.75"
+speed_change_message_62:
+    db "X0.62"
+speed_change_message_50:
+    db "X0.50"
+
+scroll_change_message_msx1:
+    db "MSX 1"
+scroll_change_message_msx2:
+    db "MSX 2"
 
 ;-----------------------------------------------
 ; Game variables to be copied to RAM
@@ -438,4 +455,6 @@ current_game_frame:
 current_animation_frame:
     ds virtual 1
 isMSX2:
+    ds virtual 1
+useSmoothScroll:
     ds virtual 1
