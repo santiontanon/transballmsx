@@ -22,7 +22,9 @@ Demo video ov version 1.0.1 can be found at: https://www.youtube.com/watch?v=uLx
 
 Demo of the updates in version 1.1 can be found at: https://www.youtube.com/watch?v=tCYXHnjSeAo
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.1.1
+Demo of some of the updates in version 1.2 can be found at: https://www.youtube.com/watch?v=xnhxpgmjCe0
+
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.2
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
@@ -54,11 +56,12 @@ Joystick:
 In the title screen:
 * Up/down arrow keys to change the selected menu item
 * Space/Trigger A to select a menu item
-
+* Press the numbers 1 through 5 to configure the rotation speed of the ship (1 = fastest, 5 = slowest)
+* Press '6' to force MSX1 sclocky scroll even in MSX2 computers (press '7' to reactivate it)
 
 ## Compatibility
 
-The game was designed to be played on MSX1 computers with at least 64KB of RAM. The game speed was tuned to be played on European 50Hz machines. Although the game might run in Japanese 60Hz machines, you might experience glitches (since most likely the CPU is not fast enough to run the game at 60 frames per second). I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid).
+The game was designed to be played on MSX1 computers with at least 64KB of RAM. The game speed was tuned to be played on European 50Hz machines. Although the game might run in Japanese 60Hz machines, you might experience some slow downs. Also, if the ship rotation speed is too fast in 60Hz, use keys 1 - 5 in the title screen to adjust the speed. Moreover, if the game detects the V9938 VDP (the graphics chip used in MSX2 computers), some enhancements to the scroll will be enabled. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
 
 
 ## Notes from the author and acknowledgments:
@@ -82,7 +85,7 @@ I used this chance to learn how to program in assembler for the Z80 (this is my 
 * VDP reference: http://bifi.msxnet.org/msxnet/tech/tms9918a.txt
 * VDP tutorial: http://map.grauw.nl/articles/vdp_tut.php
 * VDP manual: http://map.grauw.nl/resources/video/texasinstruments_tms9918.pdf
-* Finally, I heavily used the development forums at msx.org, frequented by awesome and very responsive people without whom I would have never been able to figure out many things (e.g., https://www.msx.org/forum/msx-talk/development/memory-pages-again)
+* Finally, I heavily used the development forums at msx.org, frequented by awesome and very responsive people without whom I would have never been able to figure out many things (e.g., https://www.msx.org/forum/msx-talk/development/memory-pages-again or https://www.msx.org/forum/msx-talk/development/splitscreen-scrolling-using-r19-in-msx2)
 The game was compiled with Grauw's Glass compiler (cannot thank him enough for creating it):
 * https://bitbucket.org/grauw/glass
 
