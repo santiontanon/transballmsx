@@ -56,8 +56,8 @@ Game_Loop_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
-    call drawSprites
     call renderMap
+    call drawSprites
 
     jp Game_Loop_loop
 
@@ -103,9 +103,8 @@ Ship_collided_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
-    call shipExplosionSprites
-;    call drawSprites
     call renderMap
+    call shipExplosionSprites
 
     jp Ship_collided_Loop
 
@@ -114,8 +113,8 @@ Time_is_up:
     ld c,50
 Time_is_up_Loop:
     push bc
+
     call mapAnimationCycle
-    call renderMap
 
     ;; draw  text
     ld hl,NAMTBL2+32*10
@@ -129,7 +128,15 @@ Time_is_up_text_loop:
     jp nz,Time_is_up_text_loop
 
     call SFX_INT
-    halt    
+
+    ld a,(current_game_frame)
+    ld b,a
+Time_is_up_wait_for_next_frame:
+    ld a,(current_game_frame)
+    cp b
+    jp z,Time_is_up_wait_for_next_frame
+
+    call renderMap
 
     pop bc
     dec c    

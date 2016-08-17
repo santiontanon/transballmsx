@@ -853,6 +853,9 @@ renderMap_loop:
 
 renderMap_loop_internal:
     outi
+;    outi
+;    outi
+;    outi
     jp nz,renderMap_loop_internal
     
 	add hl,de
