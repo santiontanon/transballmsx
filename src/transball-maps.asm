@@ -809,32 +809,9 @@ renderMap:
     ld hl,scoreboard
     ld b,32
     ld c,VDP_DATA
-;renderMap_scoreboard_loop:
+renderMap_scoreboard_loop:
     outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-    outi
-;    jp nz,renderMap_scoreboard_loop
+    jp nz,renderMap_scoreboard_loop
 
     ;; calculate the offset in tiles
     ld de,(map_offset)   ;; y
