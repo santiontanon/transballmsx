@@ -832,51 +832,37 @@ renderMap_scoreboard_loop:
 
     add hl,de ;; now we have the starting offset position of the map in HL
     ex de,hl
-    ;ld d,h
-    ;ld e,l
+
+    ld hl, NAMTBL2+32
+    call SETWRT
+
     ld hl,currentMap
     add hl,de
-    ;; for i = 0 to 24 {
-    ;;    copy 32 bytes from hl to videomemory
-    ;;    hl += mapwidth
-    ;; }
 
     ; skip the first line (which is for the scoreboard)
     ld a,(current_map_dimensions+1)
     ld b,0
     ld c,a
     add hl,bc
-    ld b,24-1
-;    ld b,24
-    ld de, NAMTBL2+32
+
+    sub 32
+    ld d,0
+    ld e,a
+
+    ld a,24-1
+    ld c,VDP_DATA
 
 renderMap_loop:
-    push bc
-
-    ex de,hl
-    call SETWRT
-    ex de,hl
-
     ld b,32
-    ld c,VDP_DATA
 
 renderMap_loop_internal:
     outi
     jp nz,renderMap_loop_internal
+    
+	add hl,de
 
-    ex de,hl
-    ld bc,32
-    add hl,bc
-    ex de,hl
-
-    ld a,(current_map_dimensions+1)
-    sub 32
-    ld b,0
-    ld c,a
-    add hl,bc
-
-    pop bc
-    djnz renderMap_loop
+	dec a
+    jr nz, renderMap_loop
     ret
 
 
