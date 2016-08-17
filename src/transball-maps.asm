@@ -833,20 +833,16 @@ renderMap_scoreboard_loop:
     add hl,de ;; now we have the starting offset position of the map in HL
     ex de,hl
 
-    ld hl, NAMTBL2+32
-    call SETWRT
-
     ld hl,currentMap
     add hl,de
 
     ; skip the first line (which is for the scoreboard)
     ld a,(current_map_dimensions+1)
-    ld b,0
-    ld c,a
-    add hl,bc
+    ld d,0
+    ld e,a
+    add hl,de
 
     sub 32
-    ld d,0
     ld e,a
 
     ld a,24-1
@@ -862,7 +858,7 @@ renderMap_loop_internal:
 	add hl,de
 
 	dec a
-    jr nz, renderMap_loop
+    jp nz, renderMap_loop
     ret
 
 
