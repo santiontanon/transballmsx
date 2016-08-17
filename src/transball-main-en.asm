@@ -115,6 +115,7 @@ move_ROMpage2_to_memorypage1:
     include "transball-input.asm"
     include "transball-physics.asm"
     include "transball-enemies.asm"
+    include "transball-scroll.asm"
     include "transball-auxiliar.asm"
     include "transball-sound.asm"
     include "transball-gfx.asm"
@@ -122,7 +123,6 @@ move_ROMpage2_to_memorypage1:
     include "transball-maps.asm"
     include "transball-titlescreen.asm"
     include "transball-song.asm"
-    include "transball-scroll.asm"
 
 InterLevel_text:
     db "       PRESS FIRE TO START       "

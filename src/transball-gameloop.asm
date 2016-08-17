@@ -19,6 +19,7 @@ Game_Loop_loop:
     jp nz,Level_complete
 
     call checkInput
+;    call checkForRotationSpeedConfigInputInGame
     call applyGravityAndSpeed   
     call ballPhysics
     call enemyUpdateCycle

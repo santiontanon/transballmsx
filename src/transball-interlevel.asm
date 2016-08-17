@@ -3,7 +3,7 @@
 Game_StartFromBeginning:
     ld a,0
     ld (current_level),a  ;; sets which map to load
-    jp Level_Restart
+    jr Level_Restart
 
 
 ;-----------------------------------------------
@@ -79,9 +79,9 @@ InterLevel_Loop:
     call GTTRIG0AND1
     ld (fire_button_status),a
     cp b
-    jp z,InterLevel_Loop_Continue
+    jr z,InterLevel_Loop_Continue
     and a   ;; equivalent to cp 0, but faster
-    jp z,InterLevel_Loop_Continue
+    jr z,InterLevel_Loop_Continue
 
     jp Game_Loop    ; Space pressed, start the game!
 

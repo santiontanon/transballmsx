@@ -715,7 +715,7 @@ player_bullet_hit_a_button_door_continue:
     inc c
     ld a,(ndoors)
     cp c
-    jp nz,player_bullet_hit_a_button_loop
+    jr nz,player_bullet_hit_a_button_loop
 
 player_bullet_hit_a_button_done:
     pop af
@@ -791,7 +791,7 @@ open_close_ball_doors_door_continue:
     inc c
     ld a,(nballdoors)
     cp c
-    jp nz,open_close_ball_doors_loop
+    jr nz,open_close_ball_doors_loop
 
 open_close_ball_doors_done:
     pop af
@@ -809,9 +809,32 @@ renderMap:
     ld hl,scoreboard
     ld b,32
     ld c,VDP_DATA
-renderMap_scoreboard_loop:
+;renderMap_scoreboard_loop:
     outi
-    jp nz,renderMap_scoreboard_loop
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+    outi
+;    jp nz,renderMap_scoreboard_loop
 
     ;; calculate the offset in tiles
     ld de,(map_offset)   ;; y

@@ -31,31 +31,6 @@ GTTRIG0AND1_CALL1:
 
 
 ;-----------------------------------------------
-; checks whether any of the keys from 1 - 5 have been pressed and changes ship rotation speed accordingly
-checkForRotationSpeedConfigInput:
-    call CHSNS
-    ret z
-
-    ld a,1
-    call CHGET
-    cp '1'
-    jp z,set_ship_rotation_100
-    cp '2'
-    jp z,set_ship_rotation_87
-    cp '3'
-    jp z,set_ship_rotation_75
-    cp '4'
-    jp z,set_ship_rotation_62
-    cp '5'
-    jp z,set_ship_rotation_50
-    cp '6'
-    jp z,set_msx1_scroll
-    cp '7'
-    jp z,set_msx2_scroll
-    ret
-
-
-;-----------------------------------------------
 ; checks all the player input (left/right/thrust/fire)
 checkInput:
     xor a
@@ -305,55 +280,109 @@ checkFireButton_fireBullet:
     ret
 
 
+;-----------------------------------------------
+; checks whether any of the keys from 1 - 5 have been pressed and changes ship rotation speed accordingly
+; also changes scroll mode by checking keys 6 and 7
+checkForRotationSpeedConfigInput:
+    call CHSNS
+    ret z
+
+    call CHGET
+    cp '1'
+    jr z,set_ship_rotation_100
+    cp '2'
+    jr z,set_ship_rotation_87
+    cp '3'
+    jr z,set_ship_rotation_75
+    cp '4'
+    jr z,set_ship_rotation_62
+    cp '5'
+    jr z,set_ship_rotation_50
+    cp '6'
+    jr z,set_msx1_scroll
+    cp '7'
+    jr z,set_msx2_scroll
+    ret
+
+
+;-----------------------------------------------
+; checks whether any of the keys from 1 - 5 have been pressed and changes ship rotation speed accordingly
+;checkForRotationSpeedConfigInputInGame:
+;    call CHSNS
+;    ret z
+;
+;    call CHGET
+;    cp '1'
+;    jr z,set_ship_rotation_100_no_message
+;    cp '2'
+;    jr z,set_ship_rotation_87_no_message
+;    cp '3'
+;    jr z,set_ship_rotation_75_no_message
+;    cp '4'
+;    jr z,set_ship_rotation_62_no_message
+;    cp '5'
+;    jp z,set_ship_rotation_50_no_message
+;    ret    
+
+
 set_ship_rotation_100:
     ld hl,speed_change_message_100
     call display_config_change_message
-
+set_ship_rotation_100_no_message:
     ld a,1
-    ld (ship_rotation_speed_pattern),a
-    ld (ship_rotation_speed_pattern+1),a
-    ld (ship_rotation_speed_pattern+2),a
-    ld (ship_rotation_speed_pattern+3),a
-    ld (ship_rotation_speed_pattern+4),a
-    ld (ship_rotation_speed_pattern+5),a
-    ld (ship_rotation_speed_pattern+6),a
-    ld (ship_rotation_speed_pattern+7),a
+    ld hl,ship_rotation_speed_pattern
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
+    ld (hl),a
+    inc hl
     ret
 
 set_ship_rotation_87:
-    call set_ship_rotation_100
-
     ld hl,speed_change_message_87
     call display_config_change_message
+set_ship_rotation_87_no_message:
+    call set_ship_rotation_100_no_message
 
     xor a
     ld (ship_rotation_speed_pattern+7),a
     ret
 
 set_ship_rotation_75:
-    call set_ship_rotation_87
-
     ld hl,speed_change_message_75
     call display_config_change_message
+set_ship_rotation_75_no_message:
+    call set_ship_rotation_87_no_message
 
     ld (ship_rotation_speed_pattern+3),a
     ret
 
 set_ship_rotation_62:
-    call set_ship_rotation_87
-
     ld hl,speed_change_message_62
     call display_config_change_message
+set_ship_rotation_62_no_message:
+    call set_ship_rotation_87_no_message
 
     ld (ship_rotation_speed_pattern+2),a
     ld (ship_rotation_speed_pattern+5),a
     ret
 
 set_ship_rotation_50:
-    call set_ship_rotation_75
-
     ld hl,speed_change_message_50
     call display_config_change_message
+set_ship_rotation_50_no_message:
+    call set_ship_rotation_75_no_message
 
     ld (ship_rotation_speed_pattern+1),a
     ld (ship_rotation_speed_pattern+5),a
@@ -361,12 +390,11 @@ set_ship_rotation_50:
 
 
 set_msx1_scroll:
-    xor a
-    ld (useSmoothScroll),a
-
     ld hl,scroll_change_message_msx1
     jp display_config_change_message
 
+    xor a
+    ld (useSmoothScroll),a
 
 set_msx2_scroll:
     ld a,(isMSX2)

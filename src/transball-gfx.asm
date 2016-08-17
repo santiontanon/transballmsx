@@ -32,7 +32,7 @@ renderExplosions:
 renderExplosions_loop:
     ld a,(hl)
     and a   ;; equivalent to cp 0, but faster
-    jp z,renderExplosions_next_explosion
+    jr z,renderExplosions_next_explosion
 
     cp 16
     jp p,renderExplosions_render_frame1
@@ -69,7 +69,7 @@ renderExplosions_render_frame1:
 
     pop bc
     pop hl
-    jp renderExplosions_after_render
+    jr renderExplosions_after_render
 
 renderExplosions_render_frame2:
     push hl
@@ -106,7 +106,7 @@ renderExplosions_after_render:
     dec a
     ld (hl),a
     and a   ;; equivalent to cp 0, but faster
-    jp nz,renderExplosions_next_explosion
+    jr nz,renderExplosions_next_explosion
 
     ;; explosion is over:
     ;; restore the pattern:
@@ -240,7 +240,7 @@ clearScreenLeftToRightLoop:
     ld bc,32
     add hl,bc
     dec a
-    jp nz,clearScreenLeftToRightLoop
+    jr nz,clearScreenLeftToRightLoop
     
     ld a,(SFX_play)
     and a   ;; equivalent to cp 0, but faster
@@ -254,7 +254,7 @@ clearScreenLeftToRightLoop:
     pop af
     inc bc
     dec a
-    jp nz,clearScreenLeftToRightExternalLoop
+    jr nz,clearScreenLeftToRightExternalLoop
     ret
 
 

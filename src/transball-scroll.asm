@@ -120,11 +120,11 @@ Set_SmoothScroll_Interrupt_MSX1:
 
 
 Restore_Interrupt:
-    xor a
-    ld (vertical_scroll_for_r23),a
-    ld (desired_vertical_scroll_for_r23),a
-    ld (horizontal_scroll_for_r18),a
-    ld (desired_horizontal_scroll_for_r18),a
+;    xor a
+;    ld (vertical_scroll_for_r23),a
+;    ld (desired_vertical_scroll_for_r23),a
+;    ld (horizontal_scroll_for_r18),a
+;    ld (desired_horizontal_scroll_for_r18),a
 
     ld a,(useSmoothScroll)
     and a
@@ -185,12 +185,13 @@ MSX2_SmoothScroll_Interrupt:
     ld a,128+18
     out (#99),a
 
-    ld a,(current_game_frame)
-    inc a
-    ld (current_game_frame),a
+    jp MSX1_Interrupt_after_push
+;    ld a,(current_game_frame)
+;    inc a
+;    ld (current_game_frame),a
 
-    pop af
-    ret
+;    pop af
+;    ret
 
     ;; We get to this point if it's a line interrupt:
 MSX2_SmoothScroll_Interrupt_Line_Interrupt:
@@ -217,6 +218,7 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
 MSX1_Interrupt:
     push af
         
+MSX1_Interrupt_after_push:
     ld a,(current_game_frame)
     inc a
     ld (current_game_frame),a
