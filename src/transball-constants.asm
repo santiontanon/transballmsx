@@ -46,7 +46,7 @@ CLRTBL2:  equ     #2000   ; color table address
 SPRATR2:  equ     #1b00   ; sprite attribute address            
 ; Since the VDP addresses can change, here's some variables in case I change them:
 CLRTBL_CUSTOM:  equ     #2000   ; custom color table address          
-SPRATR_CUSTOM:  equ     #1b00   ; custom sprite attribute address            
+SPRATR_CUSTOM:  equ     #1b80   ; custom sprite attribute address            
 ;-----------------------------------------------
 ; game constants:
 SHIPCOLOR:      equ 7

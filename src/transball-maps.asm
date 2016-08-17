@@ -849,7 +849,8 @@ renderMap_scoreboard_loop:
     ld d,0
     ld e,a
 
-    ld a,24-1
+    ; ld a,24-1
+    ld a,24
     ld c,VDP_DATA
 
 renderMap_loop:
