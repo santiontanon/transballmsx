@@ -390,11 +390,11 @@ set_ship_rotation_50_no_message:
 
 
 set_msx1_scroll:
-    ld hl,scroll_change_message_msx1
-    jp display_config_change_message
-
     xor a
     ld (useSmoothScroll),a
+
+    ld hl,scroll_change_message_msx1
+    jp display_config_change_message
 
 set_msx2_scroll:
     ld a,(isMSX2)
