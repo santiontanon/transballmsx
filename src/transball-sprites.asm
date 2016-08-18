@@ -3,7 +3,6 @@
 changeSprites:
     ld hl,SPRTBL2+SHIP_SPRITE*32
     call SETWRT
-    ex de,hl
     ld bc,0
     ld a,(shipangle)
     and #fe    ;; angle needs to be divided by 2 (we only have 32 frames), 
@@ -16,31 +15,23 @@ changeSprites:
     add hl,bc
     add hl,bc
     add hl,bc
-    push bc
-    ld b,32
-    ld c,VDP_DATA
-changeSprites_loop:
-    outi
-    jp nz,changeSprites_loop
+	 
+    ld bc,32*256+VDP_DATA
+b1:	outi
+	jp nz,b1
 
-    pop bc
-
-    ld hl,SPRTBL2+THRUSTER_SPRITE*32
-    call SETWRT
-    ex de,hl
-    ld hl,shipvpanther_thruster
+    ; ex de,hl							; remove if THRUSTER_SPRITE always follows SHIP_SPRITE
+    ; ld hl,SPRTBL2+THRUSTER_SPRITE*32	;
+    ; call SETWRT							;
+	; ex de,hl							;
+    
+	ld bc,shipvpanther_thruster-shipvpanther-32
+	
     add hl,bc
-    add hl,bc
-    add hl,bc
-    add hl,bc
-    ld b,32
-    ld c,VDP_DATA
-changeSprites_loop2:
-    outi
-    jp nz,changeSprites_loop2
-
-    ret
-
+    ld bc,32*256+VDP_DATA
+b2:	outi
+	jp nz,b2
+	ret
 
 ;-----------------------------------------------
 ; updates the ship and thruster sprites to display an explosion
@@ -63,11 +54,7 @@ shipExplosionSprites:
     ld c,a
     ld b,0
     add hl,bc
-    ld b,32
-    ld c,VDP_DATA
-shipExplosionSprites_loop:
-    outi
-    jp nz,shipExplosionSprites_loop
+	call outi32
 
     ld hl,SPRTBL2+THRUSTER_SPRITE*32
     call SETWRT
@@ -80,11 +67,7 @@ shipExplosionSprites_loop:
     ld c,a
     ld b,0
     add hl,bc
-    ld b,32
-    ld c,VDP_DATA
-shipExplosionSprites_loop2:
-    outi
-    jp nz,shipExplosionSprites_loop2
+	call outi32
     jp drawSprites
     
 

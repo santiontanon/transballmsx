@@ -807,11 +807,8 @@ renderMap:
     call SETWRT
     ex de,hl
     ld hl,scoreboard
-    ld b,32
-    ld c,VDP_DATA
-renderMap_scoreboard_loop:
-    outi
-    jp nz,renderMap_scoreboard_loop
+
+	call outi32
 
     ;; calculate the offset in tiles
     ld de,(map_offset)   ;; y
@@ -851,14 +848,9 @@ renderMap_scoreboard_loop:
 
 renderMap_loop:
     ld b,32
-
-renderMap_loop_internal:
-    outi
-;    outi
-;    outi
-;    outi
-    jp nz,renderMap_loop_internal
-    
+renderMap_loop_b:
+	outi
+	jp nz,renderMap_loop_b
 	add hl,de
 
 	dec a

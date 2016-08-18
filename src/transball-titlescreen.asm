@@ -197,7 +197,6 @@ MainMenu_Loop_input_continue2:
     inc a
     ld (menu_timer),a
     and #08
-    and a   ;; equivalent to cp 0, but faster
     jp z,MainMenu_Loop_clear_selectedOption
 MainMenu_Loop_mark_selectedOption:
     ld d,0
@@ -272,10 +271,10 @@ MainMenu_option_selected:
     and a   ;; equivalent to cp 0, but faster
     jp z,Game_StartFromBeginning
 
-    cp 1
+    dec a ; equivalent to cp 1
     jp z,highscores
 
-    cp 2
+    dec a ; equivalent to cp 2
     jp z,entering_password
 
     jp MainMenu_Loop_input_continue

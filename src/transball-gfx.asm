@@ -14,13 +14,12 @@ drawSprites:
     call SETWRT
     ex de,hl
     ld hl,thruster_spriteattributes
-    ld b,4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4
+    ld b,4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4-32
     ld c,VDP_DATA
 drawSprites_loop:
     outi
     jp nz,drawSprites_loop
-
-    ret
+	jp outi32
     
 
 ;-----------------------------------------------
@@ -105,7 +104,6 @@ renderExplosions_after_render:
     ld a,(hl)
     dec a
     ld (hl),a
-    and a   ;; equivalent to cp 0, but faster
     jr nz,renderExplosions_next_explosion
 
     ;; explosion is over:

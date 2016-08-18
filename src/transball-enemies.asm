@@ -608,9 +608,9 @@ tankUpdateCycle_draw_tank:
     ld a,(ix+7) ;; turret state
     and a   ;; equivalent to cp 0, but faster
     jp z,tankUpdateCycle_draw_tank_turretLeft
-    cp 1
+    dec a ; equivalent to cp 1
     jp z,tankUpdateCycle_draw_tank_turretLeftUp
-    cp 2
+    dec a ; equivalent to cp 2
     jp z,tankUpdateCycle_draw_tank_turretRightUp
 
 tankUpdateCycle_draw_tank_turretRight:
@@ -1097,11 +1097,9 @@ enemy_hit:
     ld a,(iy+10)
     dec a
     ld (iy+10),a
-    and a   ;; equivalent to cp 0, but faster
     ret nz  ;; if the enemy still has health, return
 
     ;; destroy enemy:
-    xor a
     ld (iy),a   ;; set the enemy to be dead (makes it inactive)
 
     ;; find an available explosion slot:
@@ -1177,7 +1175,6 @@ tank_hit:
     ld a,(iy)
     dec a
     ld (iy),a
-    and a   ;; equivalent to cp 0, but faster
     ret nz  ;; if the tank still has health, return
 
     ;; clear tank:
