@@ -38,7 +38,7 @@ VDP_IsTMS9918A_Wait:
 
 ;-----------------------------------------------
 ; This is some leftover code to change the VDP addresses trying to be able to use
-; a 25th row of patterns in Screen 2 in MSX2 (but I ended up not using it)
+; a 25th row of patterns in Screen 2 in MSX2
 setup_VDP_addresses:
     ld bc,#3705	
     call WRTVDP		; SAT at 1b80h
