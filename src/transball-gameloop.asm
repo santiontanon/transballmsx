@@ -56,8 +56,8 @@ Game_Loop_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
-    call renderMap
     call drawSprites
+    call renderMap
 
     jp Game_Loop_loop
 
@@ -103,8 +103,8 @@ Ship_collided_wait_for_next_frame:
     ld (map_offset),hl
     ld hl,(desired_map_offset+2)
     ld (map_offset+2),hl
-    call renderMap
     call shipExplosionSprites
+    call renderMap
 
     jp Ship_collided_Loop
 
