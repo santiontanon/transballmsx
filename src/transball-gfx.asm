@@ -105,7 +105,6 @@ renderExplosions_after_render:
     ld a,(hl)
     dec a
     ld (hl),a
-    and a   ;; equivalent to cp 0, but faster
     jr nz,renderExplosions_next_explosion
 
     ;; explosion is over:

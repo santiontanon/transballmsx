@@ -11,10 +11,8 @@ RLE_decode_loop:
     inc ix
     inc de
     dec bc
-
     ld a,b  ;; check if bc is 0
     or c
-    and a   ;; equivalent to cp 0, but faster
     jr nz,RLE_decode_loop
     ret
 RLE_decode_loop_meta_character:
@@ -31,7 +29,6 @@ RLE_decode_loop2:
     jr nz,RLE_decode_loop2
     ld a,b  ;; check if bc is 0
     or c
-    and a   ;; equivalent to cp 0, but faster
     jr nz,RLE_decode_loop
     ret
 
@@ -123,10 +120,9 @@ HL_NOT_BIGGER_THAN_BC:
     xor a
     sbc hl,bc
     pop hl
-    jp m,HL_NOT_BIGGER_THAN_BC_CONTINUE
+    ret m
     ld h,b
     ld l,c
-HL_NOT_BIGGER_THAN_BC_CONTINUE:
     ret
 
 
@@ -137,10 +133,9 @@ HL_NOT_SMALLER_THAN_BC:
     xor a
     sbc hl,bc
     pop hl
-    jp p,HL_NOT_SMALLER_THAN_BC_CONTINUE
+    ret p
     ld h,b
     ld l,c
-HL_NOT_SMALLER_THAN_BC_CONTINUE:
     ret
 
 

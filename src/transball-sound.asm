@@ -166,7 +166,6 @@ SFX_INT_END_REPEAT:
     ;; if it is not 0, goto the repeat point
     ld a,(ix-3)
     dec a
-    and a   ;; equivalent to cp 0, but faster
     jr z,SFX_INT_END_REPEAT_POP
     ld (ix-3),a
     ld l,(ix-2)
