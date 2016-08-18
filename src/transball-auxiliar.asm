@@ -137,8 +137,13 @@ HL_NOT_SMALLER_THAN_BC:
     ld h,b
     ld l,c
     ret
-
-
+;-----------------------------------------------
+; outi 32 times HL 
+outi32:
+    ld bc,32*256+VDP_DATA
+b3:	outi
+	jp nz,b3
+	ret
 ;-----------------------------------------------
 ; Source: https://www.msx.org/forum/msx-talk/development/8-bit-atan2?page=0
 ; 8-bit atan2

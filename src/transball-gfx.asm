@@ -14,13 +14,12 @@ drawSprites:
     call SETWRT
     ex de,hl
     ld hl,thruster_spriteattributes
-    ld b,4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4
+    ld b,4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4-32
     ld c,VDP_DATA
 drawSprites_loop:
     outi
     jp nz,drawSprites_loop
-
-    ret
+	jp outi32
     
 
 ;-----------------------------------------------

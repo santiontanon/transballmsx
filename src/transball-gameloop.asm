@@ -121,12 +121,7 @@ Time_is_up_Loop:
     call SETWRT
     ex de,hl
     ld hl,Time_is_up_text
-    ld b,32
-    ld c,VDP_DATA
-Time_is_up_text_loop:
-    outi
-    jp nz,Time_is_up_text_loop
-
+	call outi32
     call SFX_INT
 
     ld a,(current_game_frame)
