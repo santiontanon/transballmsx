@@ -115,7 +115,6 @@ move_ROMpage2_to_memorypage1:
     include "transball-input.asm"
     include "transball-physics.asm"
     include "transball-enemies.asm"
-    include "transball-scroll.asm"
     include "transball-auxiliar.asm"
     include "transball-sound.asm"
     include "transball-gfx.asm"
@@ -123,6 +122,7 @@ move_ROMpage2_to_memorypage1:
     include "transball-maps.asm"
     include "transball-titlescreen.asm"
     include "transball-song.asm"
+    include "transball-scroll.asm"
 
 InterLevel_text:
     db "    PULSA ESPACIO PARA EMPEZAR   "
@@ -429,6 +429,7 @@ ballPositionBeforePhysics:  ;; temporary storage to restore the position of the 
 ballCollisioncount:         ;; temporary variable to count the number of points that collide with the ball
 bulletType_tmp:             ;; temporary variable storing the type of bullet we are considering in the physics code
     ds virtual 1
+
 
 ;; variables to control the ship rotation speed:
 ship_rotation_speed_pattern:

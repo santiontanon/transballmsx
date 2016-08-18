@@ -115,7 +115,6 @@ move_ROMpage2_to_memorypage1:
     include "transball-input.asm"
     include "transball-physics.asm"
     include "transball-enemies.asm"
-    include "transball-scroll.asm"
     include "transball-auxiliar.asm"
     include "transball-sound.asm"
     include "transball-gfx.asm"
@@ -123,45 +122,46 @@ move_ROMpage2_to_memorypage1:
     include "transball-maps.asm"
     include "transball-titlescreen.asm"
     include "transball-song.asm"
+    include "transball-scroll.asm"
 
 InterLevel_text:
-    db "    PULSA ESPACIO PARA EMPEZAR   "
+    db "       PRESS FIRE TO START       "
 Time_is_up_text:
-    db "             TIEMPO!             "
+    db "            TIME OUT!            "
 Level_complete_text1:
-    db  " FASE ACABADA! "
+    db  "LEVEL COMPLETE!"
 Level_complete_text2:
-    db   "TIEMPO: 0:00:00"
+    db   "  TIME: 0:00:00"
 Level_complete_text3:
-    db   "RECORD: 0:00:00"
+    db   "  BEST: 0:00:00"
 Level_complete_text4:
-    db       "A - REPETIR"
+    db    "A - REPLAY "
 Level_complete_text5:
-    db "DISPARO - SIGUIENTE NIVEL"
+    db "   FIRE - NEXT LEVEL     "
 Level_complete_text6:
-    db     "ESC - SALIR"
+    db     "ESC - QUIT "
 
 
 splash_line1:
     db "BRAIN  GAMES"
 splash_line2:
-    db "PRESENTA"
+    db "PRESENTS"
 
 
 game_complete_line1:
-    db "  FELICIDADES!  "
+    db "CONGRATULATIONS!"
 game_complete_line2:
-    db "HAS RECOLECTADO TODAS LAS "
+    db "YOU HAVE COLLECTED ALL THE"
 game_complete_line3:
-    db "ESFERAS DE ENERGIA!"
+    db "ENERGY SPHERES!    "
 
 
 highscores_header:
-    db " RECORDS  "
+    db "BEST TIMES"
 highscores_text:
-    db "FASE       0:00:00"
+    db "LEVEL      0:00:00"
 
-titlescreen:
+titlescreen:    
     db 0,0,83,65,78,84,73,0,40,80,79,80,79,76,79,78,41,0,79,78,84,65,78,79,78,0,50,48,49,54,255,0,68
     db 255,255,1,206,239,203,231,202,203,231,202,247,0,0,247,203,231,239,203,202,0,203,231,202,247,0,0,247,255,0,7
     db 230,0,230,0,230,230,0,230,207,202,0,230,230,0,0,230,230,0,230,0,230,230,0,0,230,255,0,7
@@ -171,20 +171,20 @@ titlescreen:
     db 247,0,247,0,247,247,0,247,247,0,0,247,255,255,1,231,201,204,231,201,247,0,247,204,231,239,204,231,239,255,0,3
     db 101,97,255,96,26,97,100,255,0,3
     db 149,92,92,160,161,176,160,176,161,160,176,161,161,160,176,176,161,161,160,160,161,177,176,176,160,91,91,95,255,0,7
-    db 149,92,92,161,91,91,255,92,3,91,91,92,91,92,91,255,92,4,161,92,95,255,0,13
-    db 230,255,0,15,230,255,0,15
-    db 230,255,0,15,230,255,0,8
-    db 248,249,255,0,5,230,255,0,15,230,255,0,5,134,105
-    db 96,181,180,96,96,100,101,96,180,106,255,0,12,101,97,180,155,0,164,165,105,181,160
-    db 177,176,161,161,160,96,96,161,161,128,255,0,3,69,77,80,69,90,65,82,255,0,3,129,177,150,96,180,181,151,176,255,161,3
-    db 160,255,161,4,176,177,95,255,0,13,149,177,160,177,177,160,176,177,177
-    db 160,161,176,162,163,160,177,160,128,255,0,4,82,69,67,79,82,68,83,255,0,4,129,176,161,161,183,161,161,160
-    db 177,176,160,178,179,176,177,160,98,255,0,15,149,177,160,160,255,161,3,160
-    db 182,160,176,160,160,176,176,160,128,255,0,5,67,76,65,86,69,255,0,6,129,160,177,176,161,166,176
-    db 160,255,161,4,183,161,177,93,255,0,16,94,160,255,177,5
-    db 255,161,3,177,255,161,3,177,95,255,0,16,149,161,161,182,255,161,6
-    db 255,177,4,95,255,0,18,149,161,255,177,3,161
-    ;; Run-length encoding (size: 505)
+    db 149,255,92,3,161,91,91,92,92,91,91,92,91,92,91,255,92,4,161,92,95,255,0,14
+    db 230,255,0,14,230,255,0,16
+    db 230,255,0,14,230,255,0,8
+    db 248,249,255,0,6,230,255,0,14,230,255,0,5,134,105
+    db 96,181,180,96,96,100,101,96,96,181,106,255,0,11,101,97,180,155,0,164,165,105,181,160
+    db 177,176,161,161,160,96,96,160,161,161,128,255,0,4,80,76,65,89,255,0,4,129,177,150,96,180,181,151,176,255,161,3
+    db 160,255,161,4,176,176,177,95,255,0,12,149,177,160,177,177,160,176,177,177
+    db 160,161,176,162,163,160,177,161,160,128,0,0,72,73,71,72,83,67,79,82,69,83,0,0,129,176,161,161,183,161,161,160
+    db 177,176,160,178,179,176,177,161,160,98,255,0,14,149,177,160,160,255,161,3,160
+    db 182,160,176,160,160,176,176,160,160,128,255,0,3,80,65,83,83,87,79,82,68,255,0,4,129,160,177,176,161,166,176
+    db 160,255,161,4,183,161,161,177,93,255,0,15,94,160,255,177,5
+    db 255,161,3,177,255,161,4,177,95,255,0,15,149,161,161,182,255,161,6
+    db 255,177,5,95,255,0,17,149,161,255,177,3,161
+    ;; Run-length encoding (size: 513)
 
 speed_change_message_100:
     db "X1.00"
@@ -206,7 +206,7 @@ scroll_change_message_msx2:
 ; Game variables to be copied to RAM
 ROMtoRAM:
 map_offsetROM:     ;; top-left coordinates of the portion of the map drawn on screen (lowest 4 bits are the decimal part)
-    dw 0, 0
+    dw 0,0
 shipstateROM:
     db 0
 shipangleROM:      ;; angle goes from 0 - 255
@@ -222,11 +222,11 @@ ballvelocityROM:
 balldragTimerROM:
     db 0
 scoreboardROM:
-    db "FUEL -----  FASE 00 TIEMPO 00:00"
-scoreboard_level_offset: equ 17
+    db "FUEL -----  LEVEL 00  TIME 00:00"
+scoreboard_level_offset: equ 18
 
 InterLevel_text2ROM:
-    db "CLAVE:     "
+    db "PASSWORD:  "
 InterLevel_text2_passwordROM:
     db "XXXXXXXX"
 

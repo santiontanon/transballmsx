@@ -715,7 +715,7 @@ player_bullet_hit_a_button_door_continue:
     inc c
     ld a,(ndoors)
     cp c
-    jr nz,player_bullet_hit_a_button_loop
+    jp nz,player_bullet_hit_a_button_loop
 
 player_bullet_hit_a_button_done:
     pop af
@@ -791,7 +791,7 @@ open_close_ball_doors_door_continue:
     inc c
     ld a,(nballdoors)
     cp c
-    jr nz,open_close_ball_doors_loop
+    jp nz,open_close_ball_doors_loop
 
 open_close_ball_doors_done:
     pop af
@@ -833,16 +833,20 @@ renderMap_scoreboard_loop:
     add hl,de ;; now we have the starting offset position of the map in HL
     ex de,hl
 
+    ld hl, NAMTBL2+32
+    call SETWRT
+
     ld hl,currentMap
     add hl,de
 
     ; skip the first line (which is for the scoreboard)
     ld a,(current_map_dimensions+1)
-    ld d,0
-    ld e,a
-    add hl,de
+    ld b,0
+    ld c,a
+    add hl,bc
 
     sub 32
+    ld d,0
     ld e,a
 
     ; ld a,24-1
@@ -854,15 +858,12 @@ renderMap_loop:
 
 renderMap_loop_internal:
     outi
-;    outi
-;    outi
-;    outi
     jp nz,renderMap_loop_internal
     
 	add hl,de
 
 	dec a
-    jp nz, renderMap_loop
+    jr nz, renderMap_loop
     ret
 
 
