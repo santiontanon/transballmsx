@@ -24,7 +24,7 @@ Demo of the updates in version 1.1 can be found at: https://www.youtube.com/watc
 
 Demo of some of the updates in version 1.2 can be found at: https://www.youtube.com/watch?v=xnhxpgmjCe0
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.2
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.2.1
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
@@ -86,8 +86,8 @@ I used this chance to learn how to program in assembler for the Z80 (this is my 
 * VDP tutorial: http://map.grauw.nl/articles/vdp_tut.php
 * VDP manual: http://map.grauw.nl/resources/video/texasinstruments_tms9918.pdf
 * Finally, I heavily used the development forums at msx.org, frequented by awesome and very responsive people without whom I would have never been able to figure out many things (e.g., https://www.msx.org/forum/msx-talk/development/memory-pages-again or https://www.msx.org/forum/msx-talk/development/splitscreen-scrolling-using-r19-in-msx2)
-The game was compiled with Grauw's Glass compiler (cannot thank him enough for creating it):
-* https://bitbucket.org/grauw/glass
+* Most of the improvements in version v1.2.1 come from the contributions of ARTRAG, who carefully went over my source code, incorporating optimizations and improvements to save space, CPU time and to improve the scroll in MSX2.
+* The game was compiled with Grauw's Glass compiler (cannot thank him enough for creating it): https://bitbucket.org/grauw/glass
 
 ### Concerning the graphics:
 * I drew all the graphics myself using GIMP and a couple of small tools I coded in Java. I started by converting all the graphics I drew for "Super Transball 2" to the MSX color palette, and then I edited them. They were converted automatically to hex with another little script I wrote. The font was adapted from the one in Thexder (one of my favorite MSX games), although I had to draw some of the characters from scratch, since I could not find any text in Thexder that used some of the letters (e.q., the "Q"). I also redid the numbers, since I didn't like the Thexder ones.
