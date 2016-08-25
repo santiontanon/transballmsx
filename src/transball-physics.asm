@@ -250,15 +250,11 @@ ballPhysics_temporary_collision:
 ballPhysics_ball_no_collision_at_start:
     ld hl,(shipposition)
     ld bc,(ballposition)
-    xor a
-    sbc hl,bc
-	call divide_HL_by_16
+	call sub_HL_BC_divide_HL_by_16
     ex de,hl
     ld hl,(shipposition+2)
     ld bc,(ballposition+2)
-    xor a
-    sbc hl,bc   
-	call divide_HL_by_16
+	call sub_HL_BC_divide_HL_by_16
 	;; now we have (ship.x - ball.x) in hl, and (ship.y - ball.y) in de (in pixels)
 
     ld a,(ballstate)
@@ -461,9 +457,7 @@ ballPhysics_ball_vertical_collision2:
     ;; Vertical 2:
     ld hl,0
     ld bc,(ballvelocity)
-    xor a
-    sbc hl,bc   ;; hl = -(ballvelocity)
-	call divide_HL_by_16
+	call sub_HL_BC_divide_HL_by_16		;; hl = -(ballvelocity)/16
     ld bc,(ballposition)
     add hl,bc
     ld b,h
@@ -497,9 +491,7 @@ ballPhysics_ball_vertical_collision_continue:
     ;; Horizontal 1:
     ld hl,0
     ld bc,(ballvelocity+2)
-    xor a
-    sbc hl,bc   ;; hl = -(ballvelocity+2)
-	call divide_HL_by_16
+   	call sub_HL_BC_divide_HL_by_16	;; hl = -(ballvelocity+2)/16
     ld bc,(ballposition+2)
     add hl,bc
     ld d,h

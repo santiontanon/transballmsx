@@ -139,6 +139,11 @@ HL_NOT_SMALLER_THAN_BC:
     ret
 	
 ;-----------------------------------------------
+; SUB HL,BC and divide by 16 HL
+sub_HL_BC_divide_HL_by_16:
+	xor a
+	sbc hl,bc
+;-----------------------------------------------
 ; divide by 16 HL
 divide_HL_by_16: 
 	ld a,h
