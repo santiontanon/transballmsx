@@ -392,28 +392,15 @@ enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot:
     ld b,(ix+6)    ;; enemy y
     xor a
     sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ex de,hl
+	call divide_HL_by_16
+	ex de,hl
     ld hl,(shipposition+2)
     ld c,(ix+7)    ;; enemy x
     ld b,(ix+8)    ;; enemy x
     xor a
     sbc hl,bc   
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    ;; now we have (ship.x - enemy.x) in hl, and (ship.y - enemy.y) in de (in pixels)
+	call divide_HL_by_16
+    ;; now we have (ship.x - enemy.x) in hl, and (ship.y - enemy.y) in de (in pixels)
 
     ld b,l
     ld c,e
@@ -775,14 +762,7 @@ tankUpdateCycle_updateCanon_fireBullet:
 
     xor a
     sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
+	call divide_HL_by_16
     ex de,hl
     ld hl,(shipposition+2)
     ld b,(ix+4) ;; tank x
@@ -793,14 +773,8 @@ tankUpdateCycle_updateCanon_fireBullet:
 
     xor a
     sbc hl,bc   
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    ;; now we have (ship.x - enemy.x) in hl, and (ship.y - enemy.y) in de (in pixels)
+	call divide_HL_by_16
+	;; now we have (ship.x - enemy.x) in hl, and (ship.y - enemy.y) in de (in pixels)
 
     ld b,l
     ld c,e

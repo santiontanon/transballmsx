@@ -11,15 +11,9 @@ applyGravityAndSpeed:
     call HL_NOT_SMALLER_THAN_BC
     ld (shipvelocity),hl
     ;; add velocity (Y):
-    ex de,hl
-    sra d   ; divide by 16:
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
+	call divide_HL_by_16
+	ex de,hl
+    
     ld hl,(shipposition)
     add hl,de
     ld bc,(current_map_ship_limits)
@@ -46,16 +40,9 @@ applyGravityAndSpeed_y_continue1:
 applyGravityAndSpeed_y_continue2:
     ld (shipposition),hl
     ;; add velocity (X):
-    ld de,(shipvelocity+2)
-    sra d   ; divide by 16:
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    ld hl,(shipposition+2)
+    ld hl,(shipvelocity+2)
+	call divide_HL_by_16
+    ld de,(shipposition+2)
     add hl,de
     ld bc,(current_map_ship_limits+2)
     push hl
@@ -265,27 +252,14 @@ ballPhysics_ball_no_collision_at_start:
     ld bc,(ballposition)
     xor a
     sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
+	call divide_HL_by_16
     ex de,hl
     ld hl,(shipposition+2)
     ld bc,(ballposition+2)
     xor a
     sbc hl,bc   
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    ;; now we have (ship.x - ball.x) in hl, and (ship.y - ball.y) in de (in pixels)
+	call divide_HL_by_16
+	;; now we have (ship.x - ball.x) in hl, and (ship.y - ball.y) in de (in pixels)
 
     ld a,(ballstate)
     and a   ;; equivalent to cp 0, but faster
@@ -394,16 +368,9 @@ ballPhysics_after_drag:
     call HL_NOT_SMALLER_THAN_BC
     ld (ballvelocity),hl
     ;; add velocity (Y):
-    ld de,(ballvelocity)
-    sra d   ; divide by 16:
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    ld hl,(ballposition)
+    ld hl,(ballvelocity)
+	call divide_HL_by_16
+    ld de,(ballposition)
     add hl,de
     ld bc,(current_map_ship_limits)
     push hl
@@ -431,16 +398,9 @@ ballPhysics_y_continue1:
 ballPhysics_y_continue2:
     ld (ballposition),hl
     ;; add velocity (X):
-    ld de,(ballvelocity+2)
-    sra d   ; divide by 16:
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    sra d
-    rr e
-    ld hl,(ballposition+2)
+    ld hl,(ballvelocity+2)
+	call divide_HL_by_16
+    ld de,(ballposition+2)
     add hl,de
     ld bc,(current_map_ship_limits+2)
     push hl
@@ -487,14 +447,7 @@ ballPhysics_x_continue2:
     ld bc,(ballposition)
     ld de,(ballposition+2)
     ld hl,(ballvelocity)
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    
+	call divide_HL_by_16
     add hl,bc
     ld b,h
     ld c,l
@@ -510,14 +463,7 @@ ballPhysics_ball_vertical_collision2:
     ld bc,(ballvelocity)
     xor a
     sbc hl,bc   ;; hl = -(ballvelocity)
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    
+	call divide_HL_by_16
     ld bc,(ballposition)
     add hl,bc
     ld b,h
@@ -553,14 +499,7 @@ ballPhysics_ball_vertical_collision_continue:
     ld bc,(ballvelocity+2)
     xor a
     sbc hl,bc   ;; hl = -(ballvelocity+2)
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    
+	call divide_HL_by_16
     ld bc,(ballposition+2)
     add hl,bc
     ld d,h
@@ -577,14 +516,7 @@ ballPhysics_ball_horizontal_collision2:
     ld bc,(ballposition)
     ld de,(ballposition+2)
     ld hl,(ballvelocity+2)
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    
+	call divide_HL_by_16
     add hl,de
     ld d,h
     ld e,l

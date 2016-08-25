@@ -119,7 +119,6 @@ Time_is_up_Loop:
     ;; draw  text
     ld hl,NAMTBL2+32*10
     call SETWRT
-    ex de,hl
     ld hl,Time_is_up_text
 	call outi32
     call SFX_INT

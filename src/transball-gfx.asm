@@ -12,10 +12,9 @@ drawSprites:
                         ;; set to 0 (otherwise, we would see garbage when we move the scroll with 
                         ;; register r23).
     call SETWRT
-    ex de,hl
+    
     ld hl,thruster_spriteattributes
-    ld b,4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4
-    ld c,VDP_DATA
+    ld bc,(4+4+4+MAX_PLAYER_BULLETS*4+MAX_ENEMY_BULLETS*4)*256 + VDP_DATA
 drawSprites_loop:
     outi
     jp nz,drawSprites_loop

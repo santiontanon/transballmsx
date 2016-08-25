@@ -805,9 +805,7 @@ renderMap:
     ;; render scoreboard:
     ld hl,NAMTBL2
     call SETWRT
-    ex de,hl
     ld hl,scoreboard
-
 	call outi32
 
     ;; calculate the offset in tiles
