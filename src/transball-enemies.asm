@@ -38,15 +38,16 @@ enemyUpdateCycle_loop:
     jp z,enemyUpdateCycle_CannonDown
     dec a
     jp z,enemyUpdateCycle_CannonLeft
-    dec a
-    jp z,enemyUpdateCycle_DirectionalCannon
-    dec a
-    jp z,enemyUpdateCycle_DirectionalCannon
-    dec a
-    jp z,enemyUpdateCycle_DirectionalCannon
-    dec a
-    jp z,enemyUpdateCycle_DirectionalCannon
-
+    ; dec a
+    ; jp z,enemyUpdateCycle_DirectionalCannon
+    ; dec a
+    ; jp z,enemyUpdateCycle_DirectionalCannon
+    ; dec a
+    ; jp z,enemyUpdateCycle_DirectionalCannon
+    ; dec a
+    ; jp z,enemyUpdateCycle_DirectionalCannon
+	jp enemyUpdateCycle_DirectionalCannon			; anything else is a DirectionalCannon
+	
 enemyUpdateCycle_nextEnemy:
     pop bc
 enemyUpdateCycle_nextEnemy_nopop:
@@ -75,19 +76,18 @@ enemyUpdateCycle_CannonUp:
     ;; check if player is in the proper x range (enemy x-32 -> enemy + 16):
     ld l,(ix+7)    ;; enemy x
     ld h,(ix+8)    ;; enemy x
-    ld bc,16*16
-    xor a
-    sbc hl,bc
+    dec h 			; same as ld bc,16*16 sbc hl,bc
+    and a
     ld bc,(shipposition+2)  ;; player x
     sbc hl,bc
     jp p,enemyUpdateCycle_nextEnemy
 
     ld l,(ix+7)    ;; enemy x
     ld h,(ix+8)    ;; enemy x
-    ld bc,16*16
-    add hl,bc
+    inc h 			;same as ld bc,16*16 add hl,bc
     ld bc,(shipposition+2)  ;; player x
-    sbc hl,bc
+    and a
+	sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
     jp enemyUpdateCycle_Cannon_fireBullet
 
@@ -106,9 +106,7 @@ enemyUpdateCycle_CannonRight:
     ;; check if player is in the proper y range (enemy y -16 -> enemy + 16):
     ld l,(ix+5)    ;; enemy y
     ld h,(ix+6)    ;; enemy y
-    ld bc,16*16
-    xor a
-    sbc hl,bc
+    dec h 			; same as ld bc,16*16 sbc hl,bc
     ld bc,(shipposition)  ;; player y
     xor a
     sbc hl,bc
@@ -116,8 +114,7 @@ enemyUpdateCycle_CannonRight:
 
     ld l,(ix+5)    ;; enemy y
     ld h,(ix+6)    ;; enemy y
-    ld bc,16*16
-    add hl,bc
+    inc h 			;same as ld bc,16*16 add hl,bc
     ld bc,(shipposition)  ;; player y
     xor a
     sbc hl,bc
@@ -139,17 +136,14 @@ enemyUpdateCycle_CannonDown:
     ;; check if player is in the proper x range (enemy x-32 -> enemy + 16):
     ld l,(ix+7)    ;; enemy x
     ld h,(ix+8)    ;; enemy x
-    ld bc,16*16
-    xor a
-    sbc hl,bc
+    dec h 			; same as ld bc,16*16 sbc hl,bc
     ld bc,(shipposition+2)  ;; player x
     sbc hl,bc
     jp p,enemyUpdateCycle_nextEnemy
 
     ld l,(ix+7)    ;; enemy x
     ld h,(ix+8)    ;; enemy x
-    ld bc,16*16
-    add hl,bc
+    inc h 			; same as ld bc,16*16 add hl,bc
     ld bc,(shipposition+2)  ;; player x
     sbc hl,bc
     jp m,enemyUpdateCycle_nextEnemy
@@ -170,9 +164,7 @@ enemyUpdateCycle_CannonLeft:
     ;; check if player is in the proper y range (enemy y - 16 -> enemy + 16):
     ld l,(ix+5)    ;; enemy y
     ld h,(ix+6)    ;; enemy y
-    ld bc,16*16
-    xor a
-    sbc hl,bc
+    dec h 			; same as ld bc,16*16 sbc hl,bc
     ld bc,(shipposition)  ;; player y
     xor a
     sbc hl,bc
@@ -180,8 +172,7 @@ enemyUpdateCycle_CannonLeft:
 
     ld l,(ix+5)    ;; enemy y
     ld h,(ix+6)    ;; enemy y
-    ld bc,16*16
-    add hl,bc
+    inc h 			;same as ld bc,16*16 add hl,bc
     ld bc,(shipposition)  ;; player y
     xor a
     sbc hl,bc
@@ -261,8 +252,7 @@ enemyUpdateCycle_Cannon_fireBullet_slotFound:
     ld hl,SFX_enemy_bullet
     call play_SFX
 
-    ld a,CANON_COOLDOWN_PERIOD    ;; cooldown period
-    ld (ix+9),a
+    ld (ix+9),CANON_COOLDOWN_PERIOD    ;; cooldown period
 
     jp enemyUpdateCycle_nextEnemy    
 
@@ -433,8 +423,7 @@ enemyUpdateCycle_DirectionalCannon_fireBullet_foundSlot:
     ld hl,SFX_enemy_bullet
     call play_SFX
 
-    ld a,CANON_COOLDOWN_PERIOD    ;; cooldown period
-    ld (ix+9),a
+    ld (ix+9),CANON_COOLDOWN_PERIOD    ;; cooldown period
 
     jp enemyUpdateCycle_nextEnemy
 
@@ -518,9 +507,7 @@ tankUpdateCycle_move_right:
     sbc hl,bc
 
     ;; move the tank:
-    ld a,(ix+4)
-    inc a
-    ld (ix+4),a
+    inc (ix+4)
     inc hl
     ld (ix+5),l
     ld (ix+6),h
@@ -570,9 +557,7 @@ tankUpdateCycle_move_left:
     pop hl
 
     ;; move the tank:
-    ld a,(ix+4)
-    dec a
-    ld (ix+4),a
+    dec (ix+4)
     dec hl
     ld (ix+5),l
     ld (ix+6),h    
@@ -640,11 +625,9 @@ tankUpdateCycle_draw_tank_turretRightUp:
 tankUpdateCycle_draw_tank_turretDrawn:
     ld b,0
     ld a,(current_map_dimensions+1)
-    ld c,a
+    sub 3
+	ld c,a
     add hl,bc
-    xor a
-    ld c,3
-    sbc hl,bc
     ld (hl),16
     inc hl
     ld (hl),17
@@ -825,8 +808,7 @@ tankUpdateCycle_updateCanon_fireBullet_turrentAngleDone:
     ld hl,SFX_enemy_bullet
     call play_SFX
 
-    ld a,TANK_COOLDOWN_PERIOD    ;; cooldown period
-    ld (ix+1),a
+    ld (ix+1),TANK_COOLDOWN_PERIOD    ;; cooldown period
 
     ld l,(ix+5)
     ld h,(ix+6)
@@ -849,26 +831,22 @@ checkForShipToEnemyBulletCollision_loop:
     ;; check collision of bullet with ship:
     ld a,(ship_spriteattributes)
     sub ENEMY_BULLET_COLLISION_SIZE
-    ld b,(ix)
-    cp b
+    cp (ix)
     jp p,checkForShipToEnemyBulletCollision_next_bullet
 
     ld a,(ship_spriteattributes)
     add a,ENEMY_BULLET_COLLISION_SIZE
-    ld b,(ix)
-    cp b
+    cp (ix)
     jp m,checkForShipToEnemyBulletCollision_next_bullet
 
     ld a,(ship_spriteattributes+1)
     sub ENEMY_BULLET_COLLISION_SIZE
-    ld b,(ix+1)
-    cp b
+    cp (ix+1)
     jp p,checkForShipToEnemyBulletCollision_next_bullet
 
     ld a,(ship_spriteattributes+1)
     add a,ENEMY_BULLET_COLLISION_SIZE
-    ld b,(ix+1)
-    cp b
+    cp (ix+1)
     jp m,checkForShipToEnemyBulletCollision_next_bullet
 
     ;; collision!
@@ -1060,13 +1038,12 @@ enemy_hit:
     ld hl,SFX_explosion
     call play_SFX
 
-    ld a,(iy+10)
-    dec a
-    ld (iy+10),a
+    dec (iy+10)
     ret nz  ;; if the enemy still has health, return
-
+	
     ;; destroy enemy:
-    ld (iy),a   ;; set the enemy to be dead (makes it inactive)
+    ld a,(iy+10)
+	ld (iy),a   ;; set the enemy to be dead (makes it inactive)
 
     ;; find an available explosion slot:
     ld c,0
@@ -1110,8 +1087,7 @@ enemy_hit_explosion_loop:
     ret
 
 enemy_hit_explosion_slot_found:
-    ld a,24 ;; explosion timer copied to the state (which will be decreased in 1 each frame until reaching 0)
-    ld (hl),a
+    ld (hl),24  ;; explosion timer copied to the state (which will be decreased in 1 each frame until reaching 0)
     ld a,(iy+1) ;; write the current_map pointer of the enemy
     ld (de),a
     inc de
@@ -1122,7 +1098,7 @@ enemy_hit_explosion_slot_found:
     ld l,(iy+3)
     ld h,(iy+4) ;; enemy definition
     inc hl
-    inc hl  ;; make hl point to the tiles to be drawn after the explosion
+    inc hl  	;; make hl point to the tiles to be drawn after the explosion
     ld a,l
     ld (de),a
     inc de
@@ -1138,9 +1114,7 @@ tank_hit:
     ld hl,SFX_explosion
     call play_SFX
 
-    ld a,(iy)
-    dec a
-    ld (iy),a
+    dec (iy)
     ret nz  ;; if the tank still has health, return
 
     ;; clear tank:
@@ -1171,8 +1145,7 @@ tank_hit_explosion_loop:
     ret
 
 tank_hit_explosion_slot_found:
-    ld a,24 ;; explosion timer copied to the state (which will be decreased in 1 each frame until reaching 0)
-    ld (hl),a
+    ld (hl),24 ;; explosion timer copied to the state (which will be decreased in 1 each frame until reaching 0)
 
     ld c,(iy+5)
     ld b,(iy+6)
@@ -1196,24 +1169,18 @@ tank_hit_explosion_slot_found:
 
 ;; this only clears the sides of the tank (the center will be cleared by the explosion)
 clear_tank:
-    ld (hl),0
-    inc hl
-    inc hl
-    inc hl
-    ld (hl),0
-
     ld b,0
+	call clear_tank_line
     ld a,(current_map_dimensions+1)
-    ld c,a
+    sub 3
+	ld c,a
     add hl,bc
-    xor a
-    ld c,3
-    sbc hl,bc
-    ld (hl),0
+clear_tank_line:	
+    ld (hl),b
     inc hl
     inc hl
     inc hl
-    ld (hl),0
+    ld (hl),b
     ret
 
 tank_replacement_patterns: db 0,0,0,0
