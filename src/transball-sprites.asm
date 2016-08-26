@@ -20,11 +20,8 @@ changeSprites:
 b1:	outi
 	jp nz,b1
 
-    ; ex de,hl							; remove if THRUSTER_SPRITE always follows SHIP_SPRITE
-    ; ld hl,SPRTBL2+THRUSTER_SPRITE*32	;
-    ; call SETWRT							;
-	; ex de,hl							;
-    
+	; valid only becouse THRUSTER_SPRITE follows SHIP_SPRITE
+	
 	ld bc,shipvpanther_thruster-shipvpanther-32
 	
     add hl,bc
@@ -43,14 +40,13 @@ shipExplosionSprites:
 
     ld hl,SPRTBL2+SHIP_SPRITE*32
     call SETWRT
-    ex de,hl
     ld hl,explosion_sprites_inside
-    ld a,(shipstate)    ;; get the offset of the explosion frame
+    ld a,(shipstate)    		;; get the offset of the explosion frame
     and #f8
     sla a
     sla a
     cp 32*3
-    jp p,clearAllTheSprites ;; we do a "jp", so that when "clearAllTheSprites" is over, we return from this function
+    jp p,clearAllTheSprites 	;; we do a "jp", so that when "clearAllTheSprites" is over, we return from this function
     ld c,a
     ld b,0
     add hl,bc
@@ -58,9 +54,9 @@ shipExplosionSprites:
 
     ld hl,SPRTBL2+THRUSTER_SPRITE*32
     call SETWRT
-    ex de,hl
+    
     ld hl,explosion_sprites_outside
-    ld a,(shipstate)    ;; get the offset of the explosion frame
+    ld a,(shipstate)    		;; get the offset of the explosion frame
     and #f8
     sla a
     sla a
@@ -78,50 +74,24 @@ calculate_ship_sprite_position:
     ld hl,(shipposition)
     ;; project down to screen coordinates:
     ld bc,(desired_map_offset)
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,l
-
+	call sub_HL_BC_divide_HL_by_16
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_vertical_scroll_for_r23)
-    add a,b
+    add a,l
 
     ld (ship_spriteattributes),a
     ld (thruster_spriteattributes),a
 
     ld hl,(shipposition+2)
-    ;; project down to screen coordinates:
-    ; divide by 16:
+    ;; project down to screen coordinates
     ld bc,(desired_map_offset+2)
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,l
-
+	call sub_HL_BC_divide_HL_by_16
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_horizontal_scroll_for_r18)
-    add a,b
+    add a,l
 
     ld (ship_spriteattributes+1),a
     ld (thruster_spriteattributes+1),a
-
     ret
 
 
@@ -145,18 +115,8 @@ calculate_ball_sprite_position:
     and #80
     ld c,a
 calculate_ball_sprite_position_snap_ball_to_map_y_continue:
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,h  ;; If "h" is anything but 0, that means that the ball is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
+	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_ball_sprite_position_outside_y
     ld a,l
     cp 192
@@ -188,25 +148,13 @@ calculate_ball_sprite_position_y_continue:
     and #80
     ld c,a
 calculate_ball_sprite_position_snap_ball_to_map_x_continue:
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,h  ;; If "h" is anything but 0, that means that the ball is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
+	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_ball_sprite_position_outside_x
-    ld a,l
 
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_horizontal_scroll_for_r18)
-    add a,b
+    add a,l
 
     ld (ball_spriteattributes+1),a
     jp calculate_ball_sprite_position_continue
@@ -254,25 +202,15 @@ calculate_bullet_sprite_positions_loop:
     ;; calculate bullet position
     ;; from: player_bullet_positions to player_bullet_sprite_attributes
     ; y:
+    ld bc,(map_offset)
     ld a,(de)
     ld l,a
     inc de
     ld a,(de)
     ld h,a
     inc de
-    ld bc,(map_offset)
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
+	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_bullet_sprite_positions_bullet_outside_y
     ld a,l
     cp 192
@@ -289,32 +227,20 @@ calculate_bullet_sprite_positions_bullet_outside_y:
     ld (ix),224 ;; just a value that would draw the bullet out of the drawable area
 calculate_bullet_sprite_positions_bullet_outside_y_continue:
     ; x:
+    ld bc,(map_offset+2)
     ld a,(de)
     ld l,a
     inc de
     ld a,(de)
     ld h,a
     inc de
-    ld bc,(map_offset+2)
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
+	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_bullet_sprite_positions_bullet_outside_x
-    ld a,l
 
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_horizontal_scroll_for_r18)
-    add a,b
+    add a,l
 
     ld (ix+1),a
     jr calculate_bullet_sprite_positions_bullet_outside_x_continue
@@ -385,26 +311,14 @@ calculate_enemy_bullet_sprite_positions_loop:
     and #80
     ld c,a
 calculate_enemy_bullet_sprite_positions_snap_y_continue:
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_y
     ld a,l
     cp 192
     jr nc,calculate_enemy_bullet_sprite_positions_bullet_outside_y
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_vertical_scroll_for_r23)
-    add a,b
+    add a,l
     ld (ix),a
     jr calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue
 calculate_enemy_bullet_sprite_positions_bullet_outside_y:
@@ -427,24 +341,11 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     and #80
     ld c,a
 calculate_enemy_bullet_sprite_positions_snap_x_continue:
-    xor a
-    sbc hl,bc
-    sra h   ; divide by 16:
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l
-    sra h
-    rr l    
-    ld a,h  ;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
-    and a   ;; equivalent to cp 0, but faster
+	call sub_HL_BC_divide_HL_by_16
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_x
-    ld a,l
     ;; adjust sprite position based on the smooth scroll offset:
-    ld b,a
     ld a,(desired_horizontal_scroll_for_r18)
-    add a,b
+    add a,l
     ld (ix+1),a
     jr calculate_enemy_bullet_sprite_positions_bullet_outside_x_continue
 calculate_enemy_bullet_sprite_positions_bullet_outside_x:

@@ -22,20 +22,33 @@ VDP_IsTMS9918A_Wait:
     out (99H),a
     ld a,15 + 128
     out (99H),a
+    ld  b,a
+    nop
+    in a,(99H)           ; read s#2 / s#0
+    and 01000000B        ; check if bit 6 was 0 (s#0 5S) or 1 (s#2 VR)
+    ret z				 ; A=0 TMS9918A
+	
+	inc a                ; select s#1 on V99x8
+    di 
+	out (99H),a
+    ld a,b
+    out (99H),a
     nop
     nop
     in a,(99H)           ; read s#2 / s#0
+    rra
+	and 15 				; identification in a
+	jr nz,VDP_IsTMS9918A_end	; A=2 V9958
+	inc a						; A=1 V9938
+VDP_IsTMS9918A_end:
     ex af,af'
     xor a                ; select s#0 as required by BIOS
     out (99H),a
-    ld a,15 + 128
+    ld a,b
     ei
     out (99H),a
     ex af,af'
-    and 01000000B        ; check if bit 6 was 0 (s#0 5S) or 1 (s#2 VR)
-    ret
-
-
+	ret
 ;-----------------------------------------------
 ; This is some leftover code to change the VDP addresses trying to be able to use
 ; a 25th row of patterns in Screen 2 in MSX2
@@ -50,23 +63,6 @@ setup_VDP_addresses:
     ld bc,#0004
     jp WRTVDP
 	
-;    ld a,(VDP_REGISTER_0)+9
-;    or #80
-;    ld b,a
-;    ld c,9
-;    call WRTVDP
-
-;    ld a,#78
-;    out (#99),a
-;    ld a,3+128
-;    out (#99),a
-    
-;    ld a,#70
-;    out (#99),a
-;    ld a,5+128
-;    out (#99),a
-
-;    ret
 
 
 ;-----------------------------------------------
@@ -90,7 +86,7 @@ Set_SmoothScroll_Interrupt:
 
     ld a,(useSmoothScroll)
     and a
-    jp z,Set_SmoothScroll_Interrupt_MSX1
+    jr z,Set_SmoothScroll_Interrupt_MSX1
 
     ;; set the line interrupt to trigger after the first 8 lines
     ld a,5  ; I set it to 5, since apparently the code takes 3 lines of time to execute
@@ -146,8 +142,7 @@ Restore_Interrupt:
     out (#99),a
 
     ;; Set NO vertical offset:
-    ld b,0
-    ld c,23
+    ld bc,23
     call WRTVDP
 
 Restore_Interrupt_MSX1:

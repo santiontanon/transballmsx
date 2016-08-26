@@ -137,6 +137,41 @@ HL_NOT_SMALLER_THAN_BC:
     ld h,b
     ld l,c
     ret
+	
+;-----------------------------------------------
+; SUB HL,BC and divide by 16 HL
+sub_HL_BC_divide_HL_by_16:
+	xor a
+	sbc hl,bc
+;-----------------------------------------------
+; divide by 16 HL
+divide_HL_by_16: 
+	ld a,h
+	and a
+	jp m,divide_HL_by_16_neg
+    rrca	
+    rr l
+    rrca
+    rr l
+    rrca
+    rr l
+    rrca
+    rr l
+	and 15
+	ld h,a
+	ret
+divide_HL_by_16_neg:
+    rrca	
+    rr l
+    rrca
+    rr l
+    rrca
+    rr l
+    rrca
+    rr l
+	or 0F0h
+	ld h,a
+	ret
 ;-----------------------------------------------
 ; outi 32 times HL 
 outi32:
