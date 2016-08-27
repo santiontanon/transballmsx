@@ -17,6 +17,14 @@ Execute:
 
     call VDP_IsTMS9918A
     jr z,Execute_MSX1
+    dec a
+    jr z,Execute_MSX2
+Execute_MSX2_plus:
+    ld a,1
+    ld (isMSX2),a
+    ld (useSmoothScroll),a
+    ld (useSmoothScrollPlus),a
+    jr Execute_Continue
 Execute_MSX2:
     ld a,1
     ld (isMSX2),a
@@ -456,4 +464,6 @@ current_animation_frame:
 isMSX2:
     ds virtual 1
 useSmoothScroll:
+    ds virtual 1
+useSmoothScrollPlus:
     ds virtual 1
