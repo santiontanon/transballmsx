@@ -138,7 +138,8 @@ calculate_ball_sprite_position_y_continue:
     ld bc,(map_offset+2)
 
     ;; in MSX1, align the ball coordinates to the map offset:
-    ld a,(useSmoothScroll)
+    ; ld a,(useSmoothScroll)
+	xor a ;; TESTING MSX2P
     and a
     jp nz,calculate_ball_sprite_position_snap_ball_to_map_x_continue
     ld a,(ballstate)
@@ -334,8 +335,9 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     ld bc,(map_offset+2)
 
     ;; in MSX1, align the enemy coordinates to the map offset:
-    ld a,(useSmoothScroll)
-    and a
+    ; ld a,(useSmoothScroll)
+    xor a	;; TESTING MSX2P
+	and a
     jp nz,calculate_enemy_bullet_sprite_positions_snap_x_continue
     ld a,c      ;; align the bullet to the exact map offset (in blocks of 8x8)
     and #80

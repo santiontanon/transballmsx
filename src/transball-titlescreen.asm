@@ -267,6 +267,7 @@ MainMenu_Loop_down_overflow:
 
 
 MainMenu_option_selected:
+
     ld a,(menu_selected_option)
     and a   ;; equivalent to cp 0, but faster
     jp z,Game_StartFromBeginning
