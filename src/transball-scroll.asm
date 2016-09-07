@@ -103,12 +103,11 @@ Set_SmoothScroll_Interrupt:
     cp 2
     jp z,Set_SmoothScroll_Interrupt_MSX2P
     ld hl,MSX2_SmoothScroll_Interrupt
-    ld (HKEY+1),hl
     jp Set_SmoothScroll_Interrupt_continue
 Set_SmoothScroll_Interrupt_MSX2P:
     ld hl,MSX2P_SmoothScroll_Interrupt
-    ld (HKEY+1),hl
 Set_SmoothScroll_Interrupt_continue:
+      ld (HKEY+1),hl
 
     ;; activate line interrupts:
     ld a,(VDP_REGISTER_0)
