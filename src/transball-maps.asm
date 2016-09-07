@@ -591,7 +591,7 @@ calculate_map_offset:
     call HL_NOT_BIGGER_THAN_BC
     ld (desired_map_offset),hl
 
-    ;; calculate the offset for smooth scroll in MSX2
+    ;; calculate the offset for smooth scroll in MSX2 or higher
     ld a,(useSmoothScroll)
     and a   ;; equivalent to cp 0, but faster
     jp z,calculate_map_offset_MSX1_y
@@ -628,7 +628,7 @@ calculate_map_offset_MSX1_y:
     call HL_NOT_BIGGER_THAN_BC
     ld (desired_map_offset+2),hl
 
-    ;; calculate the offset for smooth scroll in MSX2
+    ;; calculate the offset for smooth scroll in MSX2 or higher
     ld a,(useSmoothScroll)
     and a   ;; equivalent to cp 0, but faster
     ret z

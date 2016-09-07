@@ -20,19 +20,18 @@ Execute:
     dec a
     jr z,Execute_MSX2
 Execute_MSX2_plus:
-    ld a,1
-    ld (isMSX2),a
+    ld a,2
+    ld (MSXType),a
     ld (useSmoothScroll),a
-    ld (useSmoothScrollPlus),a
     jr Execute_Continue
 Execute_MSX2:
     ld a,1
-    ld (isMSX2),a
+    ld (MSXType),a
     ld (useSmoothScroll),a
     jr Execute_Continue
 Execute_MSX1:
     xor a
-    ld (isMSX2),a
+    ld (MSXType),a
     ld (useSmoothScroll),a
 Execute_Continue:
 
@@ -209,6 +208,8 @@ scroll_change_message_msx1:
     db "MSX 1"
 scroll_change_message_msx2:
     db "MSX 2"
+scroll_change_message_msx2plus:
+    db "MSX2+"
 
 ;-----------------------------------------------
 ; Game variables to be copied to RAM
@@ -461,9 +462,7 @@ current_game_frame:
     ds virtual 1
 current_animation_frame:
     ds virtual 1
-isMSX2:
+MSXType:            ;; 0: MSX1, 1: MSX2, 2: MSX2+
     ds virtual 1
-useSmoothScroll:
-    ds virtual 1
-useSmoothScrollPlus:
+useSmoothScroll:    ;; 0: no smooth scroll, 1: MSX2 scroll, 2: MSX2+ scroll
     ds virtual 1

@@ -86,8 +86,16 @@ calculate_ship_sprite_position:
     ;; project down to screen coordinates
     ld bc,(desired_map_offset+2)
 	call sub_HL_BC_divide_HL_by_16
-    ;; adjust sprite position based on the smooth scroll offset:
+
+    ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
+    ld a,(useSmoothScroll)
+    cp 1
+    jp z,calculate_ship_sprite_position_continue1
+    ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
+    jp calculate_ship_sprite_position_continue2
+calculate_ship_sprite_position_continue1:
     ld a,(desired_horizontal_scroll_for_r18)
+calculate_ship_sprite_position_continue2:
     add a,l
 
     ld (ship_spriteattributes+1),a
@@ -138,8 +146,7 @@ calculate_ball_sprite_position_y_continue:
     ld bc,(map_offset+2)
 
     ;; in MSX1, align the ball coordinates to the map offset:
-    ; ld a,(useSmoothScroll)
-	xor a ;; TESTING MSX2P
+    ld a,(useSmoothScroll)
     and a
     jp nz,calculate_ball_sprite_position_snap_ball_to_map_x_continue
     ld a,(ballstate)
@@ -153,8 +160,15 @@ calculate_ball_sprite_position_snap_ball_to_map_x_continue:
 	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_ball_sprite_position_outside_x
 
-    ;; adjust sprite position based on the smooth scroll offset:
+    ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
+    ld a,(useSmoothScroll)
+    cp 1
+    jp z,calculate_ball_sprite_position_r18_continue1
+    ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
+    jp calculate_ball_sprite_position_r18_continue2
+calculate_ball_sprite_position_r18_continue1:
     ld a,(desired_horizontal_scroll_for_r18)
+calculate_ball_sprite_position_r18_continue2:    
     add a,l
 
     ld (ball_spriteattributes+1),a
@@ -239,8 +253,15 @@ calculate_bullet_sprite_positions_bullet_outside_y_continue:
 	;; If "h" is anything but 0, that means that the bullet is outside of the drawing area
     jr nz,calculate_bullet_sprite_positions_bullet_outside_x
 
-    ;; adjust sprite position based on the smooth scroll offset:
+    ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
+    ld a,(useSmoothScroll)
+    cp 1
+    jp z,calculate_bullet_sprite_positions_r18_continue1
+    ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
+    jp calculate_bullet_sprite_positions_r18_continue2
+calculate_bullet_sprite_positions_r18_continue1:
     ld a,(desired_horizontal_scroll_for_r18)
+calculate_bullet_sprite_positions_r18_continue2:    
     add a,l
 
     ld (ix+1),a
@@ -335,8 +356,7 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
     ld bc,(map_offset+2)
 
     ;; in MSX1, align the enemy coordinates to the map offset:
-    ; ld a,(useSmoothScroll)
-    xor a	;; TESTING MSX2P
+    ld a,(useSmoothScroll)
 	and a
     jp nz,calculate_enemy_bullet_sprite_positions_snap_x_continue
     ld a,c      ;; align the bullet to the exact map offset (in blocks of 8x8)
@@ -345,9 +365,18 @@ calculate_enemy_bullet_sprite_positions_bullet_outside_y_continue:
 calculate_enemy_bullet_sprite_positions_snap_x_continue:
 	call sub_HL_BC_divide_HL_by_16
     jr nz,calculate_enemy_bullet_sprite_positions_bullet_outside_x
-    ;; adjust sprite position based on the smooth scroll offset:
+    
+    ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
+    ld a,(useSmoothScroll)
+    cp 1
+    jp z,calculate_enemy_bullet_sprite_positions_r18_continue1
+    ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
+    jp calculate_enemy_bullet_sprite_positions_r18_continue2
+calculate_enemy_bullet_sprite_positions_r18_continue1:
     ld a,(desired_horizontal_scroll_for_r18)
+calculate_enemy_bullet_sprite_positions_r18_continue2:    
     add a,l
+
     ld (ix+1),a
     jr calculate_enemy_bullet_sprite_positions_bullet_outside_x_continue
 calculate_enemy_bullet_sprite_positions_bullet_outside_x:

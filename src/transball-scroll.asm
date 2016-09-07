@@ -50,12 +50,12 @@ VDP_IsTMS9918A_end:
     ex af,af'
 	ret
 ;-----------------------------------------------
-; This is some leftover code to change the VDP addresses trying to be able to use
+; Code to change the VDP addresses trying to be able to use
 ; a 25th row of patterns in Screen 2 in MSX2
 setup_VDP_addresses:
     ld bc,#3705	
     call WRTVDP		; SAT at 1b80h
-	ld a,(isMSX2)
+	ld a,(MSXType)
 	or 	a
 	ret z		; hybrid mode only on msx2 and upper
     ld bc,#9F03
@@ -98,9 +98,17 @@ Set_SmoothScroll_Interrupt:
 
     ld a,#c3    ;; #c3 is the opcode for "jp", so this sets "jp MSX2_SmoothScroll_Interrupt" as the interrupt code
     ld (HKEY),a
-    ; ld hl,MSX2_SmoothScroll_Interrupt
+
+    ld a,(useSmoothScroll)
+    cp 2
+    jp z,Set_SmoothScroll_Interrupt_MSX2P
+    ld hl,MSX2_SmoothScroll_Interrupt
+    ld (HKEY+1),hl
+    jp Set_SmoothScroll_Interrupt_continue
+Set_SmoothScroll_Interrupt_MSX2P:
     ld hl,MSX2P_SmoothScroll_Interrupt
     ld (HKEY+1),hl
+Set_SmoothScroll_Interrupt_continue:
 
     ;; activate line interrupts:
     ld a,(VDP_REGISTER_0)

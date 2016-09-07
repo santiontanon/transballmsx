@@ -302,6 +302,8 @@ checkForRotationSpeedConfigInput:
     jr z,set_msx1_scroll
     cp '7'
     jr z,set_msx2_scroll
+    cp '8'
+    jr z,set_msx2plus_scroll
     ret
 
 
@@ -397,7 +399,7 @@ set_msx1_scroll:
     jp display_config_change_message    
 
 set_msx2_scroll:
-    ld a,(isMSX2)
+    ld a,(MSXType)
     and a
     ret z   ;; if we cannot use smooth scroll, then ignore
 
@@ -406,6 +408,18 @@ set_msx2_scroll:
 
     ld hl,scroll_change_message_msx2
     jp display_config_change_message
+
+set_msx2plus_scroll:
+    ld a,(MSXType)
+    cp 2
+    ret nz   ;; if we cannot use smooth MSX2+ scroll, then ignore
+
+    ld a,2
+    ld (useSmoothScroll),a
+
+    ld hl,scroll_change_message_msx2plus
+    jp display_config_change_message
+
 
 
 display_config_change_message:
