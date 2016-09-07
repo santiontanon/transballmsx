@@ -1,7 +1,8 @@
 ;-----------------------------------------------
 ; Game Start:
 Game_StartFromBeginning:
-	ld a,3					; MSX2P TESTING
+    xor a
+;	ld a,3					; MSX2P TESTING
     ld (current_level),a  ;; sets which map to load
     jr Level_Restart
 

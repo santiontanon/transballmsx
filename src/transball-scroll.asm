@@ -136,9 +136,18 @@ Restore_Interrupt:
     ld a,(useSmoothScroll)
     and a
     jp z,Restore_Interrupt_MSX1
+    dec a
+    jp z,Restore_Interrupt_MSX2
 
+    ; MSX2+
+    ld bc,#001b     ;;R#27=0
+    call WRTVDP    
+    ld bc,#0019     ;;R#25=0
+    call WRTVDP    
+
+Restore_Interrupt_MSX2:
     di
-	;; deactivate line interrupts:
+    ;; deactivate line interrupts:
     ld a,(VDP_REGISTER_0)
     and #ef
     ld (VDP_REGISTER_0),a
@@ -146,9 +155,8 @@ Restore_Interrupt:
     ld a,0+128
     out (#99),a
 
-    ;; Set NO vertical offset:
     ld bc,#0017
-    call WRTVDP
+    call WRTVDP    
 
 Restore_Interrupt_MSX1:
     di
