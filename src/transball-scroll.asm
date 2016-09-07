@@ -84,6 +84,8 @@ Set_SmoothScroll_Interrupt:
     ld (horizontal_scroll_for_r18),a
     ld (desired_horizontal_scroll_for_r18),a
 
+    di		;; disable interrupts before fiddling with hooks
+
     ld a,(useSmoothScroll)
     and a
     jr z,Set_SmoothScroll_Interrupt_MSX1
@@ -94,11 +96,10 @@ Set_SmoothScroll_Interrupt:
     ld a,19+128
     out (#99),a
 
-    di
-
     ld a,#c3    ;; #c3 is the opcode for "jp", so this sets "jp MSX2_SmoothScroll_Interrupt" as the interrupt code
     ld (HKEY),a
-    ld hl,MSX2_SmoothScroll_Interrupt
+    ; ld hl,MSX2_SmoothScroll_Interrupt
+    ld hl,MSX2P_SmoothScroll_Interrupt
     ld (HKEY+1),hl
 
     ;; activate line interrupts:
@@ -111,9 +112,9 @@ Set_SmoothScroll_Interrupt:
 
     ei
     ret
+	
 Set_SmoothScroll_Interrupt_MSX1:
-
-    ld a,#c3    ;; #c3 is the opcode for "jp", so this sets "jp MSX2_SmoothScroll_Interrupt" as the interrupt code
+    ld a,#c3    ;; #c3 is the opcode for "jp", so this sets "jp MSX1_Interrupt" as the interrupt code
     ld (HKEY),a
     ld hl,MSX1_Interrupt
     ld (HKEY+1),hl
@@ -123,17 +124,13 @@ Set_SmoothScroll_Interrupt_MSX1:
 
 
 Restore_Interrupt:
-;    xor a
-;    ld (vertical_scroll_for_r23),a
-;    ld (desired_vertical_scroll_for_r23),a
-;    ld (horizontal_scroll_for_r18),a
-;    ld (desired_horizontal_scroll_for_r18),a
 
     ld a,(useSmoothScroll)
     and a
     jp z,Restore_Interrupt_MSX1
 
-    ;; deactivate line interrupts:
+    di
+	;; deactivate line interrupts:
     ld a,(VDP_REGISTER_0)
     and #ef
     ld (VDP_REGISTER_0),a
@@ -142,7 +139,7 @@ Restore_Interrupt:
     out (#99),a
 
     ;; Set NO vertical offset:
-    ld bc,23
+    ld bc,#0017
     call WRTVDP
 
 Restore_Interrupt_MSX1:
@@ -156,16 +153,16 @@ Restore_Interrupt_MSX1:
     ret
 
 MSX2_SmoothScroll_Interrupt:
-    push af
+    ; push af
         
-    ;; if bit 0 of register S#1 is 1, this is a line interrupt
+    ;; if bit 0 of register S#1 is 1, this is a line interrupt, otherwise it is vblank
     ;; read S#1:
     ld a,1  ; read S#1
     out (#99),a
     ld a,128+15
     out (#99),a
-    in a,(#99)
 
+    in a,(#99)
     rrca
     jp c,MSX2_SmoothScroll_Interrupt_Line_Interrupt 
 
@@ -174,7 +171,7 @@ MSX2_SmoothScroll_Interrupt:
     out (#99),a
     ld a,128+15
     out (#99),a 
-    in a,(#99)
+    in a,(#99)	;; read S#0 to enable next vblank
 
     ;; Set NO vertical/horizontal offset:
     xor a
@@ -188,12 +185,6 @@ MSX2_SmoothScroll_Interrupt:
     out (#99),a
 
     jp MSX1_Interrupt_after_push
-;    ld a,(current_game_frame)
-;    inc a
-;    ld (current_game_frame),a
-
-;    pop af
-;    ret
 
     ;; We get to this point if it's a line interrupt:
 MSX2_SmoothScroll_Interrupt_Line_Interrupt:
@@ -201,7 +192,7 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
     out (#99),a
     ld a,128+15
     out (#99),a 
-    in a,(#99)
+    ; in a,(#99)  ;; no need to read S#0 again
 
     ld a,(vertical_scroll_for_r23)
     out (#99),a
@@ -213,17 +204,89 @@ MSX2_SmoothScroll_Interrupt_Line_Interrupt:
     ld a,128+18
     out (#99),a
 
-    pop af
+    ; pop af
     ret
 
 
 MSX1_Interrupt:
-    push af
+    ; push af
         
 MSX1_Interrupt_after_push:
     ld a,(current_game_frame)
     inc a
     ld (current_game_frame),a
 
-    pop af
+    ; pop af
     ret
+
+	
+	
+MSX2P_SmoothScroll_Interrupt:
+    ; push af
+        
+    ;; if bit 0 of register S#1 is 1, this is a line interrupt, otherwise it is vblank
+    ;; read S#1:
+    ld a,1  ; read S#1
+    out (#99),a
+    ld a,128+15
+    out (#99),a
+    in a,(#99)
+
+    rrca
+    jp c,MSX2P_SmoothScroll_Interrupt_Line_Interrupt 
+
+    ;; We get to this point if it's a vertical sync interrupt:
+    xor a   ; select S#0 again (otherwise, the program hangs)
+    out (#99),a
+    ld a,128+15
+    out (#99),a 
+    in a,(#99)	;; read S#0 to enable next vblank
+
+    ;; Set NO vertical/horizontal offset:
+    xor a
+    out (#99),a
+    ld a,128+23
+    out (#99),a
+	
+    xor a			;;R#27=0
+    out (#99),a
+    ld a,128+27
+    out (#99),a
+
+	xor a			;;R#25=0
+    out (#99),a
+    ld a,128+25
+    out (#99),a
+
+    jp MSX1_Interrupt_after_push
+
+    ;; We get to this point if it's a line interrupt:
+MSX2P_SmoothScroll_Interrupt_Line_Interrupt:
+	ld a,2			;; mask border
+    out (#99),a
+    ld a,128+25
+    out (#99),a
+
+    ld a,(vertical_scroll_for_r23)
+    out (#99),a
+    ld a,128+23
+    out (#99),a
+
+    ; ld a,(desired_horizontal_scroll_for_r18)
+    ld a,(horizontal_scroll_for_r18)
+	neg
+	add a,7
+    out (#99),a
+    ld a,128+27
+    out (#99),a		;;R#27=horizontal_scroll
+    
+
+    xor a   ; select S#0 again (otherwise, the program hangs)
+    out (#99),a
+    ld a,128+15
+    out (#99),a 
+    ; in a,(#99)  ;; no need to read S#0 again
+
+    ; pop af
+    ret
+
