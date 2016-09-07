@@ -89,8 +89,8 @@ calculate_ship_sprite_position:
 
     ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
     ld a,(useSmoothScroll)
-    dec a
-    jp z,calculate_ship_sprite_position_continue1
+    cp 2
+    jp nz,calculate_ship_sprite_position_continue1
     ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
     jp calculate_ship_sprite_position_continue2
 calculate_ship_sprite_position_continue1:
@@ -162,8 +162,8 @@ calculate_ball_sprite_position_snap_ball_to_map_x_continue:
 
     ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
     ld a,(useSmoothScroll)
-    dec a
-    jp z,calculate_ball_sprite_position_r18_continue1
+    cp 2
+    jp nz,calculate_ball_sprite_position_r18_continue1
     ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
     jp calculate_ball_sprite_position_r18_continue2
 calculate_ball_sprite_position_r18_continue1:
@@ -255,8 +255,8 @@ calculate_bullet_sprite_positions_bullet_outside_y_continue:
 
     ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
     ld a,(useSmoothScroll)
-    dec a
-    jp z,calculate_bullet_sprite_positions_r18_continue1
+    cp 2
+    jp nz,calculate_bullet_sprite_positions_r18_continue1
     ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
     jp calculate_bullet_sprite_positions_r18_continue2
 calculate_bullet_sprite_positions_r18_continue1:
@@ -368,8 +368,8 @@ calculate_enemy_bullet_sprite_positions_snap_x_continue:
     
     ;; adjust sprite position based on the smooth scroll offset (only in MSX2):
     ld a,(useSmoothScroll)
-    dec a
-    jp z,calculate_enemy_bullet_sprite_positions_r18_continue1
+    cp 2
+    jp nz,calculate_enemy_bullet_sprite_positions_r18_continue1
     ld a,8  ;; in MSX2+ we need to move all sprites 8 pixels to the right
     jp calculate_enemy_bullet_sprite_positions_r18_continue2
 calculate_enemy_bullet_sprite_positions_r18_continue1:
