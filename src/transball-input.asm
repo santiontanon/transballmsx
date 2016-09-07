@@ -414,7 +414,7 @@ set_msx2plus_scroll:
     cp 2
     ret nz   ;; if we cannot use smooth MSX2+ scroll, then ignore
 
-    ld a,2
+    ; ld a,2
     ld (useSmoothScroll),a
 
     ld hl,scroll_change_message_msx2plus
