@@ -67,7 +67,7 @@ The game was designed to be played on MSX1 computers with at least 64KB of RAM. 
 
 I've always been a "thrust-like" games fan. For some reason I never discovered this genre during the 8-bit era, but when I first played "Zarathrusta" (https://en.wikipedia.org/wiki/Zarathrusta), on the Amiga, I thought I had found one of my favorite genres. I became so obsessed with Zarathrusta that I created my own take on the genre for DOS, which I called "Transball". I made numerous versions of Transball (Transball 2, Super Transball 2, Transball GL) over the years. So, one day I decided to just "remake" Transball for the MSX, and this is the result! If you want to check the PC versions, they can be found here:
 * http://www.braingames.getput.com/stransball2
-* http://www.braingames.getput.com/transballgl (unfinished, I need to finish it one day)
+* http://www.braingames.getput.com/transballgl
 
 ### Concerning the source code:
 I used this chance to learn how to program in assembler for the Z80 (this is my first complete game in assembler ever, and also the first time I programmed in assembler for the Z80, so go easy on the code if you take a look at it!). While learning how to code for it, I borrowed many ideas and code snippets for several routines (all of which are acknowledged in the code), but a list of the resources I used (in case they can be useful to other people) are:
