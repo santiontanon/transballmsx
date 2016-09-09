@@ -49,6 +49,37 @@ VDP_IsTMS9918A_end:
     out (99H),a
     ex af,af'
 	ret
+
+
+
+;-----------------------------------------------
+; source: https://www.msx.org/forum/development/msx-development/how-0?page=0
+; returns 1 in a and clears z flag if vdp is 60Hz
+CheckIf60Hz:
+    di
+    in      a,(#99)
+    nop
+    nop
+    nop
+vdpSync:
+    in      a,(#99)
+    and     #80
+    jr      z,vdpSync
+    
+    ld      hl,#900
+vdpLoop:
+    dec     hl
+    ld      a,h
+    or      l
+    jr      nz,vdpLoop
+    
+    in      a,(#99)
+    rlca
+    and     1
+    ei
+    ret
+
+
 ;-----------------------------------------------
 ; Code to change the VDP addresses trying to be able to use
 ; a 25th row of patterns in Screen 2 in MSX2
@@ -64,7 +95,6 @@ setup_VDP_addresses:
     jp WRTVDP
 	
 
-
 ;-----------------------------------------------
 ; saves the old interrupt
 save_interrupts:
@@ -73,6 +103,7 @@ save_interrupts:
     ld bc,3
     ldir
     ret
+
 
 ;-----------------------------------------------
 ; Checks whether we have an MSX1 or an MSX2 (or above), and sets the proper interrupt handler
@@ -235,7 +266,6 @@ MSX1_Interrupt_after_push:
     ret
 
 	
-	
 MSX2P_SmoothScroll_Interrupt:
     ; push af
         
@@ -295,7 +325,6 @@ MSX2P_SmoothScroll_Interrupt_Line_Interrupt:
     ld a,128+27
     out (#99),a		;;R#27=horizontal_scroll
     
-
     xor a   ; select S#0 again (otherwise, the program hangs)
     out (#99),a
     ld a,128+15

@@ -35,8 +35,14 @@ Execute_MSX1:
     ld (useSmoothScroll),a
 Execute_Continue:
 
-    ; set default ship rotation speed:
+    ; set default ship rotation speed (100 for 50hz, and 87 for 60hz):
+    call CheckIf60Hz
+    jr nz,Execute_60Hz
     call set_ship_rotation_100
+    jr Execute_Continue2
+Execute_60Hz:
+    call set_ship_rotation_87
+Execute_Continue2:
 
     ; Silence and init keyboard:
     xor a
