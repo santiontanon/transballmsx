@@ -15,10 +15,10 @@ Execute:
     di
     im  1
     ld  SP,#F380    ;; initialize the stack
-    ei
     ld  A,#C9
     ld  (TIMI),A
     ld  (HKEY),A
+    ei
 
     call move_ROMpage2_to_memorypage1
     call save_interrupts
