@@ -24,7 +24,7 @@ Demo videos of different versions can be found at:
 * version 1.2: https://www.youtube.com/watch?v=xnhxpgmjCe0
 * version 1.3: https://www.youtube.com/watch?v=Qzt6gVsL9W0
 
-Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.3
+Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.3.2
 
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
@@ -57,11 +57,12 @@ In the title screen:
 * Up/down arrow keys to change the selected menu item
 * Space/Trigger A to select a menu item
 * Press the numbers 1 through 5 to configure the rotation speed of the ship (1 = fastest, 5 = slowest)
-* Press '6' to select MSX1 blocky scroll (MSS/MSX2/MSX2+),  '7' to select MSX2 scroll mode (MSX2/MSX2+), and '8' to select MSX2+ scroll. The game selects the best mode available for the current hardware by default.
+* Press '6' to select MSX1 blocky scroll (MSX/MSX2/MSX2+),  '7' to select MSX2 scroll mode (MSX2/MSX2+), and '8' to select MSX2+ scroll. The game selects the best mode available for the current hardware by default.
+* Press '9' or '0' in the main menu to switch between 50Hz and 60Hz (only works on MSX2 or MSX2+)
 
 ## Compatibility
 
-The game was designed to be played on MSX1 computers with at least 64KB of RAM. The game speed was tuned to be played on European 50Hz machines. Although the game might run in Japanese 60Hz machines, you might experience some slow downs. Also, if the ship rotation speed is too fast in 60Hz, use keys 1 - 5 in the title screen to adjust the speed. Moreover, if the game detects the V9938 or the V9948 VDP (the graphics chip used in MSX2 and MSX2+ computers respectively), some enhancements to the scroll will be enabled. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
+The game was designed to be played on MSX1 computers with at least 64KB of RAM. The game speed was tuned to be played on European 50Hz machines. In 60Hz MSX2 or MSX2+ machines, the game tells the VDP to switch to 50Hz, and on 60Hz MSX1 machines the game automatically reduces the ball rotation speed to at least compensate. However, you can set the game back to 60Hz from the main menu. However, at 60Hz you might experience some slow downs. If the ship rotation speed is too fast in 60Hz, use keys 1 - 5 in the title screen to adjust the speed. Moreover, if the game detects the V9938 or the V9948 VDP (the graphics chip used in MSX2 and MSX2+ computers respectively), some enhancements to the scroll will be enabled. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
 
 ## Notes from the author and acknowledgments:
 
