@@ -304,27 +304,11 @@ checkForRotationSpeedConfigInput:
     jr z,set_msx2_scroll
     cp '8'
     jr z,set_msx2plus_scroll
+    cp '9'
+    jp z,set_50Hz
+    cp '0'
+    jp z,set_60Hz
     ret
-
-
-;-----------------------------------------------
-; checks whether any of the keys from 1 - 5 have been pressed and changes ship rotation speed accordingly
-;checkForRotationSpeedConfigInputInGame:
-;    call CHSNS
-;    ret z
-;
-;    call CHGET
-;    cp '1'
-;    jr z,set_ship_rotation_100_no_message
-;    cp '2'
-;    jr z,set_ship_rotation_87_no_message
-;    cp '3'
-;    jr z,set_ship_rotation_75_no_message
-;    cp '4'
-;    jr z,set_ship_rotation_62_no_message
-;    cp '5'
-;    jp z,set_ship_rotation_50_no_message
-;    ret    
 
 
 set_ship_rotation_100:
@@ -420,6 +404,28 @@ set_msx2plus_scroll:
     ld hl,scroll_change_message_msx2plus
     jp display_config_change_message
 
+
+set_50Hz:
+    ld a,(MSXType)
+    and a
+    ret z
+
+    ld bc,#0209 
+    call WRTVDP
+
+    ld hl,set_50Hz_change_message_msx2
+    jp display_config_change_message
+
+set_60Hz:
+    ld a,(MSXType)
+    and a
+    ret z
+
+    ld bc,#0009 
+    call WRTVDP
+
+    ld hl,set_60Hz_change_message_msx2
+    jp display_config_change_message
 
 
 display_config_change_message:

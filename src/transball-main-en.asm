@@ -12,6 +12,14 @@
 ;-----------------------------------------------
 ; Code that gets executed when the game starts
 Execute:
+    di
+    im  1
+    ld  SP,#F380    ;; initialize the stack
+    ei
+    ld  A,#C9       ;; clear the interrupts
+    ld  (TIMI),A
+    ld  (HKEY),A
+
     call move_ROMpage2_to_memorypage1
     call save_interrupts
 
@@ -35,13 +43,22 @@ Execute_MSX1:
     ld (useSmoothScroll),a
 Execute_Continue:
 
-    ; set default ship rotation speed (100 for 50hz, and 87 for 60hz):
+    ; set default speed of the game:
+    ; for 50Hz machines set to 100
+    ; for 60Hz MSX1 machines set to 87
+    ; for 60Hz MSX2/MSX2+ machines, just change to 50Hz
     call CheckIf60Hz
     jr nz,Execute_60Hz
     call set_ship_rotation_100
     jr Execute_Continue2
 Execute_60Hz:
+    ld a,(MSXType)
+    jr nz,Execute_60Hz_MSX2
     call set_ship_rotation_87
+    jr Execute_Continue2
+Execute_60Hz_MSX2:
+    ld bc,#0209 
+    call WRTVDP
 Execute_Continue2:
 
     ; Silence and init keyboard:
@@ -216,6 +233,11 @@ scroll_change_message_msx2:
     db "MSX 2"
 scroll_change_message_msx2plus:
     db "MSX2+"
+
+set_50Hz_change_message_msx2:
+    db "50HZ "
+set_60Hz_change_message_msx2:
+    db "60HZ "
 
 ;-----------------------------------------------
 ; Game variables to be copied to RAM

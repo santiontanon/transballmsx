@@ -30,6 +30,8 @@ enemyUpdateCycle_loop:
     jp nz,enemyUpdateCycle_cannotFire
 
     ld a,(ix) ; enemy type
+    and a
+    jp z,enemyUpdateCycle_nextEnemy ; enemy is dead
     dec a
     jp z,enemyUpdateCycle_CannonUp
     dec a
