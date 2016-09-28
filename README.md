@@ -26,6 +26,8 @@ Demo videos of different versions can be found at:
 
 Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/releases/tag/1.3.2
 
+Or you can buy a physical edition in cartridge here: http://www.ebsoft.fr/shop/en/home/55-transball.html
+
 You will need an MSX emulator to play the game, for example OpenMSX: http://openmsx.org
 
 In each level of Transball, the goal is to find the energy sphere, capture it and carry it to the upper part of the level. The main obstacle is the gravity, that pulls you towards the ground. But many other obstacles such as canons, tanks, doors, etc. will make your journey harder than it seems.
