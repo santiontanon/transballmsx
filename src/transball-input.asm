@@ -66,7 +66,7 @@ Readjoystick:
 ;    ld  a, 15   ;; read the joystick 1 status:
 ;    out (#a0), a
 ;    in  a, (#a2)
-;    and #af
+;    and #bf
 ;    out (#a1), a
 ;    ld  a, 14
 ;    out (#a0), a
@@ -75,7 +75,7 @@ Readjoystick:
     ;; Using BIOS calls:
     ld a,15   ;; read the joystick 1 status:
     call RDPSG
-    and #af
+    and #bf
     ld e,a
     ld a,15
     call WRTPSG
