@@ -35,7 +35,7 @@ GTTRIG0AND1_CALL1:
 checkInput:
     xor a
     ld (thruster_spriteattributes+3),a
-    
+
     ld a,#04    ;; get the status of the 4th keyboard row (to get the status of the 'M' key)
     call SNSMAT
     cpl         

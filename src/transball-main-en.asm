@@ -57,6 +57,7 @@ Execute_60Hz:
     call set_ship_rotation_87
     jr Execute_Continue2
 Execute_60Hz_MSX2:
+    call set_ship_rotation_100
     ld bc,#0209 
     call WRTVDP
 Execute_Continue2:
