@@ -29,7 +29,7 @@ Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/
 You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
 Or you can buy a physical edition in cartridge here and play on a real MSX if you own one: http://www.ebsoft.fr/shop/en/home/55-transball.html
 
-![title screen](https://github.com/santiontanon/transballmsx/blob/master/screenshots/transball-cover-front?raw=true)
+![title screen](https://github.com/santiontanon/transballmsx/blob/master/screenshots/transball-cover-front.png?raw=true)
 
 Alternatively, you can playonline here (thanks to tfh!): http://www.file-hunter.com/MSX/TransBall.html
 
