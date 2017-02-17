@@ -29,6 +29,8 @@ Download latest compiled ROM from: https://github.com/santiontanon/transballmsx/
 You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
 Or you can buy a physical edition in cartridge here and play on a real MSX if you own one: http://www.ebsoft.fr/shop/en/home/55-transball.html
 
+Alternatively, you can playonline here (thanks to tfh!): http://www.file-hunter.com/MSX/TransBall.html
+
 In each level of Transball, the goal is to find the energy sphere, capture it and carry it to the upper part of the level. The main obstacle is the gravity, that pulls you towards the ground. But many other obstacles such as canons, tanks, doors, etc. will make your journey harder than it seems.
 
 In order to capture the energy sphere, just touch it with your ship.
@@ -63,7 +65,7 @@ In the title screen:
 
 ## Compatibility
 
-The game was designed to be played on MSX1 computers with at least 64KB of RAM. The game speed was tuned to be played on European 50Hz machines. In 60Hz MSX2 or MSX2+ machines, the game tells the VDP to switch to 50Hz, and on 60Hz MSX1 machines the game automatically reduces the ball rotation speed to at least compensate. However, you can set the game back to 60Hz from the main menu. However, at 60Hz you might experience some slow downs. If the ship rotation speed is too fast in 60Hz, use keys 1 - 5 in the title screen to adjust the speed. Moreover, if the game detects the V9938 or the V9948 VDP (the graphics chip used in MSX2 and MSX2+ computers respectively), some enhancements to the scroll will be enabled. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
+The game was designed to be played on MSX1 computers with at least 16KB of RAM. The game speed was tuned to be played on European 50Hz machines. In 60Hz MSX2 or MSX2+ machines, the game tells the VDP to switch to 50Hz, and on 60Hz MSX1 machines the game automatically reduces the ball rotation speed to at least compensate. However, you can set the game back to 60Hz from the main menu. However, at 60Hz you might experience some slow downs. If the ship rotation speed is too fast in 60Hz, use keys 1 - 5 in the title screen to adjust the speed. Moreover, if the game detects the V9938 or the V9948 VDP (the graphics chip used in MSX2 and MSX2+ computers respectively), some enhancements to the scroll will be enabled. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
 
 ## Notes from the author and acknowledgments:
 
