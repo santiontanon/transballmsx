@@ -31,7 +31,7 @@ Or you can buy a physical edition in cartridge here and play on a real MSX if yo
 
 ![title screen](https://github.com/santiontanon/transballmsx/blob/master/screenshots/transball-cover-front.png?raw=true)
 
-Alternatively, you can playonline here (thanks to tfh!): https://www.file-hunter.com/MSX/index.php?id=transball
+Alternatively, you can playonline here (thanks to tfh!): https://homebrew.file-hunter.com/index.php?id=transball 
 
 In each level of Transball, the goal is to find the energy sphere, capture it and carry it to the upper part of the level. The main obstacle is the gravity, that pulls you towards the ground. But many other obstacles such as canons, tanks, doors, etc. will make your journey harder than it seems.
 
